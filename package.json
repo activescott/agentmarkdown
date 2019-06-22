@@ -1,0 +1,38 @@
+{
+  "name": "hypermarkdown",
+  "description": "An HTML to markdown converter.",
+  "version": "0.0.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/es/index.js",
+  "types": "dist/es/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "author": {
+    "name": "Scott Willeke",
+    "email": "scott@willeke.com",
+    "url": "https://scott.willeke.com/"
+  },
+  "license": "MPL",
+  "scripts": {
+    "build:cjs": "rm -rfd ./dist/cjs; tsc --project tsconfig.cjs.json",
+    "build:es": "rm -rfd ./dist/es; tsc --project tsconfig.es.json",
+    "build": "rm -rfd ./dist && yarn run build:es && yarn run build:cjs",
+    "lint": "prettier -l \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\"",
+    "lint-fix": "prettier --write \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\"",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/domhandler": "^2.4.1",
+    "@types/htmlparser2": "^3.10.0",
+    "@types/jest": "^24.0.15",
+    "jest": "^24.8.0",
+    "prettier": "^1.18.2",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.5.2"
+  },
+  "dependencies": {
+    "domhandler": "^2.4.2",
+    "htmlparser2": "^3.10.1"
+  }
+}
