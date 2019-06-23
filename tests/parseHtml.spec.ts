@@ -1,6 +1,6 @@
 import { parseHtml } from "../src/parseHtml"
 
-it("one", async () => {
+it.skip("one", async () => {
   var rawHtml =
     "Xyz <script language= javascript>var foo = '<<bar>>';< /  script><!--<!-- Waah! -- -->"
   const html = `
@@ -9,7 +9,7 @@ it("one", async () => {
   console.log(await parseHtml(html))
 })
 
-it("two", async () => {
+it.skip("two", async () => {
   var html =
     "Xyz <script language= javascript>var foo = '<<bar>>';< /  script><!--<!-- Waah! -- -->"
   console.log(await parseHtml(html))

@@ -1,5 +1,4 @@
-import { HyperMarkdown } from "../src"
-import { toMarkdown } from "./support";
+import { toMarkdown } from "./support"
 
 it("div simple", async () => {
   const html = "<div>hi</div>"

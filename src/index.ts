@@ -1,6 +1,7 @@
 import { parseHtml } from "./parseHtml"
-import { ProducerContext } from "./ProducerContext"
-import { DefaultProducerContext } from "./DefaultProducerContext";
+import { ComposerContext } from "./ComposerContext"
+import { DefaultComposerContext } from "./DefaultComposerContext"
+import { DefaultTextWriter } from "./TextWriter"
 
 /**
  * An HTML to markdown converter.
@@ -20,14 +21,12 @@ export class HyperMarkdown {
   // generate to stream or https://developer.mozilla.org/en-US/docs/Web/API/WritableStream maybe https://github.com/MattiasBuelens/web-streams-polyfill
   public static async produce(html: string): Promise<string> {
     const dom = await parseHtml(html)
-    const context = new DefaultProducerContext()
-    let out = ""
-    for (let node of dom) {
-      const producer = context.getProducerFor(node)
-      const product = producer.produce(context, node)
-      console.log(node, "=>", product)
-      out += product
-    }
-    return out
+    const context = new DefaultComposerContext()
+    const writer = new DefaultTextWriter()
+    context.compose(
+      writer,
+      dom
+    )
+    return writer.toString()
   }
 }
