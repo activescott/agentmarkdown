@@ -1,0 +1,23 @@
+# todo
+
+- build
+  - run tests in travis
+  - README badge
+- headings
+- u element
+- b element
+- Do we want to encode &lt; and &gt; like that or \< \> ?
+- font (color)
+- coverage in travis
+  - README badge
+- CLI support
+  - example in readme
+  - npx / yarn dlx support
+- online example
+  - demo in this repo that is published to github pages
+- npm package
+  - release via travis
+  - README badge
+- document how to extend/customize
+- full commonmark test suite and find out what else to support.
+- make it fast (see TextWriter and the default/lame implementation)

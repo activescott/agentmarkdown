@@ -1,7 +1,7 @@
-import { HyperMarkdown } from "../../src"
+import { HypertextMarkdown } from "../../src"
 
 export async function toMarkdown(html: string): Promise<string> {
-  const out = await HyperMarkdown.produce(html)
+  const out = await HypertextMarkdown.produce(html)
 
   if (process.env.DEBUG) {
     console.log("----- HTML -----")

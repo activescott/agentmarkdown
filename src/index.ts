@@ -17,7 +17,7 @@ import { DefaultTextWriter } from "./TextWriter"
  *  - Uses dependencies judiciously
  * - Allows overriding the MD generators for nodes so the user can customize output.
  */
-export class HyperMarkdown {
+export class HypertextMarkdown {
   // generate to stream or https://developer.mozilla.org/en-US/docs/Web/API/WritableStream maybe https://github.com/MattiasBuelens/web-streams-polyfill
   public static async produce(html: string): Promise<string> {
     const dom = await parseHtml(html)

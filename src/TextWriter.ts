@@ -2,7 +2,7 @@
  * Used by @see NodeWriter objects to write text.
  */
 export abstract class TextWriter {
-  protected activeLists: Array<ListType> = new Array<ListType>()
+  protected indentSequences: Array<string> = new Array<string>()
 
   abstract write(text: string): void
   abstract newLine(): void
@@ -13,50 +13,32 @@ export abstract class TextWriter {
   }
 
   /**
-   * Increases the current list level for determing the amount to indent lines by.
-   * All new lines created will be indented by this amount.
-   * To decrease the indent level the caller needs to call @see decreaseListLevel .
-   *
+   * Adds the specified string sequence to the begining of newlines created.
+   * To decrease the indent level the caller needs to call @see popIndentSequence.
    * NOTE: https://spec.commonmark.org/0.29/#indented-code-blocks
    * NOTE: https://spec.commonmark.org/0.29/#list-items
    */
-  beginList(listType: ListType): void {
-    this.activeLists.push(listType)
+  pushIndentSequence(sequence: string): void {
+    this.indentSequences.push(sequence)
   }
 
   /**
-   * Decreases the List level
+   * Pops the most recently pushed indent sequence off of the stack and returns it.
+   * If there are no indentSequences on the stack it will throw.
    */
-  endList(): void {
-    this.activeLists.pop()
-  }
-
-  /**
-   * If currently in the middle of a list returnst he type of list.
-   * If not in a list null is returned.
-   */
-  listType(): ListType | null {
-    return this.activeLists.length > 0
-      ? this.activeLists[this.activeLists.length - 1]
-      : null
-  }
-
-  /**
-   * Returns the current indent level of lists.
-   *
-   */
-  listLevel(): number {
-    return this.activeLists.length
+  popIndentSequence(): string {
+    if (this.indentSequences.length === 0) {
+      throw new Error("No indent sequence to pop")
+    }
+    return this.indentSequences.pop()
   }
 }
-
-export type ListType = "ul" | "ol"
 
 // TODO: This could be made fast by creating a resizing facade on Uint8Array or via https://developer.mozilla.org/en-US/docs/Web/API/WritableStream
 export class DefaultTextWriter extends TextWriter {
   private output: string = ""
   private readonly newLineSequence = "\n"
-  private readonly indentSequence = " "
+  private readonly indentSequence = "  "
 
   constructor() {
     super()
@@ -68,9 +50,7 @@ export class DefaultTextWriter extends TextWriter {
 
   newLine(): void {
     this.output += this.newLineSequence
-    if (this.listLevel() > 0) {
-      this.output += this.indentSequence.repeat(this.listLevel() - 1)
-    }
+    this.indentSequences.forEach(seq => (this.output += seq))
   }
 
   toString(): string {

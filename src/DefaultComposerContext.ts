@@ -3,11 +3,11 @@ import { Composer } from "./Composer"
 import { ComposerContext } from "./ComposerContext"
 import {
   FallbackComposer,
-  DivComposer,
   TextComposer,
+  DivComposer,
   UlComposer,
-  LiComposer,
-  OlComposer
+  OlComposer,
+  LiComposer
 } from "./Composers"
 
 const fallback: FallbackComposer = new FallbackComposer()
