@@ -5,6 +5,7 @@ An accurate, extensible, and fast HTML-to-markdown converter.
 # Features
 
 - Accurately converts HTML to [CommonMark-compliant](https://commonmark.org/) markdown
+  - uses [GitHub-Flavored Markdown's Strikethrough extention](https://github.github.com/gfm/#strikethrough-extension-) for &lt;strike&gt; and &lt;del&gt;.
 - Supports even wonky technically incorrect HTML
 - Supports nested lists
 - Extensible to allow extened or customized output

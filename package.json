@@ -1,6 +1,7 @@
 {
   "name": "hypertextmarkdown",
   "description": "An accurate, extensible, and fast HTML-to-markdown converter.",
+  "homepage": "https://github.com/activescott/hypertextmarkdown",
   "version": "0.0.0",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
@@ -12,6 +13,10 @@
     "name": "Scott Willeke",
     "email": "scott@willeke.com",
     "url": "https://scott.willeke.com/"
+  },
+  "repository": "https://github.com/activescott/hypertextmarkdown",
+  "bugs": {
+    "url": "https://github.com/activescott/hypertextmarkdown/issues"
   },
   "license": "MPL-2.0",
   "scripts": {
@@ -26,6 +31,7 @@
     "@types/domhandler": "^2.4.1",
     "@types/htmlparser2": "^3.10.0",
     "@types/jest": "^24.0.15",
+    "@types/node": "^12.0.10",
     "jest": "^24.8.0",
     "prettier": "^1.18.2",
     "ts-jest": "^24.0.2",

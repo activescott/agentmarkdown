@@ -3,6 +3,9 @@ import { HtmlNode } from "../HtmlNode"
 import { ComposerContext } from "../ComposerContext"
 import { TextWriter } from "../TextWriter"
 export { UlComposer, OlComposer, LiComposer } from "./Lists"
+export { BrComposer } from "./BrComposer"
+export { EmphasizeComposer } from "./EmphasizeComposer"
+export { HeadingComposer } from "./HeadingComposer"
 
 export class FallbackComposer implements Composer {
   compose(context: ComposerContext, writer: TextWriter, input: HtmlNode): void {
