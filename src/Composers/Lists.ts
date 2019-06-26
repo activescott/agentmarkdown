@@ -1,6 +1,6 @@
 import { Composer } from "../Composer"
 import { ComposerContext } from "../ComposerContext"
-import { TextWriter } from "../TextWriter"
+import { TextWriter, BlockType } from "../TextWriter"
 import { HtmlNode } from "../HtmlNode"
 
 export class UlComposer implements Composer {
@@ -27,14 +27,14 @@ export class OlComposer implements Composer {
 
 export class LiComposer implements Composer {
   compose(context: ComposerContext, writer: TextWriter, input: HtmlNode): void {
-    writer.newLine()
+    writer.beginBlock(BlockType.listItem)
     const listType = ListState.getListType(context)
     if (listType === "ul") {
-      writer.write("* ")
+      writer.writeMarkup("* ")
     } else if (listType === "ol") {
       ListState.newListItem(context)
       const itemCount = ListState.getListItemCount(context)
-      writer.write(`${itemCount}. `)
+      writer.writeMarkup(`${itemCount}. `)
     } else {
       throw new Error("Unexpected listType in context:" + listType)
     }
@@ -42,6 +42,7 @@ export class LiComposer implements Composer {
       writer,
       input.children
     )
+    writer.endBlock(BlockType.listItem)
   }
 }
 
@@ -60,11 +61,6 @@ class ListState {
     context.pushState<ListType>(this.ListTypeKey, listType)
     // track the list item count:
     context.pushState(ListState.ItemCountKey, 0)
-    // indent accordingly for nested lists:
-    const listCount = context.getStateStack(this.ListTypeKey).length
-    if (listCount > 1) {
-      writer.pushIndentSequence("  ".repeat(listCount - 1))
-    }
   }
 
   static endList(context: ComposerContext, writer: TextWriter) {
@@ -72,11 +68,6 @@ class ListState {
     context.popState<ListType>(this.ListTypeKey)
     // pop the item count for this list
     context.popState(ListState.ItemCountKey)
-    // update indent for nested lists:
-    const listCount = context.getStateStack(this.ListTypeKey).length
-    if (listCount > 0) {
-      writer.popIndentSequence()
-    }
   }
 
   static getListType(context: ComposerContext): ListType | undefined {

@@ -1,6 +1,6 @@
 import { Composer } from "../Composer"
 import { ComposerContext } from "../ComposerContext"
-import { TextWriter } from "../TextWriter"
+import { TextWriter, BlockType } from "../TextWriter"
 import { HtmlNode } from "../HtmlNode"
 
 const nodeToCharMap = {
@@ -25,11 +25,13 @@ export class HeadingComposer implements Composer {
   }
 
   compose(context: ComposerContext, writer: TextWriter, input: HtmlNode): void {
-    writer.write(this.boundingSequence + " ")
+    writer.beginBlock(BlockType.default)
+    writer.writeMarkup(this.boundingSequence + " ")
     context.compose(
       writer,
       input.children
     )
-    writer.write(" " + this.boundingSequence)
+    writer.writeMarkup(" " + this.boundingSequence)
+    writer.endBlock(BlockType.default)
   }
 }

@@ -24,11 +24,11 @@ export class EmphasizeComposer implements Composer {
   }
 
   compose(context: ComposerContext, writer: TextWriter, input: HtmlNode): void {
-    writer.write(this.boundingSequence)
+    writer.writeMarkup(this.boundingSequence)
     context.compose(
       writer,
       input.children
     )
-    writer.write(this.boundingSequence)
+    writer.writeMarkup(this.boundingSequence)
   }
 }

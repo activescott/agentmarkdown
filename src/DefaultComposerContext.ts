@@ -18,6 +18,7 @@ const fallback: FallbackComposer = new FallbackComposer()
 const nodeMap = new Map<string, Composer>([
   ["text", new TextComposer()],
   ["tag-div", new DivComposer()],
+  ["tag-p", new DivComposer()],
   ["tag-ul", new UlComposer()],
   ["tag-ol", new OlComposer()],
   ["tag-li", new LiComposer()],

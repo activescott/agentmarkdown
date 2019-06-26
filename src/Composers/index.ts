@@ -1,7 +1,7 @@
 import { Composer } from "../Composer"
 import { HtmlNode } from "../HtmlNode"
 import { ComposerContext } from "../ComposerContext"
-import { TextWriter } from "../TextWriter"
+import { TextWriter, BlockType } from "../TextWriter"
 export { UlComposer, OlComposer, LiComposer } from "./Lists"
 export { BrComposer } from "./BrComposer"
 export { EmphasizeComposer } from "./EmphasizeComposer"
@@ -20,18 +20,17 @@ export class TextComposer implements Composer {
   compose(context: ComposerContext, writer: TextWriter, input: HtmlNode): void {
     console.assert(input.type === "text", "expected input to be text")
     let rawText = input.data ? input.data : ""
-    rawText = rawText.replace(/\n/g, "")
-    writer.write(rawText)
+    writer.writeTextContent(rawText)
   }
 }
 
 export class DivComposer implements Composer {
   compose(context: ComposerContext, writer: TextWriter, input: HtmlNode): void {
-    writer.newLine()
+    writer.beginBlock(BlockType.default)
     context.compose(
       writer,
       input.children
     )
-    writer.newLine()
+    writer.endBlock(BlockType.default)
   }
 }

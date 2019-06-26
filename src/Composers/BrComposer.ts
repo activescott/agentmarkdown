@@ -13,6 +13,7 @@ export class BrComposer implements Composer {
         { type: input.type, name: input.name }
       )}`
     )
-    writer.newLine()
+    // note: this is actually how CSS handles rendering the br element too: https://www.w3.org/TR/CSS22/sample.html
+    writer.writeMarkup("\n")
   }
 }

@@ -8,7 +8,7 @@ export function parseHtml(html: string): Promise<HtmlNode[]> {
         if (error) reject(new Error("Error parsing html into DOM"))
         else resolve(<HtmlNode[]>dom)
       },
-      { normalizeWhitespace: true }
+      { normalizeWhitespace: false }
     )
     const parser = new htmlparser.Parser(handler)
     parser.write(html)

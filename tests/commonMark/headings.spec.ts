@@ -1,6 +1,6 @@
 import { toMarkdown } from "../support"
 
-describe.only("https://spec.commonmark.org/0.29/#atx-heading", () => {
+describe("https://spec.commonmark.org/0.29/#atx-heading", () => {
   it("https://spec.commonmark.org/0.29/#example-32", async () => {
     const html = `<h1>foo</h1>
 <h2>foo</h2>
@@ -13,8 +13,7 @@ describe.only("https://spec.commonmark.org/0.29/#atx-heading", () => {
 ### foo ###
 #### foo ####
 ##### foo #####
-###### foo ######
-`
+###### foo ######`
 
     const md = await toMarkdown(html)
     console.log({ ex: expected })
