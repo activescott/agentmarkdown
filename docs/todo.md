@@ -1,6 +1,7 @@
 # todo
 
 - Refactoring in progress...
+  - TEST CssBox & layout builder
   - See css.spec.ts: IN order to honor CSS Visual Formatting Model, suspect we have to do two passes on DOM:
     1. Build a tree with rendering/layout "boxes" that we assign a block formatting model to
        In theory you'd need to build a new tree because one element/node could result "zero or more boxes" (see "principal box"), but our render output is pretty simplistic so maybe we can get away with 1:1 element:box? Sounds hacky though. Some boxes 
@@ -10,8 +11,9 @@
     class Box {
       type: "inline" | "block"
       formattingContext: "inline" | "block"
-      children: Box[]
       element: HtmlNode
+      children(): IterableIterator<Box>
+      addChild(box: Box): void
     }
     ```
 
