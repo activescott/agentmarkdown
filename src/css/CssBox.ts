@@ -1,19 +1,21 @@
-import { HtmlNode } from "../HtmlNode"
-
+/**
+ * Represents a (simplified) a CSS box as described at https://www.w3.org/TR/CSS22/visuren.html#box-gen.
+ */
 export class CssBox {
-  private readonly kids = new Array<CssBox>()
-  private _type: BoxType
+  private readonly _children: Array<CssBox>
 
-  constructor(readonly element: HtmlNode, type: BoxType) {
-    this.type = type
-  }
-
-  get type(): BoxType {
-    return this._type
-  }
-
-  set type(value: BoxType) {
-    this._type = value
+  /**
+   * Initializes a new @see CssBox.
+   * @param type The type of this box.
+   * @param textContent Returns any text content if this box has text to render.
+   * @param children Returns any child boxes of this box.
+   */
+  constructor(
+    public type: BoxType,
+    public textContent: string = "",
+    children: Iterable<CssBox> = []
+  ) {
+    this._children = Array.from(children)
   }
 
   get formattingContext(): FormattingContext {
@@ -35,11 +37,11 @@ export class CssBox {
   }
 
   get children(): Iterable<CssBox> {
-    return this.kids
+    return this._children
   }
 
   addChild(box: CssBox): void {
-    this.kids.push(box)
+    this._children.push(box)
   }
 }
 

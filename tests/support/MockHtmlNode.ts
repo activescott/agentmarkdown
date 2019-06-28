@@ -6,6 +6,6 @@ export class MockHtmlNode implements HtmlNode {
     readonly name: string,
     readonly data?: any,
     readonly attribs?: AttribsType,
-    readonly children?: HtmlNode[]
+    readonly children: HtmlNode[] = []
   ) {}
 }

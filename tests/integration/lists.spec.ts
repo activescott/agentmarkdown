@@ -1,4 +1,4 @@
-import { toMarkdown } from "./support"
+import { toMarkdown } from "../../tests/support"
 
 it("simple ul", async () => {
   const html = `<ul>

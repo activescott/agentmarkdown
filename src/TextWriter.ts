@@ -90,7 +90,6 @@ export class DefaultTextWriter extends TextWriter {
     }
     if (this.output.length > 0) {
       // if this is the very begining of the content, don't insert a newline
-      // TODO: SIMILARLY if two blocks are rendered back to back (because they're nested) we probably shouldn't allow this!
       this.output += newLineSequence
     }
     if (this.listItemNestingLevel > 1) {

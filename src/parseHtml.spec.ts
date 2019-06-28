@@ -19,7 +19,7 @@ it("two", async () => {
   const expected =
     '[{"data":"Xyz ' +
     '","type":"text","next":null,"prev":null,"parent":null},{"type":"script","name":"script","attribs":{"language":"javascript"},"children":[{"data":"var ' +
-    "foo = '<<bar>>';< / script><!--<!-- Waah! -- " +
+    "foo = '<<bar>>';< /  script><!--<!-- Waah! -- " +
     '-->","type":"text","next":null,"prev":null,"parent":null}],"next":null,"prev":null,"parent":null}]'
   expect(actual).toMatch(expected)
 })

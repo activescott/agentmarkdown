@@ -1,8 +1,8 @@
-import { toMarkdown } from "./support"
+import { toMarkdown } from "../../tests/support"
 
-describe.only("CSS Visual Formatting Model", async () => {
+describe.only("CSS Visual Formatting Model", () => {
   // https://www.w3.org/TR/CSS22/visuren.html
-  describe("9.4 Normal flow", async () => {
+  describe("9.4 Normal flow", () => {
     /** https://www.w3.org/TR/CSS22/visuren.html#normal-flow
      * - Block-level boxes participate in a block formatting context.
      *   - In a block formatting context, boxes are laid out one after the other, vertically,
@@ -12,7 +12,7 @@ describe.only("CSS Visual Formatting Model", async () => {
      *     block-level boxes. In an inline formatting context, boxes are laid out horizontally,
      *     one after the other, beginning at the top of a containing block.
      */
-    describe("9.4.1 Block formatting contexts", async () => {
+    describe("9.4.1 Block formatting contexts", () => {
       /** https://www.w3.org/TR/CSS22/visuren.html#block-formatting
        * Notable excerpts:
        * - Block-level boxes are boxes that participate in a block formatting context.
@@ -32,7 +32,7 @@ describe.only("CSS Visual Formatting Model", async () => {
     describe("9.4.2 Inline formatting contexts", () => {
       /** https://www.w3.org/TR/CSS22/visuren.html#inline-formatting */
       it("simple", async () => {
-        const html = `<span>span1</span><span>span2</span>`
+        const html = `<span>span1</span> <span>span2</span>`
         const expected = `span1 span2`
         const md = await toMarkdown(html)
         console.log({ ex: expected })

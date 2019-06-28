@@ -1,4 +1,4 @@
-import { toMarkdown } from "./support"
+import { toMarkdown } from "../support"
 
 it.skip("CommonMark ALL", async () => {
   const commonMark = require("../test-data/spec.commonmark.v0.29.json")
