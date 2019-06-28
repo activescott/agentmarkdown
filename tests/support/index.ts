@@ -1,4 +1,5 @@
 import { HypertextMarkdown } from "../../src"
+export { MockHtmlNode } from "./MockHtmlNode"
 
 export async function toMarkdown(html: string): Promise<string> {
   const out = await HypertextMarkdown.produce(html)

@@ -1,11 +1,12 @@
 # todo
 
 - Refactoring in progress...
+
   - TEST CssBox & layout builder
   - See css.spec.ts: IN order to honor CSS Visual Formatting Model, suspect we have to do two passes on DOM:
     1. Build a tree with rendering/layout "boxes" that we assign a block formatting model to
-       In theory you'd need to build a new tree because one element/node could result "zero or more boxes" (see "principal box"), but our render output is pretty simplistic so maybe we can get away with 1:1 element:box? Sounds hacky though. Some boxes 
-       - NOTE: Each box should really ask it's parent whether it is in *block formatting context* or a *inline formatting context* (the parent elevates to block formatting context if _any_ child is a block box).
+       In theory you'd need to build a new tree because one element/node could result "zero or more boxes" (see "principal box"), but our render output is pretty simplistic so maybe we can get away with 1:1 element:box? Sounds hacky though. Some boxes
+       - NOTE: Each box should really ask it's parent whether it is in _block formatting context_ or a _inline formatting context_ (the parent elevates to block formatting context if _any_ child is a block box).
     2. With formatting contexts assigned, render the boxes to the TextWriter.
     ```
     class Box {

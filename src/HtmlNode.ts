@@ -9,22 +9,26 @@ export interface HtmlNode {
   /**
    * The type of node.
    */
-  type:
-    | "element"
-    | "text"
-    | "cdata"
-    | "comment"
-    | "tag"
-    | "directive"
-    | "script"
-    | "style"
-    | "doctype"
+  type: HtmlNodeType
   /**
    * The name of the node when @see type is "tag"
    */
   name: string
-  attribs?: {
-    [s: string]: string
-  }
+  attribs?: AttribsType
   children?: HtmlNode[]
 }
+
+export type AttribsType = {
+  [s: string]: string
+}
+
+export type HtmlNodeType =
+  | "element"
+  | "text"
+  | "cdata"
+  | "comment"
+  | "tag"
+  | "directive"
+  | "script"
+  | "style"
+  | "doctype"

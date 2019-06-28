@@ -1,14 +1,13 @@
-import { HtmlNode } from "../HtmlNode";
-import { BlockType } from "../TextWriter";
+import { HtmlNode } from "../HtmlNode"
 
 export class CssBox {
   private readonly kids = new Array<CssBox>()
   private _type: BoxType
-  
+
   constructor(readonly element: HtmlNode, type: BoxType) {
     this.type = type
   }
-  
+
   get type(): BoxType {
     return this._type
   }
@@ -16,7 +15,7 @@ export class CssBox {
   set type(value: BoxType) {
     this._type = value
   }
-  
+
   get formattingContext(): FormattingContext {
     // todo: cache, dirty upon adding new child
     let hasBlock = false

@@ -1,4 +1,4 @@
-import { normalizeWhitespace, WhitespaceHandling } from "./cssTools"
+import { normalizeWhitespace, WhitespaceHandling } from "./css"
 
 export enum BlockType {
   /**
