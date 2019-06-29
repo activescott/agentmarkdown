@@ -1,7 +1,7 @@
-import { parseHtml } from "./parseHtml"
+import { parseHtml, traceHtmlNodes } from "./parseHtml"
 import { DefaultTextWriter, TextWriter, BlockType } from "./TextWriter"
 import { layout } from "./css/layout"
-import { CssBox, BoxType, FormattingContext } from "./css/CssBox"
+import { CssBox, FormattingContext } from "./css/CssBox"
 
 /**
  * An HTML to markdown converter.
@@ -21,9 +21,10 @@ export class HypertextMarkdown {
   // generate to stream or https://developer.mozilla.org/en-US/docs/Web/API/WritableStream maybe https://github.com/MattiasBuelens/web-streams-polyfill
   public static async produce(html: string): Promise<string> {
     const dom = await parseHtml(html)
+    //console.debug(traceHtmlNodes(dom))
     const writer = new DefaultTextWriter()
     const docStructure = layout(dom)
-    render(writer, docStructure, FormattingContext.block)
+    render(writer, docStructure.children, docStructure.formattingContext)
     return writer.toString()
   }
 }
@@ -33,14 +34,13 @@ function render(
   boxes: Iterable<CssBox>,
   formattingContext: FormattingContext
 ): void {
+  let isFirst = true
   for (const box of boxes) {
     if (formattingContext === FormattingContext.block) {
-      writer.beginBlock(BlockType.default)
+      !isFirst && writer.newLine()
     }
     box.textContent && writer.writeTextContent(box.textContent)
     box.children && render(writer, box.children, box.formattingContext)
-    if (formattingContext === FormattingContext.block) {
-      writer.endBlock(BlockType.default)
-    }
+    isFirst = false
   }
 }

@@ -9,13 +9,15 @@ export class CssBox {
    * @param type The type of this box.
    * @param textContent Returns any text content if this box has text to render.
    * @param children Returns any child boxes of this box.
+   * @param debugNote A string ot add to the box to help with debugging.
    */
   constructor(
     public type: BoxType,
     public textContent: string = "",
-    children: Iterable<CssBox> = []
+    children: Iterable<CssBox> = [],
+    public readonly debugNote: string = ""
   ) {
-    this._children = Array.from(children)
+    this._children = children ? Array.from(children) : []
   }
 
   get formattingContext(): FormattingContext {
@@ -25,13 +27,6 @@ export class CssBox {
     for (let child of this.children) {
       hasBlock = hasBlock || child.type === BoxType.block
       hasInline = hasInline || child.type == BoxType.inline
-    }
-    if (hasBlock && hasInline) {
-      // if any child is a block element, this element becomes elevated to block formatting context - https://www.w3.org/TR/CSS22/visuren.html#block-boxes
-      // create anonymous box for any inlines: https://www.w3.org/TR/CSS22/visuren.html#anonymous-block-level
-      for (let child of this.children) {
-        child.type = BoxType.block
-      }
     }
     return hasBlock ? FormattingContext.block : FormattingContext.inline
   }

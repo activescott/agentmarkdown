@@ -1,6 +1,6 @@
 import { toMarkdown } from "../../tests/support"
 
-describe.only("CSS Visual Formatting Model", () => {
+describe("CSS Visual Formatting Model", () => {
   // https://www.w3.org/TR/CSS22/visuren.html
   describe("9.4 Normal flow", () => {
     /** https://www.w3.org/TR/CSS22/visuren.html#normal-flow
@@ -24,8 +24,8 @@ describe.only("CSS Visual Formatting Model", () => {
         const html = `<div>block</div><span>inline</span>`
         const expected = `block\ninline`
         const md = await toMarkdown(html)
-        console.log({ ex: expected })
-        console.log({ md })
+        //console.log({ ex: expected })
+        //console.log({ md })
         expect(md).toMatch(expected)
       })
     })
@@ -35,8 +35,8 @@ describe.only("CSS Visual Formatting Model", () => {
         const html = `<span>span1</span> <span>span2</span>`
         const expected = `span1 span2`
         const md = await toMarkdown(html)
-        console.log({ ex: expected })
-        console.log({ md })
+        //console.log({ ex: expected })
+        //console.log({ md })
         expect(md).toMatch(expected)
       })
 
@@ -50,8 +50,8 @@ describe.only("CSS Visual Formatting Model", () => {
         const html = `<div>Some text<p>More text</p></div>`
         const expected = `Some text\nMore text`
         const md = await toMarkdown(html)
-        console.log({ ex: expected })
-        console.log({ md })
+        //console.log({ ex: expected })
+        //console.log({ md })
         expect(md).toMatch(expected)
       })
     })

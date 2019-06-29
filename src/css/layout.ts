@@ -1,18 +1,48 @@
 import { HtmlNode } from "../HtmlNode"
-import { BoxType, CssBox } from "./CssBox"
+import { BoxType, CssBox, FormattingContext } from "./CssBox"
 import { normalizeWhitespace, WhitespaceHandling } from "."
+import { ListState } from "./ListState"
+import { LayoutContext } from "./LayoutContext"
 
 /**
  * Implements the CSS Visual Formatting model's box generation algorithm. It turns HTML elements into a set of CSS Boxes.
  * See https://www.w3.org/TR/CSS22/visuren.html#visual-model-intro
  */
-export function layout(document: Iterable<HtmlNode>): Iterable<CssBox> {
-  const boxes = new Array<CssBox>()
+export function layout(document: Iterable<HtmlNode>): CssBox {
+  const context = new LayoutContext()
+  // NOTE: we want a single root box so that the if the incoming HTML is a fragment (e.g. <span>a</span> <span>b</span>) it will still figure out it's own formatting context.
+  const body = new CssBox(BoxType.block, "", [], "body")
   for (let node of document) {
-    const box = generateElementBox(node)
-    box && boxes.push(box)
+    const box = generateElementBox(context, node)
+    box && body.addChild(box)
   }
-  return boxes
+  //console.debug(traceBoxTree(body))
+  return body
+}
+
+function traceBoxTree(box: CssBox, indent = 0): string {
+  const typeStr = (type: BoxType) =>
+    type === BoxType.inline ? "inline" : "block"
+  const fcStr = (fc: FormattingContext) =>
+    fc === FormattingContext.inline ? "inline" : "block"
+  const boxStr = (b: CssBox) =>
+    "CssBox " +
+    (b == null
+      ? "<null>"
+      : JSON.stringify({
+          type: typeStr(b.type),
+          fc: fcStr(b.formattingContext),
+          text: b.textContent,
+          debug: b.debugNote
+        })) +
+    "\n"
+  let output = "  ".repeat(indent) + boxStr(box)
+  if (box) {
+    for (let child of box.children) {
+      output += traceBoxTree(child, indent + 1)
+    }
+  }
+  return output
 }
 
 /**
@@ -20,18 +50,28 @@ export function layout(document: Iterable<HtmlNode>): Iterable<CssBox> {
  * See https://www.w3.org/TR/CSS22/visuren.html#propdef-display
  * @param element The element to generate a box for
  */
-function generateElementBox(element: HtmlNode): CssBox | null {
+function generateElementBox(
+  context: LayoutContext,
+  element: HtmlNode
+): CssBox | null {
   let box: CssBox = null
   if (element.type === "text") {
     const text = normalizeWhitespace(element.data, WhitespaceHandling.normal)
     if (text) {
       // only create a box if normalizeWhitespace left something over
-      box = new CssBox(BoxType.inline, text)
+      box = new CssBox(BoxType.inline, text, [], "textNode")
     }
   } else if (element.type === "tag") {
-    const display = getElementDisplay(element.name)
-    const boxBuilder = getBoxBuilder(display)
-    box = boxBuilder(element)
+    const boxBuilder = getBoxBuilderForElement(element.name)
+    try {
+      box = boxBuilder(context, element)
+    } catch (e) {
+      throw new Error(
+        `boxbuilder (${JSON.stringify(
+          boxBuilder
+        )}) error for element ${JSON.stringify(element.name)}: ${e}`
+      )
+    }
   } else {
     console.error(`Ignoring element with type ${element.type}`)
     box = null
@@ -39,50 +79,144 @@ function generateElementBox(element: HtmlNode): CssBox | null {
   return box
 }
 
-function getBoxBuilder(
-  display: CssDisplayValue
-): (element: HtmlNode) => CssBox | null {
-  const builders = new Map<CssDisplayValue, (element: HtmlNode) => CssBox>([
-    [
-      CssDisplayValue.block,
-      element => {
-        const kids = element.children
-          ? element.children
-              .map(el => generateElementBox(el))
-              .filter(childBox => childBox !== null)
-          : []
-        return new CssBox(BoxType.block, "", kids)
-      }
-    ],
-    [
-      CssDisplayValue.inline,
-      element => {
-        const kids = element.children
-          ? element.children
-              .map(el => generateElementBox(el))
-              .filter(childBox => childBox !== null)
-          : []
-        const text = element.data ? element.data : ""
-        return new CssBox(BoxType.inline, text, kids)
-      }
-    ],
-    [
-      CssDisplayValue.listItem,
-      element => {
-        const principleBox = new CssBox(BoxType.block)
-        const markerBox = new CssBox(BoxType.inline, "* ")
-        const childBoxes: CssBox[] = element.children.map(el => {
-          const builder = getBoxBuilder(getElementDisplay(el.name))
-          return builder(el)
-        })
-        principleBox.addChild(markerBox)
-        childBoxes.forEach(cb => cb && principleBox.addChild(cb))
-        return principleBox
-      }
-    ],
-    [CssDisplayValue.none, element => null]
+interface BoxBuilder {
+  (context: LayoutContext, element: HtmlNode): CssBox | null
+}
+
+class BoxBuilders {
+  public static buildBoxes(context: LayoutContext, children: HtmlNode[]) {
+    const kids = children
+      ? children
+          .map(el => generateElementBox(context, el))
+          .filter(childBox => childBox !== null)
+      : []
+    return kids
+  }
+
+  /**
+   * A @see BoxBuilder suitable for generic block elements.
+   */
+  public static genericBlock(
+    context: LayoutContext,
+    element: HtmlNode
+  ): CssBox | null {
+    return new CssBox(
+      BoxType.block,
+      "",
+      BoxBuilders.buildBoxes(context, element.children),
+      "genericBlock"
+    )
+  }
+
+  /**
+   * A @see BoxBuilder suitable for generic inline elements.
+   */
+  public static genericInline(
+    context: LayoutContext,
+    element: HtmlNode
+  ): CssBox | null {
+    const text = element.data
+      ? normalizeWhitespace(element.data, WhitespaceHandling.normal)
+      : ""
+    const kids = BoxBuilders.buildBoxes(context, element.children)
+    // if it has no text and no kids it doesnt affect layout so, don't create a box to affect layout:
+    if ((!text || text.length === 0) && kids.length === 0) {
+      return null
+    } else return new CssBox(BoxType.inline, text, kids, "genericInline")
+  }
+
+  /**
+   * A @see BoxBuilder suitable for generic list item elements.
+   */
+  public static listItem(
+    context: LayoutContext,
+    element: HtmlNode
+  ): CssBox | null {
+    ListState.newListItem(context)
+    // prepare marker box (see following for "marker box" "principal box", etc. https://www.w3.org/TR/CSS22/generate.html#lists)
+    let indentSpaces = ""
+    const depth = ListState.getListNestingDepth(context)
+    if (depth > 1) {
+      indentSpaces = "  ".repeat(depth - 1)
+    }
+    let markerBox: CssBox
+    if (ListState.getListType(context) === "ul") {
+      markerBox = new CssBox(
+        BoxType.inline,
+        indentSpaces + "* ",
+        null,
+        "li-marker-ul"
+      )
+    } else if (ListState.getListType(context) === "ol") {
+      markerBox = new CssBox(
+        BoxType.inline,
+        indentSpaces + `${ListState.getListItemCount(context)}. `,
+        null,
+        "li-marker-ol"
+      )
+    } else {
+      throw new Error("unexpected list type")
+    }
+    // add boxes for list item child elements
+    const contentChildBoxes: CssBox[] = BoxBuilders.buildBoxes(
+      context,
+      element.children
+    )
+    // prepare a single parent box for the list item's content (to keep it from breaking between the marker & content)
+    const contentBox = new CssBox(
+      BoxType.inline,
+      "",
+      contentChildBoxes,
+      "li-content"
+    )
+    const principalBox = new CssBox(
+      BoxType.block,
+      "",
+      [markerBox, contentBox],
+      "li-principal"
+    )
+    return principalBox
+  }
+
+  public static list(context: LayoutContext, element: HtmlNode): CssBox | null {
+    if (!["ul", "ol"].includes(element.name)) {
+      throw new Error(`Unexpected list type "${element.name}"`)
+    }
+    const listBox = new CssBox(BoxType.block, "", [], element.name)
+    ListState.beginList(element.name as "ul" | "ol", context)
+    const kids = BoxBuilders.buildBoxes(context, element.children)
+    ListState.endList(context)
+    kids.forEach(kid => listBox.addChild(kid))
+    return listBox
+  }
+}
+
+/**
+ * Returns @see BlockBuilder for specified element.
+ * @param elementName name/tag of element
+ */
+function getBoxBuilderForElement(elementName: string): BoxBuilder {
+  const builders = new Map<string, BoxBuilder>([
+    ["ul", BoxBuilders.list],
+    ["ol", BoxBuilders.list],
+    ["li", BoxBuilders.listItem]
+    // TODO: headings
+    // TODO: emphasis inlines
   ])
-  return builders.get(display)
+  let builder = builders.get(elementName)
+  if (!builder) {
+    const display = getElementDisplay(elementName)
+    if (display === CssDisplayValue.block) {
+      builder = BoxBuilders.genericBlock
+    } else if (display === CssDisplayValue.inline) {
+      builder = BoxBuilders.genericInline
+    } else if (display === CssDisplayValue.listItem) {
+      builder = BoxBuilders.listItem
+    } else {
+      throw new Error("unexpected element and unexpected display")
+    }
+  }
+  return builder
 }
 
 /**

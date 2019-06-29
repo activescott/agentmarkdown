@@ -15,3 +15,29 @@ export function parseHtml(html: string): Promise<HtmlNode[]> {
     parser.end()
   })
 }
+
+export function traceHtmlNodes(nodes: HtmlNode[], indent = 0): string {
+  let output = ""
+  for (let child of nodes) {
+    output += traceHtmlNode(child, indent)
+  }
+  return output
+}
+
+function traceHtmlNode(node: HtmlNode, indent = 0): string {
+  const nameStr = node => (node.name ? node.name : "")
+  const dataStr = node => (node.data ? node.data : "")
+  let output =
+    "  ".repeat(indent) +
+    "HtmlNode " +
+    JSON.stringify({
+      type: node.type,
+      name: nameStr(node),
+      data: dataStr(node)
+    }) +
+    "\n"
+  if (node && node.children) {
+    output += traceHtmlNodes(node.children, indent + 1)
+  }
+  return output
+}
