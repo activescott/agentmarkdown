@@ -1,7 +1,7 @@
 import { parseHtml } from "./parseHtml"
 import { DefaultTextWriter, TextWriter, BlockType } from "./TextWriter"
 import { layout } from "./css/layout"
-import { CssBox, BoxType } from "./css/CssBox"
+import { CssBox, BoxType, FormattingContext } from "./css/CssBox"
 
 /**
  * An HTML to markdown converter.
@@ -23,25 +23,24 @@ export class HypertextMarkdown {
     const dom = await parseHtml(html)
     const writer = new DefaultTextWriter()
     const docStructure = layout(dom)
-    render(writer, docStructure)
+    render(writer, docStructure, FormattingContext.block)
     return writer.toString()
   }
 }
 
-function render(writer: TextWriter, boxes: Iterable<CssBox>): void {
+function render(
+  writer: TextWriter,
+  boxes: Iterable<CssBox>,
+  formattingContext: FormattingContext
+): void {
   for (const box of boxes) {
-    if (box.type === BoxType.block) {
+    if (formattingContext === FormattingContext.block) {
       writer.beginBlock(BlockType.default)
-      render(writer, box.children)
+    }
+    box.textContent && writer.writeTextContent(box.textContent)
+    box.children && render(writer, box.children, box.formattingContext)
+    if (formattingContext === FormattingContext.block) {
       writer.endBlock(BlockType.default)
-    } else if (box.type === BoxType.inline) {
-      if (box.textContent) {
-        writer.writeTextContent(box.textContent)
-      } else {
-        render(writer, box.children)
-      }
-    } else {
-      throw new Error(`Unexpected BoxType: '${box.type}'`)
     }
   }
 }

@@ -41,6 +41,7 @@ export class CssBox {
   }
 
   addChild(box: CssBox): void {
+    if (!box) throw new Error("box must be provided")
     this._children.push(box)
   }
 }

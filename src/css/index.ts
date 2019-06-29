@@ -14,7 +14,7 @@ export function normalizeWhitespace(
     whitespace == WhitespaceHandling.nowrap ||
     whitespace == WhitespaceHandling.preline
   ) {
-    normalized = normalized.replace(/[\t\t ]*\n[\t\t ]*/g, "\n")
+    normalized = normalized.replace(/[\t\r ]*\n[\t\r ]*/g, "\n")
   }
   // Step 2. If 'white-space' is set to 'pre' or 'pre-wrap', any sequence of spaces (U+0020) unbroken by an element boundary is treated as a sequence of non-breaking spaces. However, for 'pre-wrap', a line breaking opportunity exists at the end of the sequence.
   if (
@@ -29,7 +29,7 @@ export function normalizeWhitespace(
     whitespace == WhitespaceHandling.nowrap
   ) {
     // if there are only LF chars, reaplce them with "no character":
-    if (normalized.match(/^\n*$/g)) {
+    if (Array.prototype.every.call(normalized, ch => ch === "\n")) {
       normalized = ""
     }
     // if there are some LF chars in the midst of other text, just turn them into spaces:

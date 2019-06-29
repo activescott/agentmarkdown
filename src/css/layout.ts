@@ -1,6 +1,6 @@
 import { HtmlNode } from "../HtmlNode"
 import { BoxType, CssBox } from "./CssBox"
-import { filterNullChars } from "../util"
+import { normalizeWhitespace, WhitespaceHandling } from "."
 
 /**
  * Implements the CSS Visual Formatting model's box generation algorithm. It turns HTML elements into a set of CSS Boxes.
@@ -10,7 +10,7 @@ export function layout(document: Iterable<HtmlNode>): Iterable<CssBox> {
   const boxes = new Array<CssBox>()
   for (let node of document) {
     const box = generateElementBox(node)
-    boxes.push(box)
+    box && boxes.push(box)
   }
   return boxes
 }
@@ -21,16 +21,22 @@ export function layout(document: Iterable<HtmlNode>): Iterable<CssBox> {
  * @param element The element to generate a box for
  */
 function generateElementBox(element: HtmlNode): CssBox | null {
+  let box: CssBox = null
   if (element.type === "text") {
-    return new CssBox(BoxType.inline, element.data)
+    const text = normalizeWhitespace(element.data, WhitespaceHandling.normal)
+    if (text) {
+      // only create a box if normalizeWhitespace left something over
+      box = new CssBox(BoxType.inline, text)
+    }
   } else if (element.type === "tag") {
     const display = getElementDisplay(element.name)
     const boxBuilder = getBoxBuilder(display)
-    return boxBuilder(element)
+    box = boxBuilder(element)
   } else {
     console.error(`Ignoring element with type ${element.type}`)
-    return null
+    box = null
   }
+  return box
 }
 
 function getBoxBuilder(
@@ -41,7 +47,9 @@ function getBoxBuilder(
       CssDisplayValue.block,
       element => {
         const kids = element.children
-          ? element.children.map(el => generateElementBox(el))
+          ? element.children
+              .map(el => generateElementBox(el))
+              .filter(childBox => childBox !== null)
           : []
         return new CssBox(BoxType.block, "", kids)
       }
@@ -50,7 +58,9 @@ function getBoxBuilder(
       CssDisplayValue.inline,
       element => {
         const kids = element.children
-          ? element.children.map(el => generateElementBox(el))
+          ? element.children
+              .map(el => generateElementBox(el))
+              .filter(childBox => childBox !== null)
           : []
         const text = element.data ? element.data : ""
         return new CssBox(BoxType.inline, text, kids)
@@ -131,40 +141,4 @@ function getElementDisplay(elementTypeName: string): CssDisplayValue {
     display = CssDisplayValue.inline
   }
   return display
-}
-
-function getBoxType(node: HtmlNode): BoxType {
-  const blockTypeMap = new Map<string, BoxType>([
-    ["text", BoxType.inline],
-    ["tag-div", BoxType.block],
-    ["tag-p", BoxType.block],
-    ["tag-ul", BoxType.inline],
-    ["tag-ol", BoxType.inline],
-    ["tag-li", BoxType.inline],
-    ["tag-br", BoxType.inline],
-    ["tag-em", BoxType.inline],
-    ["tag-i", BoxType.inline],
-    ["tag-b", BoxType.inline],
-    ["tag-strong", BoxType.inline],
-    ["tag-u", BoxType.inline],
-    ["tag-strike", BoxType.inline],
-    ["tag-del", BoxType.inline],
-    ["tag-h1", BoxType.block],
-    ["tag-h2", BoxType.block],
-    ["tag-h3", BoxType.block],
-    ["tag-h4", BoxType.block],
-    ["tag-h5", BoxType.block],
-    ["tag-h6", BoxType.block],
-    ["tag-font", BoxType.inline],
-    ["tag-span", BoxType.inline]
-  ])
-  const nodeName = filterNullChars(node.name)
-  const nodeType = filterNullChars(node.type)
-  let key: string = nodeName ? nodeType + "-" + nodeName : nodeType
-  let result = blockTypeMap.get(key)
-  if (result === undefined) {
-    console.warn(`No block type for node key ${JSON.stringify({ key })}.`)
-    result = BoxType.inline
-  }
-  return result
 }
