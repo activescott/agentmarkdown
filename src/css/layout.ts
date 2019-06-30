@@ -189,6 +189,16 @@ class BoxBuilders {
     kids.forEach(kid => listBox.addChild(kid))
     return listBox
   }
+
+  public static headingThunk(headingLevel: number): BoxBuilder {
+    return (context: LayoutContext, element: HtmlNode): CssBox | null => {
+      const kids = BoxBuilders.buildBoxes(context, element.children)
+      const headingSequence = "#".repeat(headingLevel)
+      kids.unshift(new CssBox(BoxType.inline, headingSequence + " "))
+      kids.push(new CssBox(BoxType.inline, " " + headingSequence))
+      return new CssBox(BoxType.block, "", kids)
+    }
+  }
 }
 
 /**
@@ -199,8 +209,13 @@ function getBoxBuilderForElement(elementName: string): BoxBuilder {
   const builders = new Map<string, BoxBuilder>([
     ["ul", BoxBuilders.list],
     ["ol", BoxBuilders.list],
-    ["li", BoxBuilders.listItem]
-    // TODO: headings
+    ["li", BoxBuilders.listItem],
+    ["h1", BoxBuilders.headingThunk(1)],
+    ["h2", BoxBuilders.headingThunk(2)],
+    ["h3", BoxBuilders.headingThunk(3)],
+    ["h4", BoxBuilders.headingThunk(4)],
+    ["h5", BoxBuilders.headingThunk(5)],
+    ["h6", BoxBuilders.headingThunk(6)]
     // TODO: emphasis inlines
   ])
   let builder = builders.get(elementName)
