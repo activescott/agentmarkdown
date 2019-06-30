@@ -199,6 +199,15 @@ class BoxBuilders {
       return new CssBox(BoxType.block, "", kids)
     }
   }
+
+  public static emphasisThunk(sequence: string): BoxBuilder {
+    return (context: LayoutContext, element: HtmlNode): CssBox | null => {
+      const kids = BoxBuilders.buildBoxes(context, element.children)
+      kids.unshift(new CssBox(BoxType.inline, sequence))
+      kids.push(new CssBox(BoxType.inline, sequence))
+      return new CssBox(BoxType.block, "", kids)
+    }
+  }
 }
 
 /**
@@ -215,8 +224,12 @@ function getBoxBuilderForElement(elementName: string): BoxBuilder {
     ["h3", BoxBuilders.headingThunk(3)],
     ["h4", BoxBuilders.headingThunk(4)],
     ["h5", BoxBuilders.headingThunk(5)],
-    ["h6", BoxBuilders.headingThunk(6)]
-    // TODO: emphasis inlines
+    ["h6", BoxBuilders.headingThunk(6)],
+    ["b", BoxBuilders.emphasisThunk("**")],
+    ["strong", BoxBuilders.emphasisThunk("**")],
+    ["i", BoxBuilders.emphasisThunk("*")],
+    ["em", BoxBuilders.emphasisThunk("*")],
+    ["u", BoxBuilders.emphasisThunk("_")]
   ])
   let builder = builders.get(elementName)
   if (!builder) {

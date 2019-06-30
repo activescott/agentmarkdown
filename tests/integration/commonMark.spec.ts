@@ -14,6 +14,6 @@ describe.skip("https://spec.commonmark.org/0.29/#thematic-breaks", () => {
     const expected = `---`
 
     const md = await toMarkdown(html)
-    expect(md).toMatch(expected)
+    expect(md).toEqual(expected)
   })
 })

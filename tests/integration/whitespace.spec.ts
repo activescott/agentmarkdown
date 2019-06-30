@@ -17,10 +17,10 @@ describe("whitespace handling", () => {
       //  Each tab (U+0009), carriage return (U+000D), or space (U+0020) character surrounding a linefeed (U+000A) character is removed if 'white-space' is set to 'normal', 'nowrap', or 'pre-line'.
       expect(
         normalizeWhitespace("two\n    ", WhitespaceHandling.normal)
-      ).toMatch(/^two $/)
+      ).toEqual("two ")
       expect(
         normalizeWhitespace("\n  three", WhitespaceHandling.normal)
-      ).toMatch(/^ three$/)
+      ).toEqual(" three")
     })
 
     it.skip("Step 2.", async () => {

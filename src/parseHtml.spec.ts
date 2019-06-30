@@ -7,7 +7,7 @@ it("simple", async () => {
   const expected =
     '[{"type":"tag","name":"div","attribs":{},"children":[{"data":"hi","type":"text","next":null,"prev":null,"parent":null}],"next":null,"prev":null,"parent":null}]'
   //console.log({actual})
-  expect(actual).toMatch(expected)
+  expect(actual).toEqual(expected)
 })
 
 it("two", async () => {
@@ -21,7 +21,7 @@ it("two", async () => {
     '","type":"text","next":null,"prev":null,"parent":null},{"type":"script","name":"script","attribs":{"language":"javascript"},"children":[{"data":"var ' +
     "foo = '<<bar>>';< /  script><!--<!-- Waah! -- " +
     '-->","type":"text","next":null,"prev":null,"parent":null}],"next":null,"prev":null,"parent":null}]'
-  expect(actual).toMatch(expected)
+  expect(actual).toEqual(expected)
 })
 
 function domStringifyReplacer(key: string, value: any) {

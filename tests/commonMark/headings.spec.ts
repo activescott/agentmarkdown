@@ -14,8 +14,7 @@ describe("https://spec.commonmark.org/0.29/#atx-heading", () => {
 #### foo ####
 ##### foo #####
 ###### foo ######`
-
     const md = await toMarkdown(html)
-    expect(md).toMatch(expected)
+    expect(md).toEqual(expected)
   })
 })

@@ -11,7 +11,7 @@ it("simple ul", async () => {
 * three`
 
   const md = await toMarkdown(html)
-  expect(md).toMatch(expected)
+  expect(md).toEqual(expected)
 })
 
 it("simple ol", async () => {
@@ -25,7 +25,7 @@ it("simple ol", async () => {
 2. two
 3. three`
   const md = await toMarkdown(html)
-  expect(md).toMatch(expected)
+  expect(md).toEqual(expected)
 })
 
 it("nested ul", async () => {
@@ -49,7 +49,7 @@ it("nested ul", async () => {
   * two.two
   * two.three
 * three`
-  expect(md).toMatch(expected)
+  expect(md).toEqual(expected)
 })
 
 it("nested ol", async () => {
@@ -74,7 +74,7 @@ it("nested ol", async () => {
 3. three`
   //console.log({ md })
   //console.log({ ex: expected })
-  expect(md).toMatch(expected)
+  expect(md).toEqual(expected)
 })
 
 it("nested ul / ol", async () => {
@@ -98,7 +98,7 @@ it("nested ul / ol", async () => {
   2. two.two
   3. two.three
 * three`
-  expect(md).toMatch(expected)
+  expect(md).toEqual(expected)
 })
 
 it("nested ol / ul", async () => {
@@ -122,5 +122,5 @@ it("nested ol / ul", async () => {
   * two.two
   * two.three
 3. three`
-  expect(md).toMatch(expected)
+  expect(md).toEqual(expected)
 })

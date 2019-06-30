@@ -26,7 +26,7 @@ describe("CSS Visual Formatting Model", () => {
         const md = await toMarkdown(html)
         //console.log({ ex: expected })
         //console.log({ md })
-        expect(md).toMatch(expected)
+        expect(md).toEqual(expected)
       })
     })
     describe("9.4.2 Inline formatting contexts", () => {
@@ -37,7 +37,7 @@ describe("CSS Visual Formatting Model", () => {
         const md = await toMarkdown(html)
         //console.log({ ex: expected })
         //console.log({ md })
-        expect(md).toMatch(expected)
+        expect(md).toEqual(expected)
       })
 
       it("simple w/ anonymous blocks", async () => {
@@ -52,7 +52,7 @@ describe("CSS Visual Formatting Model", () => {
         const md = await toMarkdown(html)
         //console.log({ ex: expected })
         //console.log({ md })
-        expect(md).toMatch(expected)
+        expect(md).toEqual(expected)
       })
     })
   })
