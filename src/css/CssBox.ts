@@ -21,7 +21,6 @@ export class CssBox {
   }
 
   get formattingContext(): FormattingContext {
-    // todo: cache, dirty upon adding new child
     let hasBlock = false
     let hasInline = false
     for (let child of this.children) {
