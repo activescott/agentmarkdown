@@ -4,6 +4,7 @@ import { normalizeWhitespace, WhitespaceHandling } from "."
 import { ListState } from "./ListState"
 import { LayoutContext } from "./LayoutContext"
 import { decodeHtmlEntities } from "../util"
+import { StyleState } from "./StyleState"
 
 /**
  * Implements the CSS Visual Formatting model's box generation algorithm. It turns HTML elements into a set of CSS Boxes.
@@ -53,12 +54,14 @@ function traceBoxTree(box: CssBox, indent = 0): string {
  */
 function generateElementBox(
   context: LayoutContext,
-  element: HtmlNode,
-  whitespaceHandling: WhitespaceHandling = WhitespaceHandling.normal
+  element: HtmlNode
 ): CssBox | null {
   let box: CssBox = null
   if (element.type === "text") {
-    const text = normalizeWhitespace(element.data, whitespaceHandling)
+    const text = normalizeWhitespace(
+      element.data,
+      new StyleState(context).whitespaceHandling
+    )
     if (text) {
       // only create a box if normalizeWhitespace left something over
       box = new CssBox(BoxType.inline, text, [], "textNode")
@@ -86,14 +89,10 @@ interface BoxBuilder {
 }
 
 class BoxBuilders {
-  public static buildBoxes(
-    context: LayoutContext,
-    children: HtmlNode[],
-    whitespaceHandling: WhitespaceHandling = WhitespaceHandling.normal
-  ) {
+  public static buildBoxes(context: LayoutContext, children: HtmlNode[]) {
     const kids = children
       ? children
-          .map(el => generateElementBox(context, el, whitespaceHandling))
+          .map(el => generateElementBox(context, el))
           .filter(childBox => childBox !== null)
       : []
     return kids
@@ -260,14 +259,19 @@ class BoxBuilders {
 
   public static pre(context: LayoutContext, element: HtmlNode): CssBox | null {
     // kids is likely a single text element
-    const kids = BoxBuilders.buildBoxes(
-      context,
-      element.children,
-      WhitespaceHandling.pre
-    )
-    kids.forEach(kid => (kid.textContent = decodeHtmlEntities(kid.textContent)))
+    let styleState = new StyleState(context)
+    styleState.pushWhitespaceHandling(WhitespaceHandling.pre)
+    const kids = BoxBuilders.buildBoxes(context, element.children)
+    const decode = (box: CssBox) => {
+      box.textContent = decodeHtmlEntities(box.textContent)
+      for (let child of box.children) {
+        decode(child)
+      }
+    }
+    kids.forEach(kid => decode(kid))
     kids.unshift(new CssBox(BoxType.block, "```"))
     kids.push(new CssBox(BoxType.block, "```"))
+    styleState.popWhitespaceHandling()
     return new CssBox(BoxType.block, "", kids)
   }
 }

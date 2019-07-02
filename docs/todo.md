@@ -1,17 +1,22 @@
 # todo
 
 - rename AgentMarkdown - A HTML user agent that renders HTML to markdown.
+
 - build
   - run tests in travis
   - README badge
-- coverage in travis
-  - README badge
+
 - npm package
   - release via travis
-- README badge
-  - CLI support
-  - example in readme
+
+- CLI support
   - npx / yarn dlx support
+  - example in readme
+
+- README badge
+
+- coverage in travis
+  - README badge
 
 - support elements (WITH TESTS):
   + links

@@ -20,6 +20,15 @@ describe("pre", () => {
     expect(md).toEqual(expected)
   })
 
+  it("html entities are decoded deeply", async () => {
+    const html = `<pre><code>&lt;
+ &gt;
+</code></pre>`
+    const expected = "```\n<\n >\n\n```"
+    const md = await toMarkdown(html)
+    expect(md).toEqual(expected)
+  })
+
   it("inner <code> blocks are allowed", async () => {
     // this is called out specifically in https://html.spec.whatwg.org/multipage/grouping-content.html#the-pre-element
     const html = `<pre><code>foo</code></pre>`
