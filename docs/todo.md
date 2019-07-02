@@ -14,18 +14,19 @@
   - npx / yarn dlx support
 
 - support elements (WITH TESTS):
-  - br
+  + links
+  + br
   + b, strong
   - p
-  - font (color)
+  - font (color?)
   + headings h1-h6
   + i, em
   + u (treat like em?)
-  - code
-  - pre
-  - hr
-  - a href
-    - support a title attribute
+  + code
+  + pre
+  + hr
+  + a href
+    + support a title attribute
   - img src
 - tests:
   + block elements followed by inlines and vice versa

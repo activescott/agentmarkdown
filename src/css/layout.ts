@@ -3,6 +3,7 @@ import { BoxType, CssBox, FormattingContext } from "./CssBox"
 import { normalizeWhitespace, WhitespaceHandling } from "."
 import { ListState } from "./ListState"
 import { LayoutContext } from "./LayoutContext"
+import { decodeHtmlEntities } from "../util"
 
 /**
  * Implements the CSS Visual Formatting model's box generation algorithm. It turns HTML elements into a set of CSS Boxes.
@@ -52,11 +53,12 @@ function traceBoxTree(box: CssBox, indent = 0): string {
  */
 function generateElementBox(
   context: LayoutContext,
-  element: HtmlNode
+  element: HtmlNode,
+  whitespaceHandling: WhitespaceHandling = WhitespaceHandling.normal
 ): CssBox | null {
   let box: CssBox = null
   if (element.type === "text") {
-    const text = normalizeWhitespace(element.data, WhitespaceHandling.normal)
+    const text = normalizeWhitespace(element.data, whitespaceHandling)
     if (text) {
       // only create a box if normalizeWhitespace left something over
       box = new CssBox(BoxType.inline, text, [], "textNode")
@@ -84,10 +86,14 @@ interface BoxBuilder {
 }
 
 class BoxBuilders {
-  public static buildBoxes(context: LayoutContext, children: HtmlNode[]) {
+  public static buildBoxes(
+    context: LayoutContext,
+    children: HtmlNode[],
+    whitespaceHandling: WhitespaceHandling = WhitespaceHandling.normal
+  ) {
     const kids = children
       ? children
-          .map(el => generateElementBox(context, el))
+          .map(el => generateElementBox(context, el, whitespaceHandling))
           .filter(childBox => childBox !== null)
       : []
     return kids
@@ -208,6 +214,62 @@ class BoxBuilders {
       return new CssBox(BoxType.block, "", kids)
     }
   }
+
+  public static link(context: LayoutContext, element: HtmlNode): CssBox | null {
+    const linkBox = new CssBox(BoxType.inline, "", [])
+    const childContentBoxes = BoxBuilders.buildBoxes(context, element.children)
+    // wrap the text in square brackets:
+    childContentBoxes.unshift(
+      new CssBox(BoxType.inline, "[", [], "link-helper-open-text")
+    )
+    childContentBoxes.push(
+      new CssBox(BoxType.inline, "]", [], "link-helper-close-text")
+    )
+    // add destination/title syntax:
+    const href =
+      element.attribs && element.attribs["href"] ? element.attribs["href"] : ""
+    const title =
+      element.attribs && element.attribs["title"]
+        ? '"' + element.attribs["title"] + '"'
+        : ""
+    let destinationMarkup = "(" + href
+    if (title) {
+      destinationMarkup += href ? " " + title : title
+    }
+    destinationMarkup += ")"
+    childContentBoxes.push(
+      new CssBox(
+        BoxType.inline,
+        destinationMarkup,
+        [],
+        "link-helper-close-text"
+      )
+    )
+    // add the child boxes:
+    childContentBoxes.forEach(kid => linkBox.addChild(kid))
+    return linkBox
+  }
+
+  public static hr(context: LayoutContext, element: HtmlNode): CssBox | null {
+    return new CssBox(BoxType.block, "* * *")
+  }
+
+  public static br(context: LayoutContext, element: HtmlNode): CssBox | null {
+    return new CssBox(BoxType.inline, "\n")
+  }
+
+  public static pre(context: LayoutContext, element: HtmlNode): CssBox | null {
+    // kids is likely a single text element
+    const kids = BoxBuilders.buildBoxes(
+      context,
+      element.children,
+      WhitespaceHandling.pre
+    )
+    kids.forEach(kid => (kid.textContent = decodeHtmlEntities(kid.textContent)))
+    kids.unshift(new CssBox(BoxType.block, "```"))
+    kids.push(new CssBox(BoxType.block, "```"))
+    return new CssBox(BoxType.block, "", kids)
+  }
 }
 
 /**
@@ -229,7 +291,11 @@ function getBoxBuilderForElement(elementName: string): BoxBuilder {
     ["strong", BoxBuilders.emphasisThunk("**")],
     ["i", BoxBuilders.emphasisThunk("*")],
     ["em", BoxBuilders.emphasisThunk("*")],
-    ["u", BoxBuilders.emphasisThunk("_")]
+    ["u", BoxBuilders.emphasisThunk("_")],
+    ["a", BoxBuilders.link],
+    ["hr", BoxBuilders.hr],
+    ["br", BoxBuilders.br],
+    ["pre", BoxBuilders.pre]
   ])
   let builder = builders.get(elementName)
   if (!builder) {

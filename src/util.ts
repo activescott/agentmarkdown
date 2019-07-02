@@ -7,3 +7,24 @@ export function filterNullChars(str: string): string {
     ? str.replace(new RegExp("\u0000", "g"), "")
     : ""
 }
+
+const entityMap = new Map<RegExp, string>([
+  [/&quot;/g, '"'],
+  [/&lt;/g, "<"],
+  [/&gt;/g, ">"],
+  [/&nbsp;/g, "\u00A0"],
+  [/&copy;/g, "\u00A9 "],
+  [/&reg;/g, "\u00AE"]
+])
+/**
+ * Decodes HTML Character entities into their corresponding character.
+ * https://www.w3.org/TR/html4/sgml/entities.html
+ */
+export function decodeHtmlEntities(input: string): string {
+  if (!input) return input
+  // TODO: lame only a couple obvious ones: https://www.w3.org/TR/html4/sgml/entities.html
+  for (let kv of entityMap) {
+    input = input.replace(kv[0], kv[1])
+  }
+  return input
+}

@@ -39,3 +39,7 @@ The package is written in TypeScript. To build the package run the following fro
 TODO:
 
 To release a new version, merge everything to master and let the travis build run succesfully. Then tag the succesfully built commit with a semver tag beginning with `v` like `v0.1.3`. Push the tag to GitHub and Travis will build the package using the version from the tag and make the npm release automatically.
+
+###### Alternatives
+
+- http://domchristie.github.io/turndown/
