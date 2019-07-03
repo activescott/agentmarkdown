@@ -51,4 +51,13 @@ describe("pre", () => {
     const md = await toMarkdown(html)
     expect(md).toEqual(expected)
   })
+
+  it("inline code block 1", async () => {
+    // https://daringfireball.net/projects/markdown/syntax#code
+    // similar to https://spec.commonmark.org/0.29/#example-91 (which generates an inline <code> element but not a block <pre> element)
+    const html = "<code>foo</code>"
+    const expected = "`foo`"
+    const md = await toMarkdown(html)
+    expect(md).toEqual(expected)
+  })
 })

@@ -258,9 +258,9 @@ class BoxBuilders {
   }
 
   public static pre(context: LayoutContext, element: HtmlNode): CssBox | null {
-    // kids is likely a single text element
     let styleState = new StyleState(context)
     styleState.pushWhitespaceHandling(WhitespaceHandling.pre)
+    // kids is likely a single text element
     const kids = BoxBuilders.buildBoxes(context, element.children)
     const decode = (box: CssBox) => {
       box.textContent = decodeHtmlEntities(box.textContent)
@@ -272,6 +272,17 @@ class BoxBuilders {
     kids.unshift(new CssBox(BoxType.block, "```"))
     kids.push(new CssBox(BoxType.block, "```"))
     styleState.popWhitespaceHandling()
+    return new CssBox(BoxType.block, "", kids)
+  }
+
+  public static code(context: LayoutContext, element: HtmlNode): CssBox | null {
+    // kids is likely a single text element
+    const kids = BoxBuilders.buildBoxes(context, element.children)
+    // If we're already nested inside of a <pre> element, don't output the inline code formatting (using the "whitespaceHandling" mode here is a bit of a risky assumption used to make this conclusion)
+    if (new StyleState(context).whitespaceHandling != WhitespaceHandling.pre) {
+      kids.unshift(new CssBox(BoxType.inline, "`"))
+      kids.push(new CssBox(BoxType.inline, "`"))
+    }
     return new CssBox(BoxType.block, "", kids)
   }
 }
@@ -299,7 +310,8 @@ function getBoxBuilderForElement(elementName: string): BoxBuilder {
     ["a", BoxBuilders.link],
     ["hr", BoxBuilders.hr],
     ["br", BoxBuilders.br],
-    ["pre", BoxBuilders.pre]
+    ["pre", BoxBuilders.pre],
+    ["code", BoxBuilders.code]
   ])
   let builder = builders.get(elementName)
   if (!builder) {
