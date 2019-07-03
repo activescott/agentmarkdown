@@ -1,8 +1,8 @@
-import { HypertextMarkdown } from "../../src"
+import { AgentMarkdown } from "../../src"
 export { MockHtmlNode } from "./MockHtmlNode"
 
 export async function toMarkdown(html: string): Promise<string> {
-  const out = await HypertextMarkdown.produce(html)
+  const out = await AgentMarkdown.produce(html)
 
   if (process.env.DEBUG) {
     console.log("----- HTML -----")

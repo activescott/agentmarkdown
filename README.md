@@ -1,6 +1,8 @@
-# hypertextmarkdown
+# AgentMarkdown
 
 An accurate, extensible, and fast HTML-to-markdown converter.
+
+AgentMarkdown is a [HTML user agent](https://en.wikipedia.org/wiki/User_agent) that parses HTML, performs a document layout according to the [CSS stylesheet for HTML](https://html.spec.whatwg.org/multipage/rendering.html#the-css-user-agent-style-sheet-and-presentational-hints) and then "renders" the laid out document to Markdown. This results in markdown that looks very similar to the way the HTML document looked when parsed and rendered in a browser (user agent).
 
 # Features
 
@@ -8,13 +10,19 @@ An accurate, extensible, and fast HTML-to-markdown converter.
   - uses [GitHub-Flavored Markdown's Strikethrough extention](https://github.github.com/gfm/#strikethrough-extension-) for &lt;strike&gt; and &lt;del&gt;.
 - Supports even wonky technically incorrect HTML
 - Supports nested lists
-- Extensible to allow extened or customized output
+- Extensible to allow extended or customized output?
+- Fast?
 
 # Status
 
 Unstable. All interfaces/classes subject to change.
 
 # Usage / Example
+
+```
+import { AgentMarkdown } from "../../src"
+const markdown = await AgentMarkdown.produce(html)
+```
 
 ## CLI Example
 
@@ -40,6 +48,6 @@ TODO:
 
 To release a new version, merge everything to master and let the travis build run succesfully. Then tag the succesfully built commit with a semver tag beginning with `v` like `v0.1.3`. Push the tag to GitHub and Travis will build the package using the version from the tag and make the npm release automatically.
 
-###### Alternatives
+# Alternatives
 
 - http://domchristie.github.io/turndown/

@@ -1,7 +1,7 @@
 {
-  "name": "hypertextmarkdown",
+  "name": "agentmarkdown",
   "description": "An accurate, extensible, and fast HTML-to-markdown converter.",
-  "homepage": "https://github.com/activescott/hypertextmarkdown",
+  "homepage": "https://github.com/activescott/agentmarkdown",
   "version": "0.0.0",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
@@ -14,9 +14,9 @@
     "email": "scott@willeke.com",
     "url": "https://scott.willeke.com/"
   },
-  "repository": "https://github.com/activescott/hypertextmarkdown",
+  "repository": "https://github.com/activescott/agentmarkdown",
   "bugs": {
-    "url": "https://github.com/activescott/hypertextmarkdown/issues"
+    "url": "https://github.com/activescott/agentmarkdown/issues"
   },
   "license": "MPL-2.0",
   "scripts": {
