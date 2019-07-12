@@ -38,8 +38,8 @@ describe("emphasis", () => {
   })
 
   it("should not introduce newlines", async () => {
-    const html = `<bold>bold</bold> <strong>strong</strong> <i>italic</i> <em>em</em> <u>foo</u>`
-    const expected = `**bold** **strong** *italic* *em* _u_`
+    const html = `<b>bold</b> <strong>strong</strong> <i>italic</i> <em>em</em> <u>foo</u>`
+    const expected = `**bold** **strong** *italic* *em* _foo_`
     const md = await toMarkdown(html)
     expect(md).toEqual(expected)
   })

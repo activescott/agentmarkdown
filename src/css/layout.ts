@@ -210,7 +210,7 @@ class BoxBuilders {
       const kids = BoxBuilders.buildBoxes(context, element.children)
       kids.unshift(new CssBox(BoxType.inline, sequence))
       kids.push(new CssBox(BoxType.inline, sequence))
-      return new CssBox(BoxType.block, "", kids)
+      return new CssBox(BoxType.inline, "", kids)
     }
   }
 

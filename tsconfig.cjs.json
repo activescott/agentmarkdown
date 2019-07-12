@@ -4,6 +4,7 @@
     "target": "es5",
     "module": "commonjs",
     "outDir": "dist/cjs",
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "esModuleInterop": true
   }
 }

@@ -36,8 +36,8 @@ function render(
 ): void {
   let isFirst = true
   for (const box of boxes) {
-    if (formattingContext === FormattingContext.block) {
-      !isFirst && writer.newLine()
+    if (formattingContext === FormattingContext.block && !isFirst) {
+      writer.newLine()
     }
     box.textContent && writer.writeTextContent(box.textContent)
     box.children && render(writer, box.children, box.formattingContext)
