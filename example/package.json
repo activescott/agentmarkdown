@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "devDependencies": {
+    "webpack": "^4.35.3",
+    "webpack-cli": "^3.3.5",
+    "webpack-dev-server": "^3.7.2"
+  },
+  "scripts": {
+    "build": "./node_modules/.bin/webpack-cli --output-path ./",
+    "start": "(sleep 2s && open http://localhost:8080/) & node_modules/.bin/webpack-dev-server"
+  }
+}

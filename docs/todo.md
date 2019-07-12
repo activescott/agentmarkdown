@@ -4,20 +4,25 @@
 
 - build
   - run tests in travis
-  - README badge
+  - travis README badge
 
 - npm package
-  - release via travis
+  - deploy npm (beta?) via travis
+  - README badge
 
 - CLI support
   - npx / yarn dlx support
   - example in readme
 
-- README badge
-
 - coverage in travis
   - README badge
 
+- tests:
+  + block elements followed by inlines and vice versa
+  - elements without any child nodes (e.g. <div></div>)
+  - <div><br></div>
+  - multi-paragraph list items
+  
 - support elements (WITH TESTS):
   + links
   + br
@@ -32,11 +37,7 @@
   + a href
     + support a title attribute
   - images: https://daringfireball.net/projects/markdown/syntax#img
-- tests:
-  + block elements followed by inlines and vice versa
-  - elements without any child nodes (e.g. <div></div>)
-  - <div><br></div>
-  - multi-paragraph list items
+
 
 - online example
   - demo in this repo that is published to github pages

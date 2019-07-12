@@ -1,19 +1,16 @@
 {
+  "include": ["./src/**/*"],
   "exclude": [
+    "**/*.spec.ts",
     "dist",
     "node_modules",
-    "demo/**/*",
-    "test-tools/**/*",
-    "test/**/*"
+    "example/**/*",
+    "tests/**/*"
   ],
   "compilerOptions": {
     "lib": ["es6"],
     "declaration": true,
     "moduleResolution": "node", // because classic "is mainly present for backward compatibility." - https://github.com/Microsoft/TypeScript-Handbook/blob/master/pages/Module%20Resolution.md#classic
-    "baseUrl": ".",
-    "paths": {
-      "bignumber.js": ["node_modules/bignumber.js/bignumber.js"],
-      "cross-fetch": ["node_modules/cross-fetch/dist/node-ponyfill.js"]
-    }
+    "baseUrl": "."
   }
 }
