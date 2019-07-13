@@ -6,6 +6,10 @@
   - run tests in travis
   - travis README badge
 
+- coverage in travis
+  - try codacy coverage https://github.com/codacy/node-codacy-coverage#installation
+  - coverage README badge
+
 - npm package
   - deploy npm (beta?) via travis
   - README badge
@@ -13,9 +17,6 @@
 - CLI support
   - npx / yarn dlx support
   - example in readme
-
-- coverage in travis
-  - README badge
 
 - tests:
   + block elements followed by inlines and vice versa

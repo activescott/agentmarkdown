@@ -6,5 +6,8 @@ module.exports = {
     "ts-jest": {
       tsConfig: "tsconfig.cjs.json"
     }
-  }
+  },
+  collectCoverageFrom: [
+    "src/**/*.ts"
+  ]
 }
