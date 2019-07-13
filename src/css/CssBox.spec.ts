@@ -41,7 +41,7 @@ describe("CSS 9.2.1.1 Anonymous block boxes", () => {
       new CssBox(BoxType.inline)
     ]
     let rootBox = new CssBox(BoxType.block, "", children)
-    for (let child of children) {
+    for (const child of children) {
       expect(rootBox.children).toContainEqual(child)
     }
   })
@@ -53,7 +53,7 @@ describe("CSS 9.2.1.1 Anonymous block boxes", () => {
       new CssBox(BoxType.block)
     ]
     let rootBox = new CssBox(BoxType.block, "", children)
-    for (let child of children) {
+    for (const child of children) {
       expect(rootBox.children).toContainEqual(child)
     }
   })

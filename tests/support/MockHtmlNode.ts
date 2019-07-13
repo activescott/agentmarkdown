@@ -4,7 +4,7 @@ export class MockHtmlNode implements HtmlNode {
   constructor(
     readonly type: HtmlNodeType,
     readonly name: string,
-    readonly data?: any,
+    readonly data?: string,
     readonly attribs?: AttribsType,
     readonly children: HtmlNode[] = []
   ) {}

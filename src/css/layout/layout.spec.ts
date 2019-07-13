@@ -1,7 +1,7 @@
-import { MockHtmlNode } from "../../tests/support"
-import { HtmlNode } from "../HtmlNode"
+import { MockHtmlNode } from "../../../tests/support"
+import { HtmlNode } from "../../HtmlNode"
 import { layout } from "./layout"
-import { BoxType } from "./CssBox"
+import { BoxType } from "../CssBox"
 
 it("should recognize block element", () => {
   const doc: HtmlNode[] = [new MockHtmlNode("tag", "div")]

@@ -24,7 +24,7 @@ it("two", async () => {
   expect(actual).toEqual(expected)
 })
 
-function domStringifyReplacer(key: string, value: any) {
+function domStringifyReplacer<TValue>(key: string, value: TValue): TValue {
   const ignoredProperties = ["prev", "next", "parent"]
   return ignoredProperties.includes(key) ? null : value
 }

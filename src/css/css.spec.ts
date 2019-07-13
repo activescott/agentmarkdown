@@ -45,7 +45,7 @@ describe("CSS Visual Formatting Model", () => {
          * The principle of this test is this (from 9.2.1.1 Anonymous block boxes at https://www.w3.org/TR/CSS22/visuren.html#anonymous-block-level):
          * "if a block container box (such as that generated for the DIV above) has a block-level box inside it (such as the P above),
          * then we force it to have only block-level boxes inside it."
-         * ...by creating an "anonymous" block box for "Some text", eventhough it would normally be an inline box.
+         * ...by creating an "anonymous" block box for "Some text", even though it would normally be an inline box.
          */
         const html = `<div>Some text<p>More text</p></div>`
         const expected = `Some text\nMore text`

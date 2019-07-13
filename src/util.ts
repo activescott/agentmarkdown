@@ -23,7 +23,7 @@ const entityMap = new Map<RegExp, string>([
 export function decodeHtmlEntities(input: string): string {
   if (!input) return input
   // TODO: lame only a couple obvious ones: https://www.w3.org/TR/html4/sgml/entities.html
-  for (let kv of entityMap) {
+  for (const kv of entityMap) {
     input = input.replace(kv[0], kv[1])
   }
   return input

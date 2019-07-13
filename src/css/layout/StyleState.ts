@@ -1,23 +1,24 @@
 import { LayoutContext } from "./LayoutContext"
-import { WhitespaceHandling } from "."
+import { WhitespaceHandling } from "../"
 
 /**
  * Helps manage @see LayoutContext state for misc CSS style state.
  */
 export class StyleState {
-  private static readonly WhitespaceHandlingKey = "style-whitespace-handling"
+  private static readonly WhitespaceHandlingKey: string =
+    "style-whitespace-handling"
 
-  public constructor(readonly context: LayoutContext) {}
+  constructor(readonly context: LayoutContext) {}
 
-  pushWhitespaceHandling(handling: WhitespaceHandling) {
+  public pushWhitespaceHandling(handling: WhitespaceHandling) {
     this.context.pushState(StyleState.WhitespaceHandlingKey, handling)
   }
 
-  popWhitespaceHandling() {
+  public popWhitespaceHandling() {
     this.context.popState(StyleState.WhitespaceHandlingKey)
   }
 
-  get whitespaceHandling(): WhitespaceHandling {
+  public get whitespaceHandling(): WhitespaceHandling {
     let handling: WhitespaceHandling = this.context.peekState<
       WhitespaceHandling
     >(StyleState.WhitespaceHandlingKey)

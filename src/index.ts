@@ -1,6 +1,7 @@
 import { parseHtml, traceHtmlNodes } from "./parseHtml"
-import { DefaultTextWriter, TextWriter, BlockType } from "./TextWriter"
-import { layout } from "./css/layout"
+import { TextWriter } from "./TextWriter"
+import { DefaultTextWriter } from "./DefaultTextWriter"
+import { layout } from "./css"
 import { CssBox, FormattingContext } from "./css/CssBox"
 
 /**

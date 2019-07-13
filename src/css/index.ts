@@ -1,3 +1,5 @@
+export { layout } from "./layout/layout"
+
 /**
  * Normalizes the specified text according to CSS 2.1, section 16.6.1 "The 'white-space' processing model" and returns the normalized text.
  * See see https://www.w3.org/TR/CSS2/text.html#white-space-model

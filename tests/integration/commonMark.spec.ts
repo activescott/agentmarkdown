@@ -2,7 +2,7 @@ import { toMarkdown } from "../support"
 
 it.skip("CommonMark ALL", async () => {
   const commonMark = require("../test-data/spec.commonmark.v0.29.json")
-  for (let test of commonMark) {
+  for (const test of commonMark) {
     const md = toMarkdown(test.html)
     expect(md).resolves.toEqual(test.markdown)
   }

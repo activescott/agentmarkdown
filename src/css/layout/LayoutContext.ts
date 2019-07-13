@@ -9,7 +9,7 @@ export class LayoutContext {
    * If the stack is not yet created it will return an empty stack.
    * @param stackName The stack name (state key) to retreive.
    */
-  getStateStack<TValue>(stackName: string): Array<TValue> {
+  public getStateStack<TValue>(stackName: string): Array<TValue> {
     let stack = this.state.get(stackName) as Array<TValue>
     if (!stack) {
       stack = new Array<TValue>()
@@ -25,7 +25,7 @@ export class LayoutContext {
    * @param stackName The key/name of the stack to push the value onto.
    * @param value The value to push onto the top of the stack.
    */
-  pushState<TValue>(stackName: string, value: TValue) {
+  public pushState<TValue>(stackName: string, value: TValue) {
     const stack = this.getStateStack<TValue>(stackName)
     stack.push(value)
   }
@@ -35,7 +35,7 @@ export class LayoutContext {
    * If the stack doesn't exist or is empty @see undefined is returned.
    * @param stackName The key/name of the stack to pop the value from.
    */
-  popState<TValue>(stackName: string): TValue | undefined {
+  public popState<TValue>(stackName: string): TValue | undefined {
     const stack = this.getStateStack<TValue>(stackName)
     if (stack.length === 0) return undefined
     else return stack.pop()
@@ -45,7 +45,7 @@ export class LayoutContext {
    * Returns the top value from the specified stack without removing it from the stack.
    * @param stackName The key/name of the stack to peek at.
    */
-  peekState<TValue>(stackName: string): TValue | undefined {
+  public peekState<TValue>(stackName: string): TValue | undefined {
     const stack = this.getStateStack<TValue>(stackName)
     if (stack.length === 0) return undefined
     else return stack[stack.length - 1]

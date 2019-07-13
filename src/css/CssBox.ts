@@ -23,7 +23,7 @@ export class CssBox {
   get formattingContext(): FormattingContext {
     let hasBlock = false
     let hasInline = false
-    for (let child of this.children) {
+    for (const child of this.children) {
       hasBlock = hasBlock || child.type === BoxType.block
       hasInline = hasInline || child.type == BoxType.inline
     }
@@ -34,7 +34,7 @@ export class CssBox {
     //TODO: PERF: Cache this value.
     let hasBlock = false
     let hasInline = false
-    for (let child of this._children) {
+    for (const child of this._children) {
       hasBlock = hasBlock || child.type === BoxType.block
       hasInline = hasInline || child.type == BoxType.inline
     }

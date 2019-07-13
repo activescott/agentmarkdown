@@ -5,7 +5,7 @@ export interface HtmlNode {
   /**
    * The raw text for "text" nodes
    */
-  data?: any
+  data?: string
   /**
    * The type of node.
    */
