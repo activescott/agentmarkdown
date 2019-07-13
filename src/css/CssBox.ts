@@ -30,8 +30,51 @@ export class CssBox {
     return hasBlock ? FormattingContext.block : FormattingContext.inline
   }
 
-  get children(): Iterable<CssBox> {
-    return this._children
+  private get containsInlineAndBlockBoxes(): boolean {
+    //TODO: PERF: Cache this value.
+    let hasBlock = false
+    let hasInline = false
+    for (let child of this._children) {
+      hasBlock = hasBlock || child.type === BoxType.block
+      hasInline = hasInline || child.type == BoxType.inline
+    }
+    return hasBlock && hasInline
+  }
+
+  private *childrenBoxGenerator(): IterableIterator<CssBox> {
+    // The logic here is generating anonymous block boxes per https://www.w3.org/TR/CSS22/visuren.html#anonymous-block-level
+    const areAnonymousBoxesNeeded: boolean =
+      this._children.length > 0 && this.containsInlineAndBlockBoxes
+    if (areAnonymousBoxesNeeded) {
+      let anonymousBox: CssBox
+      const kids: Iterator<CssBox> = this._children[Symbol.iterator]()
+      let nextKid = kids.next()
+      while (!nextKid.done) {
+        let child: CssBox = nextKid.value
+        if (child.type === BoxType.inline) {
+          anonymousBox = anonymousBox
+            ? anonymousBox
+            : new CssBox(BoxType.block, null, null, "Anonymous-Block-Box")
+          anonymousBox.addChild(child)
+        } else {
+          if (anonymousBox) {
+            yield anonymousBox
+            anonymousBox = null
+          }
+          yield child
+        }
+        nextKid = kids.next()
+      }
+      if (anonymousBox) yield anonymousBox
+    } else {
+      for (const child of this._children) {
+        yield child
+      }
+    }
+  }
+
+  get children(): IterableIterator<CssBox> {
+    return this.childrenBoxGenerator()
   }
 
   addChild(box: CssBox): void {
@@ -41,11 +84,11 @@ export class CssBox {
 }
 
 export enum BoxType {
-  block,
-  inline
+  block = 0,
+  inline = 1
 }
 
 export enum FormattingContext {
-  block,
-  inline
+  block = 0,
+  inline = 1
 }

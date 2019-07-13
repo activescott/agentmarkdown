@@ -71,7 +71,7 @@ describe("CSS 9.2.1.1 Anonymous block boxes", () => {
     expect(actual).toContainEqual(children[0])
     expect(actual).toContainEqual(children[2])
     expect(actual[1]).toHaveProperty("type", BoxType.block)
-    expect(actual[1].children).toHaveLength(1)
+    expect(Array.from(actual[1].children)).toHaveLength(1)
   })
 
   it("anonymous block box should collect sequences of adjacent inlines with block & inline children", () => {
@@ -89,7 +89,7 @@ describe("CSS 9.2.1.1 Anonymous block boxes", () => {
     expect(actual).toContainEqual(children[3])
     // the middle one should contain the two inlines (collapsed into a single anonymous box)
     expect(actual[1]).toHaveProperty("type", BoxType.block)
-    expect(actual[1].children).toHaveLength(2)
+    expect(Array.from(actual[1].children)).toHaveLength(2)
   })
 
   it("anonymous block box should not collect sequences of non-adjacent inlines with block & inline children", () => {
@@ -105,9 +105,10 @@ describe("CSS 9.2.1.1 Anonymous block boxes", () => {
     // should have the blocks (first and third):
     expect(actual).toContainEqual(children[0])
     expect(actual).toContainEqual(children[2])
+    // check the anonymous boxes were generated:
     expect(actual[1]).toHaveProperty("type", BoxType.block)
-    expect(actual[1].children).toHaveLength(1)
+    expect(Array.from(actual[1].children)).toHaveLength(1)
     expect(actual[3]).toHaveProperty("type", BoxType.block)
-    expect(actual[3].children).toHaveLength(1)
+    expect(Array.from(actual[3].children)).toHaveLength(1)
   })
 })
