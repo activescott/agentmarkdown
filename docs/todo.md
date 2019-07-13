@@ -3,12 +3,12 @@
 + rename AgentMarkdown - A HTML user agent that renders HTML to markdown.
 
 - build
-  - run tests in travis
-  - travis README badge
+  + run tests in travis
+  + travis README badge
 
-- coverage in travis
-  - try codacy coverage https://github.com/codacy/node-codacy-coverage#installation
-  - coverage README badge
++ coverage in travis
+  + try codacy coverage https://github.com/codacy/node+codacy-coverage#installation
+  + coverage README badge
 
 - npm package
   - deploy npm (beta?) via travis
