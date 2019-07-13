@@ -1,0 +1,52 @@
+language: node_js
+node_js:
+  - "node"
+  - "lts/*"
+  - "10" # To keep v10 support alive even when lts shifts to a later version
+env:
+  global:
+    # CODACY_PROJECT_TOKEN
+    secure: uEAtiFXRBXBApNTWULgcIrJU1ZSgvURSGQFDU3nQg7aqRADYJONEaiPvHEgs5ye1w9vVxR5kZWe8OaTuPdSEB7/p6FXyZeCE2d4IqqtgYvHG3/ImDy6QqSWDFXKmsMHb2a2SweNXvZu1nTs5sGB9WlTpanp6z0UN3zw383CEbSRlqHtPZ3/1NkBA19KuIV7qjV7KSUnq7Med/XQtb9ctXAw45CigIsE3pGCjWLW8zjMIYM2whPKd//coQHPWkygRS/U1hhv+BODw2GXE29XUnhrOAMuwR46171H0CCtwFki6b0fict1mFsT0LFyckv1FpLI/yeLGnYr7MNmZ5cGLFu6Iua2U6ZSFcIDrycftjr6fza46RpJtZkdOM3aejAHFVw/MWw766NS3Ap3cuQKh835g5gz3H22e5/qGrDSKx2PVW4SXsmAi/7gQUSpwlNfdLpoi4zOHPzpGdZRcihn6iCnAxJdu2m5+itY3zJeh+v/8PVDBjs1TTmvCVaCUsn0jfY/Bvpw901Y69qMDtcbL7XFTI9liED54ibGSRmXUq74lyNOnxjY5JFgY1f/tG0f9JLyuvb7uBSQmf8RimbOXTBlYmFBhivTnx3GLhqAvOwUssbtGoqMGm5lfM2e/0YgIAivCb9PQVKCASUGIXlZHZebCE9S8jdMR+8MpamTfLJE=
+cache: yarn
+script:
+  - echo "Running with node version $(node -v) ..."
+  - yarn lint
+  - yarn test
+jobs:
+  include:
+    - stage: Report Coverage
+      node_js: "node"
+      script: yarn coverage
+    - stage: Deploy NPM
+      node_js: "node"
+      script: echo "Deploying to npm ..." # explicitly having a tag here also prevents default script (i.e. tests for node_js), which have already run in prior stage: https://docs.travis-ci.com/user/build-stages/#build-stages-and-deployments
+      before_deploy: # NOTE: only be triggered if Travis CI is actually deploying; https://docs.travis-ci.com/user/deployment/npm/#running-commands-before-and-after-deploy
+        - |
+          echo "Running yarn version --no-git-tag-version --new-version $TRAVIS_TAG ..."
+          yarn version --no-git-tag-version --new-version $TRAVIS_TAG
+      deploy:
+        # production releases
+        - provider: npm
+          email: scott@willeke.com
+          api_key:
+            secure: "i9OTdM0/1jpNHOBvEVxOjHq2Y1luFsJQJjikqhZ15DDuu4qQzMxuzxy0eoDz4fqRvtlpVD1kjsFpMV9AZGB1eTrhab1deptISrAnmfgdDyuMA5O8g5Er5NERD8dx22vk3NUpnSIjn2bzHxZfwlbpsDKFGdBqmoI3AR3xmXCabmuKZL57V1jfu5gLKE48TV2/RsuDLIeRSahhM8JpavlsBJ5OdAorLx68BuKKcJRLD38hrZsO4DClK/IXVB7LN3GJy4XyrQWMNmzMQJoHs7HsbNIJ3MGOb5Sh2po8X5jAoGMPOX4F0JsmS3AnFb1KrWZYETvpZcWq1E0p/FV+YlyMz43OLnetgtKaD3xtTvssFwEbRaw9ngoi4q9eBCbJHRXr9BIHiD2t7/dVizymE1umYC81wTmcNr6+nU76AucPFwrTxzvZ1VlOnXUv6lQQ4ChAPdYGc71Jo/77JhgtXnNMGhgUdSncqbt6zLDklIfQkSMiXFHHGsvnAJSE58CtZdX13xC1EUQuE71BUfObTZId7EZkI5IGAGM5XNjYPv8GHi/HTf+EYGO5gtrUoRQcGSxjFM9wk4Nx6P7e32JpjtXxlAF3kQvjil1sb+DQ1yqYYydsAxVUs9Vq14CDZ/5qig6fQcsI8pOkLw2aicUBxCvniv9sRs3WwR7tONHSzFYIBvM="
+          skip_cleanup: true # because we use npm version in before_deploy to edit the package version
+          tag: latest # latest==production: https://docs.npmjs.com/adding-dist-tags-to-packages
+          on: # https://docs.travis-ci.com/user/deployment#conditional-releases-with-on
+            tags: true
+            repo: activescott/agentmarkdown
+            branch: master
+            # only if the git tag that triggered this build was "D.D.D" *WITHOUT* an NPM distribution tag postfix like `1.0.1`
+            condition: '$TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$'
+        # tagged prereleases
+        - provider: npm
+          email: scott@willeke.com
+          api_key:
+            secure: "i9OTdM0/1jpNHOBvEVxOjHq2Y1luFsJQJjikqhZ15DDuu4qQzMxuzxy0eoDz4fqRvtlpVD1kjsFpMV9AZGB1eTrhab1deptISrAnmfgdDyuMA5O8g5Er5NERD8dx22vk3NUpnSIjn2bzHxZfwlbpsDKFGdBqmoI3AR3xmXCabmuKZL57V1jfu5gLKE48TV2/RsuDLIeRSahhM8JpavlsBJ5OdAorLx68BuKKcJRLD38hrZsO4DClK/IXVB7LN3GJy4XyrQWMNmzMQJoHs7HsbNIJ3MGOb5Sh2po8X5jAoGMPOX4F0JsmS3AnFb1KrWZYETvpZcWq1E0p/FV+YlyMz43OLnetgtKaD3xtTvssFwEbRaw9ngoi4q9eBCbJHRXr9BIHiD2t7/dVizymE1umYC81wTmcNr6+nU76AucPFwrTxzvZ1VlOnXUv6lQQ4ChAPdYGc71Jo/77JhgtXnNMGhgUdSncqbt6zLDklIfQkSMiXFHHGsvnAJSE58CtZdX13xC1EUQuE71BUfObTZId7EZkI5IGAGM5XNjYPv8GHi/HTf+EYGO5gtrUoRQcGSxjFM9wk4Nx6P7e32JpjtXxlAF3kQvjil1sb+DQ1yqYYydsAxVUs9Vq14CDZ/5qig6fQcsI8pOkLw2aicUBxCvniv9sRs3WwR7tONHSzFYIBvM="
+          skip_cleanup: true # because we use npm version in before_deploy to edit the package version
+          tag: next
+          on: # https://docs.travis-ci.com/user/deployment#conditional-releases-with-on
+            tags: true
+            repo: activescott/agentmarkdown
+            # only if the git tag that triggered this build was "D.D.D" *WITH* an NPM distribution tag postfix of `next` like `1.0.1-next`
+            condition: '$TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+(-next)$'
