@@ -26,7 +26,8 @@
     "lint": "prettier -l \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\"",
     "lint-fix": "prettier --write \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\"",
     "test": "jest",
-    "coverage": "jest --coverage && cat ./coverage/lcov.info | codacy-coverage"
+    "coverage": "jest --coverage && cat ./coverage/lcov.info | codacy-coverage",
+    "commit": "git-cz"
   },
   "devDependencies": {
     "@types/domhandler": "^2.4.1",
@@ -34,6 +35,8 @@
     "@types/jest": "^24.0.15",
     "@types/node": "^12.0.10",
     "codacy-coverage": "^3.4.0",
+    "commitizen": "^3.1.1",
+    "cz-conventional-changelog": "2.1.0",
     "jest": "^24.8.0",
     "prettier": "^1.18.2",
     "ts-jest": "^24.0.2",
@@ -42,5 +45,10 @@
   "dependencies": {
     "domhandler": "^2.4.2",
     "htmlparser2": "^3.10.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
