@@ -44,9 +44,9 @@ jobs:
           api_key:
             secure: "i9OTdM0/1jpNHOBvEVxOjHq2Y1luFsJQJjikqhZ15DDuu4qQzMxuzxy0eoDz4fqRvtlpVD1kjsFpMV9AZGB1eTrhab1deptISrAnmfgdDyuMA5O8g5Er5NERD8dx22vk3NUpnSIjn2bzHxZfwlbpsDKFGdBqmoI3AR3xmXCabmuKZL57V1jfu5gLKE48TV2/RsuDLIeRSahhM8JpavlsBJ5OdAorLx68BuKKcJRLD38hrZsO4DClK/IXVB7LN3GJy4XyrQWMNmzMQJoHs7HsbNIJ3MGOb5Sh2po8X5jAoGMPOX4F0JsmS3AnFb1KrWZYETvpZcWq1E0p/FV+YlyMz43OLnetgtKaD3xtTvssFwEbRaw9ngoi4q9eBCbJHRXr9BIHiD2t7/dVizymE1umYC81wTmcNr6+nU76AucPFwrTxzvZ1VlOnXUv6lQQ4ChAPdYGc71Jo/77JhgtXnNMGhgUdSncqbt6zLDklIfQkSMiXFHHGsvnAJSE58CtZdX13xC1EUQuE71BUfObTZId7EZkI5IGAGM5XNjYPv8GHi/HTf+EYGO5gtrUoRQcGSxjFM9wk4Nx6P7e32JpjtXxlAF3kQvjil1sb+DQ1yqYYydsAxVUs9Vq14CDZ/5qig6fQcsI8pOkLw2aicUBxCvniv9sRs3WwR7tONHSzFYIBvM="
           skip_cleanup: true # because we use npm version in before_deploy to edit the package version
-          tag: next
+          tag: beta
           on: # https://docs.travis-ci.com/user/deployment#conditional-releases-with-on
             tags: true
             repo: activescott/agentmarkdown
             # only if the git tag that triggered this build was "D.D.D" *WITH* an NPM distribution tag postfix of `next` like `1.0.1-next`
-            condition: '$TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+(-next)$'
+            condition: '$TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+(-beta)$'
