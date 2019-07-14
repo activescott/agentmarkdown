@@ -17,8 +17,9 @@
 + Commitizen
   + https://github.com/commitizen/cz-cli
 
-- semantic-release
-  - https://github.com/semantic-release/semantic-release
++ semantic-release
+  + https://github.com/semantic-release/semantic-release
+  + readme updates about release process
 
 - Web Example
   - publish to github pages

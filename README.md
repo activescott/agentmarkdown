@@ -70,19 +70,7 @@ The package is written in TypeScript. To build the package run the following fro
 
 ## Release Process (Deploying to NPM) 🚀
 
-To deploy a **pre-release version** to NPM, tag a commit in master branch with a semver-compatible git tag and **postfixed with** an NPM distribution tag of `beta`. For example:
-
-    git tag 1.0.1-beta
-
-To deploy a **production** version to NPM, tag a commit in master branch with a semver-compatible git tag **WITHOUT** a NPM distribution tag. For example:
-
-    git tag 1.0.1
-
-In this case, since no NPM distribution tag is provided the `latest` tag will be used making it a normal production release.
-
-NOTE: To get the tag to GitHub push it with `git push --tags`.
-
-NOTE: If you want to move the git tag that was already pushed to the remote (GitHub) to a different commit you must delete it on the remote like `git push --delete origin 0.8.7-beta` and then push it with `git push --tags`. Or do the abbreviated from by force-pushing it like `git push --tags -f`.
+This project uses [semantic-release](https://github.com/semantic-release/semantic-release) to automates the whole package release workflow including: determining the next version number, generating the release notes and publishing the package. For each new commits added to the release branch (i.e. `master`) with `git push` or by merging a pull request or merging from another branch, a CI build is triggered and runs the `semantic-release` command to make a release if there are codebase changes since the last release that affect the package functionalities.
 
 # Todo / Roadmap
 
