@@ -1,8 +1,20 @@
+/* eslint-disable no-unused-vars */
+export enum BoxType {
+  block = 0,
+  inline = 1
+}
+
+export enum FormattingContext {
+  block = 0,
+  inline = 1
+}
+/* eslint-enable no-unused-vars */
+
 /**
  * Represents a (simplified) a CSS box as described at https://www.w3.org/TR/CSS22/visuren.html#box-gen.
  */
 export class CssBox {
-  private readonly _children: Array<CssBox>
+  private readonly _children: CssBox[]
 
   /**
    * Initializes a new @see CssBox.
@@ -11,7 +23,7 @@ export class CssBox {
    * @param children Returns any child boxes of this box.
    * @param debugNote A string ot add to the box to help with debugging.
    */
-  constructor(
+  public constructor(
     public type: BoxType,
     public textContent: string = "",
     children: Iterable<CssBox> = [],
@@ -20,7 +32,7 @@ export class CssBox {
     this._children = children ? Array.from(children) : []
   }
 
-  get formattingContext(): FormattingContext {
+  public get formattingContext(): FormattingContext {
     let hasBlock = false
     let hasInline = false
     for (const child of this.children) {
@@ -50,7 +62,7 @@ export class CssBox {
       const kids: Iterator<CssBox> = this._children[Symbol.iterator]()
       let nextKid = kids.next()
       while (!nextKid.done) {
-        let child: CssBox = nextKid.value
+        const child: CssBox = nextKid.value
         if (child.type === BoxType.inline) {
           anonymousBox = anonymousBox
             ? anonymousBox
@@ -73,22 +85,12 @@ export class CssBox {
     }
   }
 
-  get children(): IterableIterator<CssBox> {
+  public get children(): IterableIterator<CssBox> {
     return this.childrenBoxGenerator()
   }
 
-  addChild(box: CssBox): void {
+  public addChild(box: CssBox): void {
     if (!box) throw new Error("box must be provided")
     this._children.push(box)
   }
-}
-
-export enum BoxType {
-  block = 0,
-  inline = 1
-}
-
-export enum FormattingContext {
-  block = 0,
-  inline = 1
 }

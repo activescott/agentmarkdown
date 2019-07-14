@@ -1,0 +1,35 @@
+env:
+  es6: true
+parser: "@typescript-eslint/parser"
+parserOptions:
+  sourceType: module
+extends:
+  - eslint:recommended
+  - "plugin:@typescript-eslint/eslint-recommended"
+  - "plugin:@typescript-eslint/recommended"
+  - prettier
+  - "prettier/@typescript-eslint"
+plugins:
+  - "@typescript-eslint"
+rules:
+  semi:
+    - error
+    - never
+  complexity:
+    - warn
+    - max: 10
+  no-eval:
+    - error
+  no-implied-eval:
+    - error
+  "@typescript-eslint/indent":
+    - off
+  "@typescript-eslint/no-parameter-properties":
+    - off
+overrides:
+  - files: "**/*.spec.ts"
+    env:
+      jest: true
+    rules:
+      "@typescript-eslint/explicit-function-return-type":
+        - off

@@ -2,7 +2,7 @@ import { CssBox, BoxType, FormattingContext } from "./CssBox"
 
 describe("formattingContext", () => {
   it("should be inline with only inlines", () => {
-    let rootBox = new CssBox(BoxType.block, "", [
+    const rootBox = new CssBox(BoxType.block, "", [
       new CssBox(BoxType.inline),
       new CssBox(BoxType.inline),
       new CssBox(BoxType.inline)
@@ -11,7 +11,7 @@ describe("formattingContext", () => {
   })
 
   it("should be block with only blocks", () => {
-    let rootBox = new CssBox(BoxType.block, "", [
+    const rootBox = new CssBox(BoxType.block, "", [
       new CssBox(BoxType.block),
       new CssBox(BoxType.block),
       new CssBox(BoxType.block)
@@ -20,7 +20,7 @@ describe("formattingContext", () => {
   })
 
   it("should be block with inlines & blocks", () => {
-    let rootBox = new CssBox(BoxType.block, "", [
+    const rootBox = new CssBox(BoxType.block, "", [
       new CssBox(BoxType.inline),
       new CssBox(BoxType.block),
       new CssBox(BoxType.inline)
@@ -40,7 +40,7 @@ describe("CSS 9.2.1.1 Anonymous block boxes", () => {
       new CssBox(BoxType.inline),
       new CssBox(BoxType.inline)
     ]
-    let rootBox = new CssBox(BoxType.block, "", children)
+    const rootBox = new CssBox(BoxType.block, "", children)
     for (const child of children) {
       expect(rootBox.children).toContainEqual(child)
     }
@@ -52,7 +52,7 @@ describe("CSS 9.2.1.1 Anonymous block boxes", () => {
       new CssBox(BoxType.block),
       new CssBox(BoxType.block)
     ]
-    let rootBox = new CssBox(BoxType.block, "", children)
+    const rootBox = new CssBox(BoxType.block, "", children)
     for (const child of children) {
       expect(rootBox.children).toContainEqual(child)
     }
@@ -64,8 +64,8 @@ describe("CSS 9.2.1.1 Anonymous block boxes", () => {
       new CssBox(BoxType.inline),
       new CssBox(BoxType.block)
     ]
-    let rootBox = new CssBox(BoxType.block, "", children)
-    const actual: Array<CssBox> = Array.from(rootBox.children)
+    const rootBox = new CssBox(BoxType.block, "", children)
+    const actual: CssBox[] = Array.from(rootBox.children)
     expect(actual).toHaveLength(3)
     // should have the first and last:
     expect(actual).toContainEqual(children[0])
@@ -81,8 +81,8 @@ describe("CSS 9.2.1.1 Anonymous block boxes", () => {
       new CssBox(BoxType.inline),
       new CssBox(BoxType.block)
     ]
-    let rootBox = new CssBox(BoxType.block, "", children)
-    const actual: Array<CssBox> = Array.from(rootBox.children)
+    const rootBox = new CssBox(BoxType.block, "", children)
+    const actual: CssBox[] = Array.from(rootBox.children)
     expect(actual).toHaveLength(3)
     // should have the first and last:
     expect(actual).toContainEqual(children[0])
@@ -99,8 +99,8 @@ describe("CSS 9.2.1.1 Anonymous block boxes", () => {
       new CssBox(BoxType.block),
       new CssBox(BoxType.inline)
     ]
-    let rootBox = new CssBox(BoxType.block, "", children)
-    const actual: Array<CssBox> = Array.from(rootBox.children)
+    const rootBox = new CssBox(BoxType.block, "", children)
+    const actual: CssBox[] = Array.from(rootBox.children)
     expect(actual).toHaveLength(4)
     // should have the blocks (first and third):
     expect(actual).toContainEqual(children[0])
