@@ -14,6 +14,12 @@
   + deploy npm (beta?) via travis
   + README badge
 
+- Commitizen
+  - http://commitizen.github.io/cz-cli/
+
+- semantic-release
+  - https://github.com/semantic-release/semantic-release
+
 - Web Example
   - publish to github pages
   - link in readme
