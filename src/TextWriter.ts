@@ -2,6 +2,10 @@
  * Used by @see NodeWriter objects to write text.
  */
 export abstract class TextWriter {
+  public newLine(): void {
+    this.writeMarkup("\n")
+  }
+
   /**
    * Writes inline text content. Collapses whitespace as needed.
    * Begins an inline formatting context.
@@ -15,8 +19,4 @@ export abstract class TextWriter {
    * Any automatic white-space handling applied to text content (such as collapsing consecutive whitespace characters) is *not* applied.
    */
   public abstract writeMarkup(markup: string): void
-
-  public newLine(): void {
-    this.writeMarkup("\n")
-  }
 }

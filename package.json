@@ -25,7 +25,7 @@
     "build": "rm -rfd ./dist && yarn run build:es && yarn run build:cjs",
     "lint": "prettier -l \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\" && yarn run eslint",
     "eslint": "./node_modules/.bin/eslint . --ext .ts",
-    "lint-fix": "prettier --write \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\"",
+    "lint-fix": "yarn run eslint --fix && prettier --write \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\"",
     "test": "jest",
     "coverage": "jest --coverage && cat ./coverage/lcov.info | codacy-coverage"
   },

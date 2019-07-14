@@ -32,6 +32,15 @@ export class CssBox {
     this._children = children ? Array.from(children) : []
   }
 
+  public addChild(box: CssBox): void {
+    if (!box) throw new Error("box must be provided")
+    this._children.push(box)
+  }
+
+  public get children(): IterableIterator<CssBox> {
+    return this.childrenBoxGenerator()
+  }
+
   public get formattingContext(): FormattingContext {
     let hasBlock = false
     let hasInline = false
@@ -83,14 +92,5 @@ export class CssBox {
         yield child
       }
     }
-  }
-
-  public get children(): IterableIterator<CssBox> {
-    return this.childrenBoxGenerator()
-  }
-
-  public addChild(box: CssBox): void {
-    if (!box) throw new Error("box must be provided")
-    this._children.push(box)
   }
 }
