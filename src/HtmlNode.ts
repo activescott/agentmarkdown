@@ -18,7 +18,7 @@ export interface HtmlNode {
   children?: HtmlNode[]
 }
 
-export type AttribsType = {
+export interface AttribsType {
   [s: string]: string
 }
 

@@ -22,9 +22,18 @@ rules:
     - error
   no-implied-eval:
     - error
+  no-magic-numbers:
+    - warn
+    - ignore: 
+      - 0
+      - 1    
   "@typescript-eslint/indent":
     - off
   "@typescript-eslint/no-parameter-properties":
+    - off
+  "@typescript-eslint/no-explicit-any":
+    - warn
+  "@typescript-eslint/no-use-before-define":
     - off
 overrides:
   - files: "**/*.spec.ts"
@@ -32,4 +41,6 @@ overrides:
       jest: true
     rules:
       "@typescript-eslint/explicit-function-return-type":
+        - off
+      no-magic-numbers:
         - off

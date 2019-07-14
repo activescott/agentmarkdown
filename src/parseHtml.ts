@@ -2,11 +2,11 @@ import * as htmlparser from "htmlparser2"
 import { HtmlNode } from "./HtmlNode"
 
 export function parseHtml(html: string): Promise<HtmlNode[]> {
-  return new Promise<HtmlNode[]>((resolve, reject) => {
+  return new Promise<HtmlNode[]>((resolve, reject): void => {
     const handler = new htmlparser.DomHandler(
-      function(error, dom) {
+      function(error, dom): void {
         if (error) reject(new Error("Error parsing html into DOM"))
-        else resolve(<HtmlNode[]>dom)
+        else resolve(dom as HtmlNode[])
       },
       { normalizeWhitespace: false }
     )
@@ -17,6 +17,7 @@ export function parseHtml(html: string): Promise<HtmlNode[]> {
 }
 
 export function traceHtmlNodes(nodes: HtmlNode[], indent: number = 0): string {
+  // eslint-disable-line @typescript-eslint/no-unused-vars
   let output = ""
   for (const child of nodes) {
     output += traceHtmlNode(child, indent)
@@ -25,8 +26,8 @@ export function traceHtmlNodes(nodes: HtmlNode[], indent: number = 0): string {
 }
 
 function traceHtmlNode(node: HtmlNode, indent: number = 0): string {
-  const nameStr = node => (node.name ? node.name : "")
-  const dataStr = node => (node.data ? node.data : "")
+  const nameStr = (node: HtmlNode): string => (node.name ? node.name : "")
+  const dataStr = (node: HtmlNode): string => (node.data ? node.data : "")
   let output =
     "  ".repeat(indent) +
     "HtmlNode " +

@@ -1,4 +1,4 @@
-import { parseHtml, traceHtmlNodes } from "./parseHtml"
+import { parseHtml } from "./parseHtml"
 import { TextWriter } from "./TextWriter"
 import { DefaultTextWriter } from "./DefaultTextWriter"
 import { layout } from "./css"
