@@ -17,6 +17,6 @@ Feel free to check [issues page](https://github.com/activescott/agentmarkdown/is
 
 #### Commit Message Guidelines
 
-We have very precise rules over how our git commit messages can be formatted.  This leads to **more readable messages** that are easy to follow when looking through the **project history**.  But also, we use the git commit messages to **generate the change log**.
+We have very precise rules over how our git commit messages can be formatted. This leads to **more readable messages** that are easy to follow when looking through the **project history**. But also, we use the git commit messages to **generate the change log**.
 
 The commit message formatting can be added using a typical git workflow or through the use of a CLI wizard ([Commitizen](https://github.com/commitizen/cz-cli)). To use the wizard, run `yarn run commit` in your terminal after staging your changes in git.

@@ -14,8 +14,8 @@
   + deploy npm (beta?) via travis
   + README badge
 
-- Commitizen
-  - http://commitizen.github.io/cz-cli/
++ Commitizen
+  + https://github.com/commitizen/cz-cli
 
 - semantic-release
   - https://github.com/semantic-release/semantic-release
