@@ -1,7 +1,7 @@
 import { toMarkdown } from "../support"
 
 it.skip("CommonMark ALL", async () => {
-  const commonMark = require("../test-data/spec.commonmark.v0.29.json")
+  const commonMark = require("../test-data/spec.commonmark.v0.29.json") // eslint-disable-line @typescript-eslint/no-var-requires
   for (const test of commonMark) {
     const md = toMarkdown(test.html)
     expect(md).resolves.toEqual(test.markdown)

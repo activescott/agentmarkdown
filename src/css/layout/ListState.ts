@@ -9,7 +9,7 @@ export class ListState {
   private static readonly ItemCountKey = "ol-item-count-stack"
   private static readonly ListTypeKey = "list-type-key-stack"
 
-  constructor(readonly context: LayoutContext) {}
+  public constructor(readonly context: LayoutContext) {}
 
   public beginList(listType: ListType): void {
     // track list type:
@@ -18,7 +18,7 @@ export class ListState {
     this.context.pushState(ListState.ItemCountKey, 0)
   }
 
-  public endList() {
+  public endList(): void {
     // track list type:
     this.context.popState<ListType>(ListState.ListTypeKey)
     // pop the item count for this list

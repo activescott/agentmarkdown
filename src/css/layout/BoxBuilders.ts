@@ -169,18 +169,18 @@ export class BoxBuilders {
     childContentBoxes.forEach(kid => linkBox.addChild(kid))
     return linkBox
   }
-  public static hr(context: LayoutContext, element: HtmlNode): CssBox | null {
+  public static hr(): CssBox | null {
     return new CssBox(BoxType.block, "* * *")
   }
-  public static br(context: LayoutContext, element: HtmlNode): CssBox | null {
+  public static br(): CssBox | null {
     return new CssBox(BoxType.inline, "\n")
   }
   public static pre(context: LayoutContext, element: HtmlNode): CssBox | null {
-    let styleState = new StyleState(context)
+    const styleState = new StyleState(context)
     styleState.pushWhitespaceHandling(WhitespaceHandling.pre)
     // kids is likely a single text element
     const kids = BoxBuilders.buildBoxes(context, element.children)
-    const decode = (box: CssBox) => {
+    const decode = (box: CssBox): void => {
       box.textContent = decodeHtmlEntities(box.textContent)
       for (const child of box.children) {
         decode(child)

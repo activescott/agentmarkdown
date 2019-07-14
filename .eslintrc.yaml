@@ -26,7 +26,10 @@ rules:
     - warn
     - ignore: 
       - 0
-      - 1    
+      - 1
+  "@typescript-eslint/explicit-function-return-type":
+    - error
+    - allowExpressions: true
   "@typescript-eslint/indent":
     - off
   "@typescript-eslint/no-parameter-properties":

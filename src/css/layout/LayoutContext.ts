@@ -2,15 +2,15 @@
  * Provides context during layout.
  */
 export class LayoutContext {
-  private readonly state: Map<string, any> = new Map<string, any>()
+  private readonly state: Map<string, any> = new Map<string, any>() // eslint-disable-line @typescript-eslint/no-explicit-any
 
   /**
    * Returns the specified stack.
    * If the stack is not yet created it will return an empty stack.
    * @param stackName The stack name (state key) to retreive.
    */
-  public getStateStack<TValue>(stackName: string): Array<TValue> {
-    let stack = this.state.get(stackName) as Array<TValue>
+  public getStateStack<TValue>(stackName: string): TValue[] {
+    let stack = this.state.get(stackName) as TValue[]
     if (!stack) {
       stack = new Array<TValue>()
       this.state.set(stackName, stack)
@@ -25,7 +25,7 @@ export class LayoutContext {
    * @param stackName The key/name of the stack to push the value onto.
    * @param value The value to push onto the top of the stack.
    */
-  public pushState<TValue>(stackName: string, value: TValue) {
+  public pushState<TValue>(stackName: string, value: TValue): void {
     const stack = this.getStateStack<TValue>(stackName)
     stack.push(value)
   }

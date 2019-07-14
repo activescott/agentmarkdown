@@ -21,12 +21,13 @@ export function layout(document: Iterable<HtmlNode>): CssBox {
   return body
 }
 
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 function traceBoxTree(box: CssBox, indent = 0): string {
-  const typeStr = (type: BoxType) =>
+  const typeStr = (type: BoxType): string =>
     type === BoxType.inline ? "inline" : "block"
-  const fcStr = (fc: FormattingContext) =>
+  const fcStr = (fc: FormattingContext): string =>
     fc === FormattingContext.inline ? "inline" : "block"
-  const boxStr = (b: CssBox) =>
+  const boxStr = (b: CssBox): string =>
     "CssBox " +
     (b == null
       ? "<null>"
@@ -92,12 +93,15 @@ function getBoxBuilderForElement(elementName: string): BoxBuilder {
     ["ul", BoxBuilders.list],
     ["ol", BoxBuilders.list],
     ["li", BoxBuilders.listItem],
+    /* eslint-disable no-magic-numbers */
+
     ["h1", BoxBuilders.headingThunk(1)],
     ["h2", BoxBuilders.headingThunk(2)],
     ["h3", BoxBuilders.headingThunk(3)],
     ["h4", BoxBuilders.headingThunk(4)],
     ["h5", BoxBuilders.headingThunk(5)],
     ["h6", BoxBuilders.headingThunk(6)],
+    /* eslint-enable no-magic-numbers */
     ["b", BoxBuilders.emphasisThunk("**")],
     ["strong", BoxBuilders.emphasisThunk("**")],
     ["i", BoxBuilders.emphasisThunk("*")],

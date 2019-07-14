@@ -8,18 +8,18 @@ export class StyleState {
   private static readonly WhitespaceHandlingKey: string =
     "style-whitespace-handling"
 
-  constructor(readonly context: LayoutContext) {}
+  public constructor(readonly context: LayoutContext) {}
 
-  public pushWhitespaceHandling(handling: WhitespaceHandling) {
+  public pushWhitespaceHandling(handling: WhitespaceHandling): void {
     this.context.pushState(StyleState.WhitespaceHandlingKey, handling)
   }
 
-  public popWhitespaceHandling() {
+  public popWhitespaceHandling(): void {
     this.context.popState(StyleState.WhitespaceHandlingKey)
   }
 
   public get whitespaceHandling(): WhitespaceHandling {
-    let handling: WhitespaceHandling = this.context.peekState<
+    const handling: WhitespaceHandling = this.context.peekState<
       WhitespaceHandling
     >(StyleState.WhitespaceHandlingKey)
     return handling ? handling : WhitespaceHandling.normal

@@ -1,7 +1,7 @@
 import { HtmlNode, HtmlNodeType, AttribsType } from "../../src/HtmlNode"
 
 export class MockHtmlNode implements HtmlNode {
-  constructor(
+  public constructor(
     readonly type: HtmlNodeType,
     readonly name: string,
     readonly data?: string,
