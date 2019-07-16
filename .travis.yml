@@ -42,15 +42,12 @@ jobs:
           # see https://docs.travis-ci.com/user/deployment/pages/
           skip_cleanup: true
           github_token: $GH_TOKEN
-          # TODO: Turn keep_history off once stable to avoid wasting space in repo
-          keep_history: true
+          # keep_history off avoids wasting space in repo, but be careful to only target the gh-pages branch!
+          keep_history: false
           local_dir: ./example
           target_branch: gh-pages
           on:
-            #- branch: master
-            # Remove below two, and uncomment above so it is MASTER only:
-            all_branches: true
-            condition: $TRAVIS_BRANCH =~ ^(master|build/deploy-web-demo)$
+            - branch: master
     - stage: Report Coverage
       node_js: "node"
       script: yarn coverage
