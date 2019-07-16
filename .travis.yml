@@ -24,6 +24,7 @@ jobs:
     # Define the release stage that runs semantic-release
     - stage: release to npm
       node_js: lts/*
+      script: yarn build
       deploy:
         provider: script
         skip_cleanup: true
