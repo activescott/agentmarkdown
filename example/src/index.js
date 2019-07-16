@@ -1,4 +1,4 @@
-import { AgentMarkdown } from "../../dist/es/index"
+import { AgentMarkdown } from "agentmarkdown"
 
 window.addEventListener("load", docLoad)
 

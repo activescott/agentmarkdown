@@ -52,7 +52,15 @@ Coming Soon! :construction_worker:
 
 ## Web Example
 
-Coming Soon! :construction_worker:
+You can view the online web example at [https://activescott.github.io/agentmarkdown/](https://activescott.github.io/agentmarkdown/).
+
+You can build and the web example locally with the following commands:
+
+```
+cd example/
+yarn
+yarn start
+```
 
 ## Contributing 🤝
 
