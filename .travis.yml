@@ -16,6 +16,11 @@ script:
   - echo "Running with node version $(node -v). TRAVIS_NODE_VERSION=$TRAVIS_NODE_VERSION"
   - yarn lint
   - yarn test
+  - pushd .
+  - cd ./example
+  - yarn
+  - yarn build
+  - popd
 jobs:
   include:
     # Define the release stage that runs semantic-release
@@ -28,7 +33,6 @@ jobs:
           - ./node_modules/.bin/semantic-release
     - stage: publish demo
       node_js: lts/*
-      script: cd ./example && yarn && yarn build
       deploy:
         # see https://docs.travis-ci.com/user/deployment/pages/
         provider: pages
@@ -36,7 +40,7 @@ jobs:
         github_token: $GH_TOKEN
         # TODO: Turn keep_history off once stable to avoid wasting space in repo
         keep_history: true
-        local_dir: ./
+        local_dir: ./example
         target_branch: gh-pages
         on:
           #- branch: master
