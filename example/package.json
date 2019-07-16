@@ -8,5 +8,8 @@
   "scripts": {
     "build": "./node_modules/.bin/webpack-cli --output-path ./",
     "start": "(sleep 2s && open http://localhost:8080/) & node_modules/.bin/webpack-dev-server"
+  },
+  "dependencies": {
+    "agentmarkdown": "latest"
   }
 }
