@@ -16,37 +16,41 @@ script:
   - echo "Running with node version $(node -v). TRAVIS_NODE_VERSION=$TRAVIS_NODE_VERSION"
   - yarn lint
   - yarn test
+  # build demo
   - pushd .
   - cd ./example
   - yarn
   - yarn build
+  # cleanup unnecessary files for gh-pages branch
+  - rm -rfd ./node_modules
+  - rm -rfd ./src
+  - rm -f ./package.json
+  - rm -f ./yarn.lock
+  # leave us in our default working directory
   - popd
 jobs:
   include:
     # Define the release stage that runs semantic-release
-    - stage: release to npm
+    - stage: deploy npm & demo
       node_js: lts/*
       deploy:
-        provider: script
-        skip_cleanup: true
-        script:
-          - ./node_modules/.bin/semantic-release
-    - stage: publish demo
-      node_js: lts/*
-      deploy:
-        # see https://docs.travis-ci.com/user/deployment/pages/
-        provider: pages
-        skip_cleanup: true
-        github_token: $GH_TOKEN
-        # TODO: Turn keep_history off once stable to avoid wasting space in repo
-        keep_history: true
-        local_dir: ./example
-        target_branch: gh-pages
-        on:
-          #- branch: master
-          # Remove below two, and uncomment above so it is MASTER only:
-          all_branches: true
-          condition: $TRAVIS_BRANCH =~ ^(master|build/deploy-web-demo)$
+        - provider: script
+          skip_cleanup: true
+          script:
+            - ./node_modules/.bin/semantic-release
+        - provider: pages
+          # see https://docs.travis-ci.com/user/deployment/pages/
+          skip_cleanup: true
+          github_token: $GH_TOKEN
+          # TODO: Turn keep_history off once stable to avoid wasting space in repo
+          keep_history: true
+          local_dir: ./example
+          target_branch: gh-pages
+          on:
+            #- branch: master
+            # Remove below two, and uncomment above so it is MASTER only:
+            all_branches: true
+            condition: $TRAVIS_BRANCH =~ ^(master|build/deploy-web-demo)$
     - stage: Report Coverage
       node_js: "node"
       script: yarn coverage
