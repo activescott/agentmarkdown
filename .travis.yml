@@ -1,8 +1,8 @@
 language: node_js
 node_js:
-  - "node"
+#  - "node"
   - "lts/*"
-  - "10" # To keep v10 support alive even when lts shifts to a later version
+#  - "10" # To keep v10 support alive even when lts shifts to a later version
 env:
   global:
     # CODACY_PROJECT_TOKEN
@@ -18,20 +18,20 @@ script:
   - yarn test
 jobs:
   include:
-    - stage: Report Coverage
-      node_js: "node"
-      script: yarn coverage
-    # Define the release stage that runs semantic-release
-    - stage: release to npm
-      node_js: lts/*
-      deploy:
-        provider: script
-        skip_cleanup: true
-        script:
-          - ./node_modules/.bin/semantic-release
+#    - stage: Report Coverage
+#      node_js: "node"
+#      script: yarn coverage
+#    # Define the release stage that runs semantic-release
+#    - stage: release to npm
+#      node_js: lts/*
+#      deploy:
+#        provider: script
+#        skip_cleanup: true
+#        script:
+#          - ./node_modules/.bin/semantic-release
     - stage: publish demo
       node_js: lts/*
-      script: cd ./example && yarn build
+      script: cd ./example && yarn && yarn build
       deploy:
         # see https://docs.travis-ci.com/user/deployment/pages/
         provider: pages
