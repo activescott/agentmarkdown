@@ -29,3 +29,18 @@ jobs:
         skip_cleanup: true
         script:
           - ./node_modules/.bin/semantic-release
+    - stage: publish demo
+      node_js: lts/*
+      script: cd ./example && yarn build
+      deploy:
+        # see https://docs.travis-ci.com/user/deployment/pages/
+        provider: pages
+        skip_cleanup: true
+        github_token: $GH_TOKEN
+        # TODO: Turn keep_history off once stable to avoid wasting space in repo
+        keep_history: true
+        local_dir: ./
+        target_branch: gh-pages
+        # TODO: FUTURE:
+        #on:
+        #  branch: master
