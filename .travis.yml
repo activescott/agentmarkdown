@@ -47,7 +47,7 @@ jobs:
           local_dir: ./example
           target_branch: gh-pages
           on:
-            - branch: master
+            branch: master
     - stage: Report Coverage
       node_js: "node"
       script: yarn coverage
