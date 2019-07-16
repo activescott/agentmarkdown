@@ -46,7 +46,7 @@ jobs:
           #- branch: master
           # Remove below two, and uncomment above so it is MASTER only:
           all_branches: true
-          condition: $TRAVIS_BRANCH =~ ^(master|build/deploy-web-demo)$ 
+          condition: $TRAVIS_BRANCH =~ ^(master|build/deploy-web-demo)$
     - stage: Report Coverage
       node_js: "node"
       script: yarn coverage

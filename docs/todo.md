@@ -29,6 +29,13 @@
   - npx / yarn dlx support
   - example in readme
 
++ The "Report coverage" stage takes too long. Can we just combine it as part of one of the test scripts?
+  - Moved it to last step so it doesn't matter as much
+  - Still should combine it to test stage
+
+- Add all of their Tests: https://github.com/integrations/html-to-mrkdwn/blob/master/test/index.test.js
+- Add to readme as an "Alternative": https://github.com/integrations/html-to-mrkdwn
+
 - tests:
   + block elements followed by inlines and vice versa
   - elements without any child nodes (e.g. <div></div>)
@@ -50,13 +57,8 @@
     + support a title attribute
   - images: https://daringfireball.net/projects/markdown/syntax#img
 
-
-- online example
-  - demo in this repo that is published to github pages
-
 - Do we want to encode &lt; and &gt; like that or \< \> ?
 - document how to extend/customize
-- full commonmark test suite and find out what else to support
 - make it fast (see TextWriter and the default/lame implementation)
   - benchmarks (some other lib had benchmarks)
 
