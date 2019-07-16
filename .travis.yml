@@ -39,8 +39,9 @@ jobs:
         local_dir: ./
         target_branch: gh-pages
         on:
-          - branch: master
-          - branch: build/deploy-web-demo # <- Remove it later.
+          #- branch: master
+          all_branches: true
+          condition: (branch = master) OR (branch = build/deploy-web-demo) # <- MASTER ONLY later
     - stage: Report Coverage
       node_js: "node"
       script: yarn coverage
