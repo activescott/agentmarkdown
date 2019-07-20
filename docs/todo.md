@@ -30,7 +30,7 @@
 
 - CLI support
   + npx / yarn dlx support
-  - example in readme
+  + example in readme
 
 - Add install size badge: https://packagephobia.now.sh/result?p=agent-markdown
 - Add keywords to packagejson
