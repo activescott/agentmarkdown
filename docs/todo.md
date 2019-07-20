@@ -21,13 +21,19 @@
   + https://github.com/semantic-release/semantic-release
   + readme updates about release process
 
-- Web Example
-  - publish to github pages
-  - link in readme
++ Web Example
+  + publish to github pages
+  + link in readme
+
++ rename agentmarkdown -> agent-markdown
+  + Doh! https://blog.npmjs.org/post/168978377570/new-package-moniker-rules
 
 - CLI support
-  - npx / yarn dlx support
-  - example in readme
+  + npx / yarn dlx support
+  + example in readme
+
+- Add install size badge: https://packagephobia.now.sh/result?p=agent-markdown
+- Add keywords to packagejson
 
 + The "Report coverage" stage takes too long. Can we just combine it as part of one of the test scripts?
   - Moved it to last step so it doesn't matter as much

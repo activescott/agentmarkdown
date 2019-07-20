@@ -1,16 +1,16 @@
 [![npm version](https://badge.fury.io/js/agentmarkdown.svg)](https://www.npmjs.com/package/agentmarkdown)
 [![npm downloads](https://img.shields.io/npm/dt/agentmarkdown.svg?logo=npm)](https://www.npmjs.com/package/agentmarkdown)
-[![Build Status](https://travis-ci.org/activescott/agentmarkdown.svg)](https://travis-ci.org/activescott/agentmarkdown)
+[![Build Status](https://travis-ci.org/activescott/agentmarkdown.svg?branch=master)](https://travis-ci.org/activescott/agentmarkdown)
 [![Code Coverage](https://api.codacy.com/project/badge/Coverage/6469e8003872412296b5b87a672240d4)](https://www.codacy.com/app/activescott/agentmarkdown?utm_source=github.com&utm_medium=referral&utm_content=activescott/agentmarkdown&utm_campaign=Badge_Coverage)
 [![Code Quality](https://api.codacy.com/project/badge/Grade/1b9057ec20bb473295303334bfd2ccd8)](https://app.codacy.com/app/activescott/agentmarkdown?utm_source=github.com&utm_medium=referral&utm_content=activescott/agentmarkdown&utm_campaign=Badge_Grade_Dashboard)
 [![License](https://img.shields.io/github/license/activescott/agentmarkdown.svg)](https://github.com/activescott/agentmarkdown/blob/master/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/activescott/agentmarkdown.svg?style=social)](https://github.com/activescott/agentmarkdown)
 
-# AgentMarkdown
+# Agent Markdown
 
 An accurate, extensible, and fast HTML-to-markdown converter.
 
-AgentMarkdown is a [HTML user agent](https://en.wikipedia.org/wiki/User_agent) that parses HTML, performs a document layout according to the [CSS stylesheet for HTML](https://html.spec.whatwg.org/multipage/rendering.html#the-css-user-agent-style-sheet-and-presentational-hints) and then "renders" the laid out document to Markdown. This results in markdown that looks very similar to the way the HTML document looked when parsed and rendered in a browser (user agent).
+Agent Markdown is a [HTML user agent](https://en.wikipedia.org/wiki/User_agent) that parses HTML, performs a document layout according to the [CSS stylesheet for HTML](https://html.spec.whatwg.org/multipage/rendering.html#the-css-user-agent-style-sheet-and-presentational-hints) and then "renders" the laid out document to Markdown. This results in markdown that looks very similar to the way the HTML document looked when parsed and rendered in a browser (user agent).
 
 <!-- TOC -->
 
@@ -48,7 +48,17 @@ yarn (`yarn add agentmarkdown`) or npm (`npm install agentmarkdown`)
 
 ## CLI Example
 
-Coming Soon! :construction_worker:
+You can convert any HTML file to Markdown at the command line using the following command, and the markdown output will be printed to stdout:
+
+    agentmarkdown <filename.html>
+
+It also responds to stdin, if you pipe html to it. So you can do things like:
+
+    echo "<b>bold</bold>" | agentmarkdown > myfile.md
+
+The above commands assume you installed agentmarkdown with `yarn global add agentmarkdown`, `npm install --global agentmarkdown` but it also works with `npx` so you can run it without installing like:
+
+    npx agentmarkdown <filename.html>
 
 ## Web Example
 

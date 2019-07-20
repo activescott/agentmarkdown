@@ -14,7 +14,6 @@ env:
 cache: yarn
 script:
   - echo "Running with node version $(node -v). TRAVIS_NODE_VERSION=$TRAVIS_NODE_VERSION"
-  - yarn lint
   - yarn test
   # build demo
   - pushd .
@@ -31,14 +30,18 @@ script:
 jobs:
   include:
     # Define the release stage that runs semantic-release
-    - stage: deploy npm & demo
+    - stage: semantic-release & demo
       node_js: lts/*
+      # build it so the necessary distributable files exist
       script: yarn build
       deploy:
         - provider: script
           skip_cleanup: true
           script:
             - ./node_modules/.bin/semantic-release
+          on:
+            # Override `deploy` default of master; semantic-release will decide which branches to deploy on!
+            all_branches: true
         - provider: pages
           # see https://docs.travis-ci.com/user/deployment/pages/
           skip_cleanup: true
