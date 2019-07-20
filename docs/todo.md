@@ -25,11 +25,13 @@
   + publish to github pages
   + link in readme
 
+- rename agentmarkdown -> agent-markdown
+
 - CLI support
-  - npx / yarn dlx support
+  + npx / yarn dlx support
   - example in readme
 
-- Add install size badge: https://packagephobia.now.sh/result?p=agentmarkdown
+- Add install size badge: https://packagephobia.now.sh/result?p=agent-markdown
 - Add keywords to packagejson
 
 + The "Report coverage" stage takes too long. Can we just combine it as part of one of the test scripts?

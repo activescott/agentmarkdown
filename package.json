@@ -1,7 +1,7 @@
 {
-  "name": "agentmarkdown",
+  "name": "agent-markdown",
   "description": "An accurate, extensible, and fast HTML-to-markdown converter.",
-  "homepage": "https://github.com/activescott/agentmarkdown",
+  "homepage": "https://github.com/activescott/agent-markdown",
   "version": "0.0.0",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
@@ -17,9 +17,9 @@
     "email": "scott@willeke.com",
     "url": "https://scott.willeke.com/"
   },
-  "repository": "https://github.com/activescott/agentmarkdown",
+  "repository": "https://github.com/activescott/agent-markdown",
   "bugs": {
-    "url": "https://github.com/activescott/agentmarkdown/issues"
+    "url": "https://github.com/activescott/agent-markdown/issues"
   },
   "license": "MPL-2.0",
   "scripts": {
