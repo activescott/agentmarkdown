@@ -30,7 +30,7 @@ script:
 jobs:
   include:
     # Define the release stage that runs semantic-release
-    - stage: deploy npm & demo
+    - stage: semantic-release & demo
       node_js: lts/*
       # build it so the necessary distributable files exist
       script: yarn build
