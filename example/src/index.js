@@ -1,4 +1,4 @@
-import { AgentMarkdown } from "agent-markdown"
+import { AgentMarkdown } from "agentmarkdown"
 
 window.addEventListener("load", docLoad)
 

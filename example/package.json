@@ -10,6 +10,6 @@
     "start": "(sleep 2s && open http://localhost:8080/) & node_modules/.bin/webpack-dev-server"
   },
   "dependencies": {
-    "agent-markdown": "latest"
+    "agentmarkdown": "latest"
   }
 }
