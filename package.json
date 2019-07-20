@@ -23,6 +23,7 @@
   },
   "license": "MPL-2.0",
   "scripts": {
+    "cm": "git-cz",
     "build:cjs": "rm -rfd ./dist/cjs; tsc --project tsconfig.cjs.json",
     "build:es": "rm -rfd ./dist/es; tsc --project tsconfig.es.json",
     "build": "rm -rfd ./dist && yarn run build:es && yarn run build:cjs",
@@ -30,6 +31,7 @@
     "eslint": "./node_modules/.bin/eslint . --ext .ts",
     "lint-fix": "yarn run eslint --fix && prettier --write \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\"",
     "test": "jest",
+    "pretest": "yarn run lint",
     "coverage": "jest --coverage && cat ./coverage/lcov.info | codacy-coverage"
   },
   "devDependencies": {
@@ -46,7 +48,7 @@
     "eslint-config-prettier": "^6.0.0",
     "jest": "^24.8.0",
     "prettier": "^1.18.2",
-    "semantic-release": "^15.13.18",
+    "semantic-release": "@beta",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.2"

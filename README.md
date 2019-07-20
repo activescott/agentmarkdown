@@ -52,8 +52,7 @@ You can convert HTML to Markdown at the command line using the following command
 
     npx agent-markdown
 
-Or if you have 
-
+Or if you have
 
 ## Web Example
 
