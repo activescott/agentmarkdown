@@ -1,6 +1,6 @@
 [![npm version](https://badge.fury.io/js/agent-markdown.svg)](https://www.npmjs.com/package/agent-markdown)
 [![npm downloads](https://img.shields.io/npm/dt/agent-markdown.svg?logo=npm)](https://www.npmjs.com/package/agent-markdown)
-[![Build Status](https://travis-ci.org/activescott/agent-markdown.svg)](https://travis-ci.org/activescott/agent-markdown)
+[![Build Status](https://travis-ci.org/activescott/agent-markdown.svg?branch=master)](https://travis-ci.org/activescott/agent-markdown)
 [![Code Coverage](https://api.codacy.com/project/badge/Coverage/6469e8003872412296b5b87a672240d4)](https://www.codacy.com/app/activescott/agent-markdown?utm_source=github.com&utm_medium=referral&utm_content=activescott/agent-markdown&utm_campaign=Badge_Coverage)
 [![Code Quality](https://api.codacy.com/project/badge/Grade/1b9057ec20bb473295303334bfd2ccd8)](https://app.codacy.com/app/activescott/agent-markdown?utm_source=github.com&utm_medium=referral&utm_content=activescott/agent-markdown&utm_campaign=Badge_Grade_Dashboard)
 [![License](https://img.shields.io/github/license/activescott/agent-markdown.svg)](https://github.com/activescott/agent-markdown/blob/master/LICENSE)
