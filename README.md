@@ -48,11 +48,17 @@ yarn (`yarn add agentmarkdown`) or npm (`npm install agentmarkdown`)
 
 ## CLI Example
 
-You can convert HTML to Markdown at the command line using the following command (npx will automatically download and execute the `agentmarkdown` package):
+You can convert any HTML file to Markdown at the command line using the following command, and the markdown output will be printed to stdout:
 
-    npx agentmarkdown
+    agentmarkdown <filename.html>
 
-Or if you have
+It also responds to stdin, if you pipe html to it. So you can do things like:
+
+    echo "<b>bold</bold>" | agentmarkdown > myfile.md
+
+The above commands assume you installed agentmarkdown with `yarn global add agentmarkdown`, `npm install --global agentmarkdown` but it also works with `npx` so you can run it without installing like:
+
+    npx agentmarkdown <filename.html>
 
 ## Web Example
 
