@@ -91,7 +91,7 @@ export class Cli {
   }
 
   private showHelp(process: CliProcess, exitCode: number = EXIT_SUCCESS): void {
-    const help = `Usage: agent-markdown [filePath]
+    const help = `Usage: agentmarkdown [filePath]
 
 An application to convert HTML to markdown.
 

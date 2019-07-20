@@ -1,12 +1,12 @@
 import { Readable, Writable } from "stream"
 import path from "path"
-import { Cli, CliProcess } from "./agent-markdown"
+import { Cli, CliProcess } from "./agentmarkdown"
 import { StringDecoder } from "string_decoder"
 
 describe("CLI", () => {
   /**
    * Represents the following command:
-   * ./node_modules/.bin/ts-node --compiler-options "{ \"downlevelIteration\": true }" src/cli/agent-markdown.ts
+   * ./node_modules/.bin/ts-node --compiler-options "{ \"downlevelIteration\": true }" src/cli/agentmarkdown.ts
    */
   it("should show error without options", async () => {
     const mockStdOut: MockWritable = new MockWritable()
@@ -17,12 +17,12 @@ describe("CLI", () => {
       stdout: mockStdOut
     }
     await new Cli().run(mockProcess)
-    expect(mockStdOut.data).toMatch(/^Usage: agent-markdown \[filePath\]/)
+    expect(mockStdOut.data).toMatch(/^Usage: agentmarkdown \[filePath\]/)
   })
 
   /**
    * represents the following command:
-   * ./node_modules/.bin/ts-node --compiler-options "{ \"downlevelIteration\": true }" src/cli/agent-markdown.ts test-data/emphasis.fragment.html
+   * ./node_modules/.bin/ts-node --compiler-options "{ \"downlevelIteration\": true }" src/cli/agentmarkdown.ts test-data/emphasis.fragment.html
    */
   it("should process filename on arg", async () => {
     const contentPath: string = path.join(
@@ -42,7 +42,7 @@ describe("CLI", () => {
 
   /**
    * Represents the following command:
-   * echo "<em>emphasis</em>" | ./node_modules/.bin/ts-node --compiler-options "{ \"downlevelIteration\": true }" src/cli/agent-markdown.ts
+   * echo "<em>emphasis</em>" | ./node_modules/.bin/ts-node --compiler-options "{ \"downlevelIteration\": true }" src/cli/agentmarkdown.ts
    */
   it("should accept stdin", async () => {
     const mockStdOut: MockWritable = new MockWritable()

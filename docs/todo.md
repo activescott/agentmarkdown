@@ -25,7 +25,8 @@
   + publish to github pages
   + link in readme
 
-- rename agentmarkdown -> agent-markdown
++ rename agentmarkdown -> agent-markdown
+  + Doh! https://blog.npmjs.org/post/168978377570/new-package-moniker-rules
 
 - CLI support
   + npx / yarn dlx support

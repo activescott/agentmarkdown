@@ -1,16 +1,16 @@
-[![npm version](https://badge.fury.io/js/agent-markdown.svg)](https://www.npmjs.com/package/agent-markdown)
-[![npm downloads](https://img.shields.io/npm/dt/agent-markdown.svg?logo=npm)](https://www.npmjs.com/package/agent-markdown)
-[![Build Status](https://travis-ci.org/activescott/agent-markdown.svg?branch=master)](https://travis-ci.org/activescott/agent-markdown)
-[![Code Coverage](https://api.codacy.com/project/badge/Coverage/6469e8003872412296b5b87a672240d4)](https://www.codacy.com/app/activescott/agent-markdown?utm_source=github.com&utm_medium=referral&utm_content=activescott/agent-markdown&utm_campaign=Badge_Coverage)
-[![Code Quality](https://api.codacy.com/project/badge/Grade/1b9057ec20bb473295303334bfd2ccd8)](https://app.codacy.com/app/activescott/agent-markdown?utm_source=github.com&utm_medium=referral&utm_content=activescott/agent-markdown&utm_campaign=Badge_Grade_Dashboard)
-[![License](https://img.shields.io/github/license/activescott/agent-markdown.svg)](https://github.com/activescott/agent-markdown/blob/master/LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/activescott/agent-markdown.svg?style=social)](https://github.com/activescott/agent-markdown)
+[![npm version](https://badge.fury.io/js/agentmarkdown.svg)](https://www.npmjs.com/package/agentmarkdown)
+[![npm downloads](https://img.shields.io/npm/dt/agentmarkdown.svg?logo=npm)](https://www.npmjs.com/package/agentmarkdown)
+[![Build Status](https://travis-ci.org/activescott/agentmarkdown.svg?branch=master)](https://travis-ci.org/activescott/agentmarkdown)
+[![Code Coverage](https://api.codacy.com/project/badge/Coverage/6469e8003872412296b5b87a672240d4)](https://www.codacy.com/app/activescott/agentmarkdown?utm_source=github.com&utm_medium=referral&utm_content=activescott/agentmarkdown&utm_campaign=Badge_Coverage)
+[![Code Quality](https://api.codacy.com/project/badge/Grade/1b9057ec20bb473295303334bfd2ccd8)](https://app.codacy.com/app/activescott/agentmarkdown?utm_source=github.com&utm_medium=referral&utm_content=activescott/agentmarkdown&utm_campaign=Badge_Grade_Dashboard)
+[![License](https://img.shields.io/github/license/activescott/agentmarkdown.svg)](https://github.com/activescott/agentmarkdown/blob/master/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/activescott/agentmarkdown.svg?style=social)](https://github.com/activescott/agentmarkdown)
 
 # Agent Markdown
 
 An accurate, extensible, and fast HTML-to-markdown converter.
 
-Agent-Markdown is a [HTML user agent](https://en.wikipedia.org/wiki/User_agent) that parses HTML, performs a document layout according to the [CSS stylesheet for HTML](https://html.spec.whatwg.org/multipage/rendering.html#the-css-user-agent-style-sheet-and-presentational-hints) and then "renders" the laid out document to Markdown. This results in markdown that looks very similar to the way the HTML document looked when parsed and rendered in a browser (user agent).
+Agent Markdown is a [HTML user agent](https://en.wikipedia.org/wiki/User_agent) that parses HTML, performs a document layout according to the [CSS stylesheet for HTML](https://html.spec.whatwg.org/multipage/rendering.html#the-css-user-agent-style-sheet-and-presentational-hints) and then "renders" the laid out document to Markdown. This results in markdown that looks very similar to the way the HTML document looked when parsed and rendered in a browser (user agent).
 
 <!-- TOC -->
 
@@ -29,13 +29,13 @@ Agent-Markdown is a [HTML user agent](https://en.wikipedia.org/wiki/User_agent) 
 ## Usage / Quick Start
 
 ```
-import { AgentMarkdown } from "agent-markdown"
+import { AgentMarkdown } from "agentmarkdown"
 const markdownString = await AgentMarkdown.produce(htmlString)
 ```
 
 ## Install
 
-yarn (`yarn add agent-markdown`) or npm (`npm install agent-markdown`)
+yarn (`yarn add agentmarkdown`) or npm (`npm install agentmarkdown`)
 
 ## Features
 
@@ -48,15 +48,15 @@ yarn (`yarn add agent-markdown`) or npm (`npm install agent-markdown`)
 
 ## CLI Example
 
-You can convert HTML to Markdown at the command line using the following command (npx will automatically download and execute the `agent-markdown` package):
+You can convert HTML to Markdown at the command line using the following command (npx will automatically download and execute the `agentmarkdown` package):
 
-    npx agent-markdown
+    npx agentmarkdown
 
 Or if you have
 
 ## Web Example
 
-You can view the online web example at [https://activescott.github.io/agent-markdown/](https://activescott.github.io/agent-markdown/).
+You can view the online web example at [https://activescott.github.io/agentmarkdown/](https://activescott.github.io/agentmarkdown/).
 
 You can build and the web example locally with the following commands:
 

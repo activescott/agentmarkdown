@@ -2,18 +2,18 @@
 
 :+1::tada: First off, thanks for taking the time to contribute! :tada::+1:
 
-The following is a set of guidelines for contributing to this project. These are mostly guidelines, not rules. Use your best judgment, and feel free to [propose changes to this document](https://github.com/activescott/agent-markdown/edit/master/.github/CONTRIBUTING.md).
+The following is a set of guidelines for contributing to this project. These are mostly guidelines, not rules. Use your best judgment, and feel free to [propose changes to this document](https://github.com/activescott/agentmarkdown/edit/master/.github/CONTRIBUTING.md).
 
 ## How Can I Contribute?
 
-Feel free to check [issues page](https://github.com/activescott/agent-markdown/issues) to find an enhancement to implement or bug to fix. You could also **[Improve the documentation](https://github.com/activescott/agent-markdown/edit/master/README.md)**, **Report a Bug**, or **Suggest an Enhancement**.
+Feel free to check [issues page](https://github.com/activescott/agentmarkdown/issues) to find an enhancement to implement or bug to fix. You could also **[Improve the documentation](https://github.com/activescott/agentmarkdown/edit/master/README.md)**, **Report a Bug**, or **Suggest an Enhancement**.
 
 ### Contribute Code
 
 - Fork this repository and [submit a pull request](https://help.github.com/articles/creating-a-pull-request/).
 - Write tests
 - Ensure the linter passes with `yarn lint`
-- Ensure the tests pass at [the CI Server](https://travis-ci.org/activescott/agent-markdown) by [following the status](https://help.github.com/articles/about-statuses/) of your pull request.
+- Ensure the tests pass at [the CI Server](https://travis-ci.org/activescott/agentmarkdown) by [following the status](https://help.github.com/articles/about-statuses/) of your pull request.
 
 #### Commit Message Guidelines
 
