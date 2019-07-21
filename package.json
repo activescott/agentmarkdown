@@ -61,5 +61,16 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "keywords": [
+    "markdown",
+    "html",
+    "mrkdwn",
+    "markup",
+    "parser",
+    "commonmark",
+    "transform",
+    "compile",
+    "stringify"
+  ]
 }
