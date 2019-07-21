@@ -33,11 +33,11 @@
   + example in readme
 
 + Add install size badge: https://packagephobia.now.sh/result?p=agentmarkdown
-- Add keywords to packagejson
++ Add keywords to packagejson
 
 + The "Report coverage" stage takes too long. Can we just combine it as part of one of the test scripts?
-  - Moved it to last step so it doesn't matter as much
-  - Still should combine it to test stage
+  + Moved it to last step so it doesn't matter as much
+  + Still should combine it to test stage
   - Move it to coveralls
 
 - Add all of their Tests: https://github.com/integrations/html-to-mrkdwn/blob/master/test/index.test.js

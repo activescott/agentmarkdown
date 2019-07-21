@@ -27,6 +27,10 @@ script:
   - rm -f ./yarn.lock
   # leave us in our default working directory
   - popd
+
+after_success:
+  - test "$TRAVIS_NODE_VERSION" = "lts/*" && yarn coverage-publish
+
 jobs:
   include:
     # Define the release stage that runs semantic-release
@@ -52,6 +56,3 @@ jobs:
           target_branch: gh-pages
           on:
             branch: master
-    - stage: Report Coverage
-      node_js: "node"
-      script: yarn coverage
