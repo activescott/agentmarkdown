@@ -30,9 +30,9 @@
     "lint": "prettier -l \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\" && yarn run eslint",
     "eslint": "./node_modules/.bin/eslint . --ext .ts",
     "lint-fix": "yarn run eslint --fix && prettier --write \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\"",
-    "test": "jest",
+    "test": "jest --coverage",
     "pretest": "yarn run lint",
-    "coverage": "jest --coverage && cat ./coverage/lcov.info | codacy-coverage"
+    "coverage-publish": "cat ./coverage/lcov.info | codacy-coverage"
   },
   "devDependencies": {
     "@types/domhandler": "^2.4.1",
@@ -61,5 +61,16 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "keywords": [
+    "markdown",
+    "html",
+    "mrkdwn",
+    "markup",
+    "parser",
+    "commonmark",
+    "transform",
+    "compile",
+    "stringify"
+  ]
 }

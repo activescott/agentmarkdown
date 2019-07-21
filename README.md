@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/activescott/agentmarkdown.svg?branch=master)](https://travis-ci.org/activescott/agentmarkdown)
 [![Code Coverage](https://api.codacy.com/project/badge/Coverage/6469e8003872412296b5b87a672240d4)](https://www.codacy.com/app/activescott/agentmarkdown?utm_source=github.com&utm_medium=referral&utm_content=activescott/agentmarkdown&utm_campaign=Badge_Coverage)
 [![Code Quality](https://api.codacy.com/project/badge/Grade/1b9057ec20bb473295303334bfd2ccd8)](https://app.codacy.com/app/activescott/agentmarkdown?utm_source=github.com&utm_medium=referral&utm_content=activescott/agentmarkdown&utm_campaign=Badge_Grade_Dashboard)
+[![Minified Size](https://badgen.net/bundlephobia/min/agentmarkdown)](https://bundlephobia.com/result?p=agentmarkdown)
 [![License](https://img.shields.io/github/license/activescott/agentmarkdown.svg)](https://github.com/activescott/agentmarkdown/blob/master/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/activescott/agentmarkdown.svg?style=social)](https://github.com/activescott/agentmarkdown)
 
@@ -18,7 +19,7 @@ Agent Markdown is a [HTML user agent](https://en.wikipedia.org/wiki/User_agent) 
 - [Install](#install)
 - [Features](#features)
 - [CLI Example](#cli-example)
-- [Web Example](#web-example)
+- [Live Example](#live-example)
 - [Contributing 🤝](#contributing-🤝)
 - [Show your support](#show-your-support)
 - [Release Process (Deploying to NPM) 🚀](#release-process-deploying-to-npm-🚀)
@@ -43,6 +44,7 @@ yarn (`yarn add agentmarkdown`) or npm (`npm install agentmarkdown`)
   - uses [GitHub-Flavored Markdown's Strikethrough extention](https://github.github.com/gfm/#strikethrough-extension-) for &lt;strike&gt; and &lt;del&gt;.
 - Supports even wonky technically incorrect HTML
 - Supports nested lists
+- Can be used client side (in the browser) or server side (with Node.js)
 - Extensible to allow extended or customized output?
 - Fast?
 
@@ -60,9 +62,9 @@ The above commands assume you installed agentmarkdown with `yarn global add agen
 
     npx agentmarkdown <filename.html>
 
-## Web Example
+## Live Example
 
-You can view the online web example at [https://activescott.github.io/agentmarkdown/](https://activescott.github.io/agentmarkdown/).
+You can view the live online web example at [https://activescott.github.io/agentmarkdown/](https://activescott.github.io/agentmarkdown/).
 
 You can build and the web example locally with the following commands:
 

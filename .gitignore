@@ -3,4 +3,3 @@ node_modules/
 /coverage/
 /.nyc_output/
 /dist/
-/example/main.js
