@@ -19,7 +19,7 @@ Agent Markdown is a [HTML user agent](https://en.wikipedia.org/wiki/User_agent) 
 - [Install](#install)
 - [Features](#features)
 - [CLI Example](#cli-example)
-- [Web Example](#web-example)
+- [Live Example](#live-example)
 - [Contributing 🤝](#contributing-🤝)
 - [Show your support](#show-your-support)
 - [Release Process (Deploying to NPM) 🚀](#release-process-deploying-to-npm-🚀)
@@ -44,6 +44,7 @@ yarn (`yarn add agentmarkdown`) or npm (`npm install agentmarkdown`)
   - uses [GitHub-Flavored Markdown's Strikethrough extention](https://github.github.com/gfm/#strikethrough-extension-) for &lt;strike&gt; and &lt;del&gt;.
 - Supports even wonky technically incorrect HTML
 - Supports nested lists
+- Can be used client side (in the browser) or server side (with Node.js)
 - Extensible to allow extended or customized output?
 - Fast?
 
@@ -61,9 +62,9 @@ The above commands assume you installed agentmarkdown with `yarn global add agen
 
     npx agentmarkdown <filename.html>
 
-## Web Example
+## Live Example
 
-You can view the online web example at [https://activescott.github.io/agentmarkdown/](https://activescott.github.io/agentmarkdown/).
+You can view the live online web example at [https://activescott.github.io/agentmarkdown/](https://activescott.github.io/agentmarkdown/).
 
 You can build and the web example locally with the following commands:
 
