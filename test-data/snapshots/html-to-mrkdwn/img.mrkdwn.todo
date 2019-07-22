@@ -1,0 +1,6 @@
+<img alt="hello world" src="http://example.com/logo.png">
+<img src="http://example.com/logo.png">
+<a href="url"><img src="image" alt="hello"></a>
+<a href="url"><img src="image"></a>
+====
+![hello world](http://example.com/logo.png) ![](http://example.com/logo.png) [![hello](image)](url) [![](image)](url)

@@ -1,0 +1,11 @@
+<!-- from https://html.spec.whatwg.org/#paragraphs -->
+<section>
+  <h1>Example of paragraphs</h1>
+  This is the <em>first</em> paragraph in this example.
+  <p>This is the second.</p>
+  <!-- This is not a paragraph. -->
+</section>
+====
+# Example of paragraphs #
+ This is the *first* paragraph in this example. 
+This is the second.

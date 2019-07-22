@@ -1,5 +1,5 @@
 import { HtmlNode } from "../../HtmlNode"
-import { BoxType, CssBox, FormattingContext } from "../CssBox"
+import { BoxType, CssBox } from "../CssBox"
 import { normalizeWhitespace } from "../"
 import { LayoutContext } from "./LayoutContext"
 import { StyleState } from "./StyleState"
@@ -25,15 +25,12 @@ export function layout(document: Iterable<HtmlNode>): CssBox {
 function traceBoxTree(box: CssBox, indent = 0): string {
   const typeStr = (type: BoxType): string =>
     type === BoxType.inline ? "inline" : "block"
-  const fcStr = (fc: FormattingContext): string =>
-    fc === FormattingContext.inline ? "inline" : "block"
   const boxStr = (b: CssBox): string =>
     "CssBox " +
     (b == null
       ? "<null>"
       : JSON.stringify({
           type: typeStr(b.type),
-          fc: fcStr(b.formattingContext),
           text: b.textContent,
           debug: b.debugNote
         })) +
@@ -77,6 +74,8 @@ export function generateElementBox(
         )}) error for element ${JSON.stringify(element.name)}: ${e}`
       )
     }
+  } else if (element.type === "comment") {
+    // deliberately ignored
   } else {
     console.error(`Ignoring element with type ${element.type}`)
     box = null
@@ -107,6 +106,9 @@ function getBoxBuilderForElement(elementName: string): BoxBuilder {
     ["i", BoxBuilders.emphasisThunk("*")],
     ["em", BoxBuilders.emphasisThunk("*")],
     ["u", BoxBuilders.emphasisThunk("_")],
+    ["s", BoxBuilders.emphasisThunk("~")],
+    ["strike", BoxBuilders.emphasisThunk("~")],
+    ["del", BoxBuilders.emphasisThunk("~")],
     ["a", BoxBuilders.link],
     ["hr", BoxBuilders.hr],
     ["br", BoxBuilders.br],

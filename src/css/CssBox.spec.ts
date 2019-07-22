@@ -1,33 +1,4 @@
-import { CssBox, BoxType, FormattingContext } from "./CssBox"
-
-describe("formattingContext", () => {
-  it("should be inline with only inlines", () => {
-    const rootBox = new CssBox(BoxType.block, "", [
-      new CssBox(BoxType.inline),
-      new CssBox(BoxType.inline),
-      new CssBox(BoxType.inline)
-    ])
-    expect(rootBox.formattingContext).toBe(FormattingContext.inline)
-  })
-
-  it("should be block with only blocks", () => {
-    const rootBox = new CssBox(BoxType.block, "", [
-      new CssBox(BoxType.block),
-      new CssBox(BoxType.block),
-      new CssBox(BoxType.block)
-    ])
-    expect(rootBox.formattingContext).toBe(FormattingContext.block)
-  })
-
-  it("should be block with inlines & blocks", () => {
-    const rootBox = new CssBox(BoxType.block, "", [
-      new CssBox(BoxType.inline),
-      new CssBox(BoxType.block),
-      new CssBox(BoxType.inline)
-    ])
-    expect(rootBox.formattingContext).toBe(FormattingContext.block)
-  })
-})
+import { CssBox, BoxType } from "./CssBox"
 
 describe("CSS 9.2.1.1 Anonymous block boxes", () => {
   /**

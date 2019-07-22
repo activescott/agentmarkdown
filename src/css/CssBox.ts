@@ -4,10 +4,6 @@ export enum BoxType {
   inline = 1
 }
 
-export enum FormattingContext {
-  block = 0,
-  inline = 1
-}
 /* eslint-enable no-unused-vars */
 
 /**
@@ -39,16 +35,6 @@ export class CssBox {
 
   public get children(): IterableIterator<CssBox> {
     return this.childrenBoxGenerator()
-  }
-
-  public get formattingContext(): FormattingContext {
-    let hasBlock = false
-    let hasInline = false
-    for (const child of this.children) {
-      hasBlock = hasBlock || child.type === BoxType.block
-      hasInline = hasInline || child.type == BoxType.inline
-    }
-    return hasBlock ? FormattingContext.block : FormattingContext.inline
   }
 
   private get containsInlineAndBlockBoxes(): boolean {
