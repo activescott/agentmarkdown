@@ -1,7 +1,7 @@
 [![npm version](https://badge.fury.io/js/agentmarkdown.svg)](https://www.npmjs.com/package/agentmarkdown)
 [![npm downloads](https://img.shields.io/npm/dt/agentmarkdown.svg?logo=npm)](https://www.npmjs.com/package/agentmarkdown)
 [![Build Status](https://travis-ci.org/activescott/agentmarkdown.svg?branch=master)](https://travis-ci.org/activescott/agentmarkdown)
-[![Code Coverage](https://api.codacy.com/project/badge/Coverage/6469e8003872412296b5b87a672240d4)](https://www.codacy.com/app/activescott/agentmarkdown?utm_source=github.com&utm_medium=referral&utm_content=activescott/agentmarkdown&utm_campaign=Badge_Coverage)
+[![Coverage Status](https://coveralls.io/repos/github/activescott/agentmarkdown/badge.svg?branch=master)](https://coveralls.io/github/activescott/agentmarkdown?branch=master)
 [![Code Quality](https://api.codacy.com/project/badge/Grade/1b9057ec20bb473295303334bfd2ccd8)](https://app.codacy.com/app/activescott/agentmarkdown?utm_source=github.com&utm_medium=referral&utm_content=activescott/agentmarkdown&utm_campaign=Badge_Grade_Dashboard)
 [![Minified Size](https://badgen.net/bundlephobia/min/agentmarkdown)](https://bundlephobia.com/result?p=agentmarkdown)
 [![License](https://img.shields.io/github/license/activescott/agentmarkdown.svg)](https://github.com/activescott/agentmarkdown/blob/master/LICENSE)
@@ -20,8 +20,8 @@ Agent Markdown is a [HTML user agent](https://en.wikipedia.org/wiki/User_agent) 
 - [Features](#features)
 - [CLI Example](#cli-example)
 - [Live Example](#live-example)
-- [Contributing 🤝](#contributing-🤝)
 - [Show your support](#show-your-support)
+- [Contributing 🤝](#contributing-🤝)
 - [Release Process (Deploying to NPM) 🚀](#release-process-deploying-to-npm-🚀)
 - [License 📝](#license-📝)
 
@@ -74,13 +74,13 @@ yarn
 yarn start
 ```
 
-## Contributing 🤝
-
-This is a community project. We invite your participation through issues and pull requests! You can peruse the [contributing guidelines](.github/CONTRIBUTING.md).
-
 ## Show your support
 
 Give a ⭐️ if this project helped you!
+
+## Contributing 🤝
+
+This is a community project. We invite your participation through issues and pull requests! You can peruse the [contributing guidelines](.github/CONTRIBUTING.md).
 
 # Building
 
@@ -90,7 +90,14 @@ The package is written in TypeScript. To build the package run the following fro
 
 ## Release Process (Deploying to NPM) 🚀
 
-This project uses [semantic-release](https://github.com/semantic-release/semantic-release) to automates the whole package release workflow including: determining the next version number, generating the release notes and publishing the package. For each new commits added to the release branch (i.e. `master`) with `git push` or by merging a pull request or merging from another branch, a CI build is triggered and runs the `semantic-release` command to make a release if there are codebase changes since the last release that affect the package functionalities.
+We use [semantic-release](https://github.com/semantic-release/semantic-release) to consistently release [semver](https://semver.org/)-compatible versions. This project deploys to multiple [npm distribution tags](https://docs.npmjs.com/cli/dist-tag). Each of the below branches correspond to the following npm distribution tags:
+
+| branch | npm distribution tag |
+| ------ | -------------------- |
+| master | latest               |
+| beta   | beta                 |
+
+To trigger a release use a Conventional Commit following [Angular Commit Message Conventions](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines) on one of the above branches.
 
 # Todo / Roadmap
 
