@@ -31,6 +31,7 @@
     "eslint": "./node_modules/.bin/eslint . --ext .ts",
     "lint-fix": "yarn run eslint --fix && prettier --write \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\"",
     "test": "jest --coverage",
+    "dev": "jest --watch",
     "pretest": "yarn run lint",
     "coverage-publish": "cat ./coverage/lcov.info | coveralls"
   },

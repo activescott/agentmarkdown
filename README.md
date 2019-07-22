@@ -44,6 +44,7 @@ yarn (`yarn add agentmarkdown`) or npm (`npm install agentmarkdown`)
   - uses [GitHub-Flavored Markdown's Strikethrough extention](https://github.github.com/gfm/#strikethrough-extension-) for &lt;strike&gt; and &lt;del&gt;.
 - Supports even wonky technically incorrect HTML
 - Supports nested lists
+- Supports [implied paragraphs](https://html.spec.whatwg.org/#paragraphs) / [CSS anonymous bock box layout](https://www.w3.org/TR/CSS22/visuren.html#anonymous-block-level)
 - Can be used client side (in the browser) or server side (with Node.js)
 - Extensible to allow extended or customized output?
 - Fast?

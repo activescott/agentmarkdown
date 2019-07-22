@@ -1,47 +1,6 @@
 # todo
 
-+ rename AgentMarkdown - A HTML user agent that renders HTML to markdown.
-
-+ build
-  + run tests in travis
-  + travis README badge
-
-+ coverage in travis
-  + try codacy coverage https://github.com/codacy/node+codacy-coverage#installation
-  + coverage README badge
-
-+ npm package
-  + deploy npm (beta?) via travis
-  + README badge
-
-+ Commitizen
-  + https://github.com/commitizen/cz-cli
-
-+ semantic-release
-  + https://github.com/semantic-release/semantic-release
-  + readme updates about release process
-
-+ Web Example
-  + publish to github pages
-  + link in readme
-
-+ rename agentmarkdown -> agent-markdown
-  + Doh! https://blog.npmjs.org/post/168978377570/new-package-moniker-rules
-
-+ CLI support
-  + npx / yarn dlx support
-  + example in readme
-
-+ Add install size badge: https://packagephobia.now.sh/result?p=agentmarkdown
-+ Add keywords to packagejson
-
-+ The "Report coverage" stage takes too long. Can we just combine it as part of one of the test scripts?
-  + Moved it to last step so it doesn't matter as much
-  + Still should combine it to test stage
-  + Move it to coveralls
-    + update coveralls badge
-
-- Add all of their Tests: https://github.com/integrations/html-to-mrkdwn/blob/master/test/index.test.js
++ Add all of their Tests: https://github.com/integrations/html-to-mrkdwn/blob/master/test/index.test.js
 - Add to readme as an "Alternative": https://github.com/integrations/html-to-mrkdwn
 
 - tests:
@@ -52,6 +11,7 @@
   
 - Feat: Extensibility
   - Allow customizing the conversion. Should the caller be able to provide custom `BoxBuilder`?
+  - We're using uinst (inadvertantly) so maybe allow different uinst frontends and extensibility in uinst as well as the CssBox BoxBuilder backend: https://unified.js.org/create-a-plugin.html
 
 - support elements (WITH TESTS):
   + links
@@ -67,6 +27,8 @@
   + a href
     + support a title attribute
   - images: https://daringfireball.net/projects/markdown/syntax#img
+
+- this is relevant but i'm not sure how yet: https://unified.js.org/
 
 - Do we want to encode &lt; and &gt; like that or \< \> ?
 - document how to extend/customize

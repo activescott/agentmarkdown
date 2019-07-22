@@ -2,7 +2,7 @@ import { parseHtml } from "./parseHtml"
 import { TextWriter } from "./TextWriter"
 import { DefaultTextWriter } from "./DefaultTextWriter"
 import { layout } from "./css"
-import { CssBox, FormattingContext } from "./css/CssBox"
+import { CssBox, BoxType } from "./css/CssBox"
 
 /**
  * An HTML to markdown converter.
@@ -25,23 +25,19 @@ export class AgentMarkdown {
     //console.debug(traceHtmlNodes(dom))
     const writer = new DefaultTextWriter()
     const docStructure = layout(dom)
-    render(writer, docStructure.children, docStructure.formattingContext)
+    render(writer, docStructure.children)
     return writer.toString()
   }
 }
 
-function render(
-  writer: TextWriter,
-  boxes: Iterable<CssBox>,
-  formattingContext: FormattingContext
-): void {
+function render(writer: TextWriter, boxes: Iterable<CssBox>): void {
   let isFirst = true
   for (const box of boxes) {
-    if (formattingContext === FormattingContext.block && !isFirst) {
+    if (box.type == BoxType.block && !isFirst) {
       writer.newLine()
     }
     box.textContent && writer.writeTextContent(box.textContent)
-    box.children && render(writer, box.children, box.formattingContext)
+    box.children && render(writer, box.children)
     isFirst = false
   }
 }
