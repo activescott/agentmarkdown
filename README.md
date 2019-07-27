@@ -8,7 +8,6 @@
 [![License](https://img.shields.io/github/license/activescott/agentmarkdown.svg)](https://github.com/activescott/agentmarkdown/blob/master/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/activescott/agentmarkdown.svg?style=social)](https://github.com/activescott/agentmarkdown)
 
-
 # Agent Markdown
 
 An accurate, extensible, and fast HTML-to-markdown converter.
