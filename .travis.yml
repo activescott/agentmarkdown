@@ -13,7 +13,10 @@ env:
     - secure: "XIlYhrIn5a2nCawky+1Wk1WK1mGlTWZUttVHDQ2H6C9Vf1QdZCZWw3Bvihf+6Rn/naErTyUZneWMyDMt06BckhBzeYEZnyQ7OWjc6S8KFhLIcxtxyBlM5DVCt4QUNMBWs24CjOjiNwlUd40KE+YhfyR6Zvq1arrzCsFHjOvm/us+k0kto2B7VS7oQxVhSO3XEJIc96j4W6D/5BkyUXdwBsVHoulokCmAKgKMWAATkwCqE/l3e1m4ItGvlfkme1Kc89KRQpl9/rCF6IVZa/xbPgLyeL03eYC9DKXN0hboY5oEy6O1jwGnGR1K5az+yqOwrAUY+wrHNTesvabd0Z45hqPOTgLBtfoRxf8jEpIZaXbsYKJ1CklA/wOHwS2eJSSveuv++RN7h2TiJ8QyDoq5y0vm6QVQTy89QTdHR68FlZEe8OP1pBd6rtmPsoYIFjcQZh7hYkLHsomWBYopWTHuxx18SSnVmxZYOkhyNy9I1m7iFLFRgPrRp0+ZOpS5PA7lHwZ9DRekRIvZyh/LXUoA6AqWPShSiXiH8xDkGf/LYP03Np/pHfr5vdUgTBir+1LGEAvl1Z0TBUWlX4DUUiwdcQGM+KZnRYqwKVl7PpU/oV277ajphCMKoC1g3anApQ4bMCn9e52TsPNIVnMcSqDd4iSSJ1s98BHbdXUbJaphDaY="
 cache: yarn
 
-script: skip # we run the tests below in the "test" stage (and I prefer explicit)
+# NOTE: this is basically the first "stage" with the name "Test"
+script:
+  - echo "Running with node version $(node -v). TRAVIS_NODE_VERSION=$TRAVIS_NODE_VERSION"
+  - yarn test
 
 after_success:
   - test "$TRAVIS_NODE_VERSION" = "lts/*" && yarn coverage-publish
@@ -21,9 +24,7 @@ after_success:
 jobs:
   include:
     - stage: test
-      script:
-        - echo "Running with node version $(node -v). TRAVIS_NODE_VERSION=$TRAVIS_NODE_VERSION"
-        - yarn test
+    # NOTE: this stage is an implicit "test" stage for the script noted above
     # Define the release stage that runs semantic-release
     - stage: semantic-release & demo
       node_js: lts/*
