@@ -38,6 +38,7 @@ jobs:
         # test the demo locally:
         - echo "Running in directory $PWD (before yarn test)"
         - yarn start & # note intentional use of background shell task https://www.maketecheasier.com/run-bash-commands-background-linux/
+        - sleep 2 # to give yarn start/webpack a generous amount of time to complete initialization
         - yarn run test-local
         # cleanup unnecessary files for gh-pages branch
         - rm -rfd ./node_modules
