@@ -73,6 +73,7 @@ jobs:
       script:
         - pushd .
         - cd ./example
+        - yarn
         - yarn run test-prod
         # leave us in our default working directory
         - popd
