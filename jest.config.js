@@ -7,5 +7,6 @@ module.exports = {
       tsConfig: "tsconfig.cjs.json"
     }
   },
-  collectCoverageFrom: ["src/**/*.ts"]
+  collectCoverageFrom: ["src/**/*.ts"],
+  testPathIgnorePatterns: ["/node_modules/", "/example"]
 }
