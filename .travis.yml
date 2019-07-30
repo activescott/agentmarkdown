@@ -23,9 +23,7 @@ after_success:
 
 jobs:
   include:
-    - stage: test
-    # NOTE: this stage is an implicit "test" stage for the script noted above
-    # Define the release stage that runs semantic-release
+    # NOTE: There is an implicit "test" stage for the script above that is run as the default
     - stage: semantic-release & demo
       node_js: lts/*
       script:
@@ -34,7 +32,7 @@ jobs:
         # build demo
         - pushd .
         - cd ./example
-        - echo Running in directory $PWD (before yarn)
+        - echo "Running in directory $PWD (before yarn)"
         - yarn # although the default install script in travis runs this for the root, it doesn't for the example (https://docs.travis-ci.com/user/languages/javascript-with-nodejs/)
         - yarn build
         # cleanup unnecessary files for gh-pages branch
@@ -45,7 +43,7 @@ jobs:
         - rm -f ./jest.config.js
         - rm -rfd ./tests
         # test the demo locally:
-        - echo Running in directory $PWD (before yarn test)
+        - echo "Running in directory $PWD (before yarn test)"
         - TEST_URL=http://localhost:8080 yarn test
         # leave us in our default working directory
         - popd
