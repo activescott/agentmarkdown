@@ -35,6 +35,10 @@ jobs:
         - echo "Running in directory $PWD (before yarn)"
         - yarn # although the default install script in travis runs this for the root, it doesn't for the example (https://docs.travis-ci.com/user/languages/javascript-with-nodejs/)
         - yarn build
+        # test the demo locally:
+        - echo "Running in directory $PWD (before yarn test)"
+        - yarn start & # note intentional use of background shell task https://www.maketecheasier.com/run-bash-commands-background-linux/
+        - yarn run test-local
         # cleanup unnecessary files for gh-pages branch
         - rm -rfd ./node_modules
         - rm -rfd ./src
@@ -42,9 +46,6 @@ jobs:
         - rm -f ./yarn.lock
         - rm -f ./jest.config.js
         - rm -rfd ./tests
-        # test the demo locally:
-        - echo "Running in directory $PWD (before yarn test)"
-        - TEST_URL=http://localhost:8080 yarn test
         # leave us in our default working directory
         - popd
       deploy:
@@ -67,12 +68,11 @@ jobs:
           on:
             all_branches: true
             condition: $TRAVIS_BRANCH =~ ^(master|live-example-test)$
-        - provider: script
-          skip_cleanup: true
-          script:
-            - echo "testing live demo prod deployment"
-            - pushd .
-            - cd ./example
-            - TEST_URL="https://activescott.github.io/agentmarkdown/" yarn test
-            # leave us in our default working directory
-            - popd
+    - stage: test live demo prod deployment
+      node_js: lts/*
+      script:
+        - pushd .
+        - cd ./example
+        - yarn run test-prod
+        # leave us in our default working directory
+        - popd

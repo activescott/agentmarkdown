@@ -15,7 +15,9 @@
     "build": "./node_modules/.bin/webpack-cli --output-path ./",
     "start": "node_modules/.bin/webpack-dev-server",
     "dev": "(sleep 2s && open http://localhost:8080/) & node_modules/.bin/webpack-dev-server",
-    "test": "jest ./tests/test.ts"
+    "test": "./node_modules/.bin/jest ./tests/test.ts",
+    "test-local": "TEST_URL='http://localhost:8080' yarn test",
+    "test-prod": "TEST_URL='https://activescott.github.io/agentmarkdown/' yarn test"
   },
   "dependencies": {
     "agentmarkdown": "latest"
