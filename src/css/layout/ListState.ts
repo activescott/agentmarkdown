@@ -1,4 +1,4 @@
-import { LayoutContext } from "./LayoutContext"
+import { LayoutContext } from "../.."
 
 type ListType = "ul" | "ol"
 
