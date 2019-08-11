@@ -1,28 +1,11 @@
 import { HtmlNode } from "../../HtmlNode"
-import { BoxType, CssBox } from "../CssBox"
 import { normalizeWhitespace, WhitespaceHandling } from "../"
 import { ListState } from "./ListState"
-import { LayoutContext } from "./LayoutContext"
+import { CssBox, BoxBuilder, LayoutContext } from "../.."
 import { decodeHtmlEntities } from "../../util"
 import { StyleState } from "./StyleState"
-import { generateElementBox } from "./layout"
 
-export interface BoxBuilder {
-  (context: LayoutContext, element: HtmlNode): CssBox | null
-}
-
-export class BoxBuilders {
-  public static buildBoxes(
-    context: LayoutContext,
-    children: HtmlNode[]
-  ): CssBox[] {
-    const kids = children
-      ? children
-          .map(el => generateElementBox(context, el))
-          .filter(childBox => childBox !== null)
-      : []
-    return kids
-  }
+export class DefaultBoxBuilderFuncs {
   /**
    * A @see BoxBuilder suitable for generic block elements.
    */
@@ -30,10 +13,9 @@ export class BoxBuilders {
     context: LayoutContext,
     element: HtmlNode
   ): CssBox | null {
-    return new CssBox(
-      BoxType.block,
+    return context.createBlockBox(
       "",
-      BoxBuilders.buildBoxes(context, element.children),
+      context.buildBoxes(context, element.children),
       "genericBlock"
     )
   }
@@ -47,14 +29,14 @@ export class BoxBuilders {
     const text = element.data
       ? normalizeWhitespace(element.data, WhitespaceHandling.normal)
       : ""
-    const kids = BoxBuilders.buildBoxes(context, element.children)
-    // if it has no text and no kids it doesnt affect layout so, don't create a box to affect layout:
+    const kids = context.buildBoxes(context, element.children)
+    // if it has no text and no kids it doesn't affect layout so, don't create a box to affect layout:
     if ((!text || text.length === 0) && kids.length === 0) {
       return null
-    } else return new CssBox(BoxType.inline, text, kids, "genericInline")
+    } else return context.createInlineBox(text, kids, "genericInline")
   }
   /**
-   * A @see BoxBuilder suitable for generic list item elements.
+   * A @see BoxBuilder suitable for list item elements.
    */
   public static listItem(
     context: LayoutContext,
@@ -70,15 +52,13 @@ export class BoxBuilders {
     }
     let markerBox: CssBox
     if (listState.getListType() === "ul") {
-      markerBox = new CssBox(
-        BoxType.inline,
+      markerBox = context.createInlineBox(
         indentSpaces + "* ",
         null,
         "li-marker-ul"
       )
     } else if (listState.getListType() === "ol") {
-      markerBox = new CssBox(
-        BoxType.inline,
+      markerBox = context.createInlineBox(
         indentSpaces + `${listState.getListItemCount()}. `,
         null,
         "li-marker-ol"
@@ -87,19 +67,17 @@ export class BoxBuilders {
       throw new Error("unexpected list type")
     }
     // add boxes for list item child elements
-    const contentChildBoxes: CssBox[] = BoxBuilders.buildBoxes(
+    const contentChildBoxes: CssBox[] = context.buildBoxes(
       context,
       element.children
     )
     // prepare a single parent box for the list item's content (to keep it from breaking between the marker & content)
-    const contentBox = new CssBox(
-      BoxType.inline,
+    const contentBox = context.createInlineBox(
       "",
       contentChildBoxes,
       "li-content"
     )
-    const principalBox = new CssBox(
-      BoxType.block,
+    const principalBox = context.createBlockBox(
       "",
       [markerBox, contentBox],
       "li-principal"
@@ -111,39 +89,50 @@ export class BoxBuilders {
       throw new Error(`Unexpected list type "${element.name}"`)
     }
     const listState = new ListState(context)
-    const listBox = new CssBox(BoxType.block, "", [], element.name)
+    const listBox = context.createBlockBox("", [], element.name)
     listState.beginList(element.name as "ul" | "ol")
-    const kids = BoxBuilders.buildBoxes(context, element.children)
+    const kids = context.buildBoxes(context, element.children)
     listState.endList()
     kids.forEach(kid => listBox.addChild(kid))
     return listBox
   }
+
+  public static blockquote(
+    context: LayoutContext,
+    element: HtmlNode
+  ): CssBox | null {
+    const blockquoteBox = context.createBlockBox("", [], element.name)
+    const kids = context.buildBoxes(context, element.children)
+    kids.forEach(kid => blockquoteBox.addChild(kid))
+    return blockquoteBox
+  }
+
   public static headingThunk(headingLevel: number): BoxBuilder {
     return (context: LayoutContext, element: HtmlNode): CssBox | null => {
-      const kids = BoxBuilders.buildBoxes(context, element.children)
+      const kids = context.buildBoxes(context, element.children)
       const headingSequence = "#".repeat(headingLevel)
-      kids.unshift(new CssBox(BoxType.inline, headingSequence + " "))
-      kids.push(new CssBox(BoxType.inline, " " + headingSequence))
-      return new CssBox(BoxType.block, "", kids)
+      kids.unshift(context.createInlineBox(headingSequence + " "))
+      kids.push(context.createInlineBox(" " + headingSequence))
+      return context.createBlockBox("", kids)
     }
   }
   public static emphasisThunk(sequence: string): BoxBuilder {
     return (context: LayoutContext, element: HtmlNode): CssBox | null => {
-      const kids = BoxBuilders.buildBoxes(context, element.children)
-      kids.unshift(new CssBox(BoxType.inline, sequence))
-      kids.push(new CssBox(BoxType.inline, sequence))
-      return new CssBox(BoxType.inline, "", kids)
+      const kids = context.buildBoxes(context, element.children)
+      kids.unshift(context.createInlineBox(sequence))
+      kids.push(context.createInlineBox(sequence))
+      return context.createInlineBox("", kids)
     }
   }
   public static link(context: LayoutContext, element: HtmlNode): CssBox | null {
-    const linkBox = new CssBox(BoxType.inline, "", [])
-    const childContentBoxes = BoxBuilders.buildBoxes(context, element.children)
+    const linkBox = context.createInlineBox("")
+    const childContentBoxes = context.buildBoxes(context, element.children)
     // wrap the text in square brackets:
     childContentBoxes.unshift(
-      new CssBox(BoxType.inline, "[", [], "link-helper-open-text")
+      context.createInlineBox("[", [], "link-helper-open-text")
     )
     childContentBoxes.push(
-      new CssBox(BoxType.inline, "]", [], "link-helper-close-text")
+      context.createInlineBox("]", [], "link-helper-close-text")
     )
     // add destination/title syntax:
     const href =
@@ -158,28 +147,23 @@ export class BoxBuilders {
     }
     destinationMarkup += ")"
     childContentBoxes.push(
-      new CssBox(
-        BoxType.inline,
-        destinationMarkup,
-        [],
-        "link-helper-close-text"
-      )
+      context.createInlineBox(destinationMarkup, [], "link-helper-close-text")
     )
     // add the child boxes:
     childContentBoxes.forEach(kid => linkBox.addChild(kid))
     return linkBox
   }
-  public static hr(): CssBox | null {
-    return new CssBox(BoxType.block, "* * *")
+  public static hr(context: LayoutContext): CssBox | null {
+    return context.createBlockBox("* * *")
   }
-  public static br(): CssBox | null {
-    return new CssBox(BoxType.inline, "\n")
+  public static br(context: LayoutContext): CssBox | null {
+    return context.createInlineBox("\n")
   }
   public static pre(context: LayoutContext, element: HtmlNode): CssBox | null {
     const styleState = new StyleState(context)
     styleState.pushWhitespaceHandling(WhitespaceHandling.pre)
     // kids is likely a single text element
-    const kids = BoxBuilders.buildBoxes(context, element.children)
+    const kids = context.buildBoxes(context, element.children)
     const decode = (box: CssBox): void => {
       box.textContent = decodeHtmlEntities(box.textContent)
       for (const child of box.children) {
@@ -187,19 +171,19 @@ export class BoxBuilders {
       }
     }
     kids.forEach(kid => decode(kid))
-    kids.unshift(new CssBox(BoxType.block, "```"))
-    kids.push(new CssBox(BoxType.block, "```"))
+    kids.unshift(context.createBlockBox("```"))
+    kids.push(context.createBlockBox("```"))
     styleState.popWhitespaceHandling()
-    return new CssBox(BoxType.block, "", kids)
+    return context.createBlockBox("", kids)
   }
   public static code(context: LayoutContext, element: HtmlNode): CssBox | null {
     // kids is likely a single text element
-    const kids = BoxBuilders.buildBoxes(context, element.children)
+    const kids = context.buildBoxes(context, element.children)
     // If we're already nested inside of a <pre> element, don't output the inline code formatting (using the "whitespaceHandling" mode here is a bit of a risky assumption used to make this conclusion)
     if (new StyleState(context).whitespaceHandling != WhitespaceHandling.pre) {
-      kids.unshift(new CssBox(BoxType.inline, "`"))
-      kids.push(new CssBox(BoxType.inline, "`"))
+      kids.unshift(context.createInlineBox("`"))
+      kids.push(context.createInlineBox("`"))
     }
-    return new CssBox(BoxType.block, "", kids)
+    return context.createBlockBox("", kids)
   }
 }

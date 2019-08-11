@@ -1,24 +1,83 @@
 import { HtmlNode } from "../../HtmlNode"
-import { BoxType, CssBox } from "../CssBox"
+import {
+  BoxBuilder,
+  BoxType,
+  CssBox,
+  LayoutContext,
+  RenderPlugin,
+  BoxMapper
+} from "../../"
 import { normalizeWhitespace } from "../"
-import { LayoutContext } from "./LayoutContext"
+import { LayoutContextImp } from "./LayoutContextImp"
 import { StyleState } from "./StyleState"
-import { BoxBuilders, BoxBuilder } from "./BoxBuilders"
+import { CssBoxImp } from "../CssBoxImp"
+import { DefaultBoxBuilderFuncs } from "./DefaultBoxBuilderFuncs"
 
 /**
  * Implements the CSS Visual Formatting model's box generation algorithm. It turns HTML elements into a set of CSS Boxes.
  * See https://www.w3.org/TR/CSS22/visuren.html#visual-model-intro
  */
-export function layout(document: Iterable<HtmlNode>): CssBox {
-  const context = new LayoutContext()
+export function layout(
+  document: Iterable<HtmlNode>,
+  plugins: RenderPlugin[]
+): CssBox {
+  const boxBuilderMap = createBoxBuilderMap(plugins)
+  const compositeBoxBuilder: BoxBuilder = (
+    context: LayoutContext,
+    element: HtmlNode
+  ): CssBox => {
+    return buildBoxForElementImp(context, element, boxBuilderMap)
+  }
+
+  const context: LayoutContext = new LayoutContextImp(
+    createCssBoxConstructor(plugins, BoxType.block),
+    createCssBoxConstructor(plugins, BoxType.inline),
+    compositeBoxBuilder
+  )
   // NOTE: we want a single root box so that the if the incoming HTML is a fragment (e.g. <span>a</span> <span>b</span>) it will still figure out it's own formatting context.
-  const body = new CssBox(BoxType.block, "", [], "body")
+  const body = new CssBoxImp(BoxType.block, "", [], "body")
   for (const node of document) {
-    const box = generateElementBox(context, node)
+    const box = compositeBoxBuilder(context, node)
     box && body.addChild(box)
   }
   //console.debug(traceBoxTree(body))
   return body
+}
+
+function createBoxBuilderMap(plugins: RenderPlugin[]): Map<string, BoxBuilder> {
+  const builders = new Map<string, BoxBuilder>([
+    ["a", DefaultBoxBuilderFuncs.link],
+    ["b", DefaultBoxBuilderFuncs.emphasisThunk("**")],
+    ["blockquote", DefaultBoxBuilderFuncs.blockquote],
+    ["br", DefaultBoxBuilderFuncs.br],
+    ["code", DefaultBoxBuilderFuncs.code],
+    ["del", DefaultBoxBuilderFuncs.emphasisThunk("~")],
+    ["li", DefaultBoxBuilderFuncs.listItem],
+    ["ol", DefaultBoxBuilderFuncs.list],
+    ["ul", DefaultBoxBuilderFuncs.list],
+    /* eslint-disable no-magic-numbers */
+    ["h1", DefaultBoxBuilderFuncs.headingThunk(1)],
+    ["h2", DefaultBoxBuilderFuncs.headingThunk(2)],
+    ["h3", DefaultBoxBuilderFuncs.headingThunk(3)],
+    ["h4", DefaultBoxBuilderFuncs.headingThunk(4)],
+    ["h5", DefaultBoxBuilderFuncs.headingThunk(5)],
+    ["h6", DefaultBoxBuilderFuncs.headingThunk(6)],
+    /* eslint-enable no-magic-numbers */
+    ["hr", DefaultBoxBuilderFuncs.hr],
+    ["i", DefaultBoxBuilderFuncs.emphasisThunk("*")],
+    ["em", DefaultBoxBuilderFuncs.emphasisThunk("*")],
+    ["pre", DefaultBoxBuilderFuncs.pre],
+    ["s", DefaultBoxBuilderFuncs.emphasisThunk("~")],
+    ["strike", DefaultBoxBuilderFuncs.emphasisThunk("~")],
+    ["strong", DefaultBoxBuilderFuncs.emphasisThunk("**")],
+    ["u", DefaultBoxBuilderFuncs.emphasisThunk("_")]
+  ])
+  if (plugins) {
+    for (const plugin of plugins) {
+      builders.set(plugin.elementName, plugin.renderer)
+    }
+  }
+  return builders
 }
 
 /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
@@ -45,14 +104,41 @@ function traceBoxTree(box: CssBox, indent = 0): string {
 }
 
 /**
+ * Returns @see BlockBuilder for specified element.
+ * @param elementName name/tag of element
+ */
+function getBoxBuilderForElement(
+  elementName: string,
+  builders: Map<string, BoxBuilder>
+): BoxBuilder {
+  if (!builders) throw new Error("builders must not be null!!")
+  let builder = builders.get(elementName)
+  if (!builder) {
+    const display = getElementDisplay(elementName)
+    if (display === CssDisplayValue.block) {
+      builder = DefaultBoxBuilderFuncs.genericBlock
+    } else if (display === CssDisplayValue.inline) {
+      builder = DefaultBoxBuilderFuncs.genericInline
+    } else if (display === CssDisplayValue.listItem) {
+      builder = DefaultBoxBuilderFuncs.listItem
+    } else {
+      throw new Error("unexpected element and unexpected display")
+    }
+  }
+  return builder
+}
+
+/**
  * Generates zero or more CSS boxes for the specified element.
  * See https://www.w3.org/TR/CSS22/visuren.html#propdef-display
  * @param element The element to generate a box for
  */
-export function generateElementBox(
+export function buildBoxForElementImp(
   context: LayoutContext,
-  element: HtmlNode
+  element: HtmlNode,
+  builders: Map<string, BoxBuilder>
 ): CssBox | null {
+  if (!builders) throw new Error("builders must not be null!")
   let box: CssBox = null
   if (element.type === "text") {
     const text = normalizeWhitespace(
@@ -61,16 +147,16 @@ export function generateElementBox(
     )
     if (text) {
       // only create a box if normalizeWhitespace left something over
-      box = new CssBox(BoxType.inline, text, [], "textNode")
+      box = context.createInlineBox(text, [], "textNode")
     }
   } else if (element.type === "tag") {
-    const boxBuilder = getBoxBuilderForElement(element.name)
+    const boxBuilderFunc = getBoxBuilderForElement(element.name, builders)
     try {
-      box = boxBuilder(context, element)
+      box = boxBuilderFunc(context, element)
     } catch (e) {
       throw new Error(
         `boxbuilder (${JSON.stringify(
-          boxBuilder
+          boxBuilderFunc
         )}) error for element ${JSON.stringify(element.name)}: ${e}`
       )
     }
@@ -81,54 +167,6 @@ export function generateElementBox(
     box = null
   }
   return box
-}
-
-/**
- * Returns @see BlockBuilder for specified element.
- * @param elementName name/tag of element
- */
-function getBoxBuilderForElement(elementName: string): BoxBuilder {
-  const builders = new Map<string, BoxBuilder>([
-    ["ul", BoxBuilders.list],
-    ["ol", BoxBuilders.list],
-    ["li", BoxBuilders.listItem],
-    /* eslint-disable no-magic-numbers */
-
-    ["h1", BoxBuilders.headingThunk(1)],
-    ["h2", BoxBuilders.headingThunk(2)],
-    ["h3", BoxBuilders.headingThunk(3)],
-    ["h4", BoxBuilders.headingThunk(4)],
-    ["h5", BoxBuilders.headingThunk(5)],
-    ["h6", BoxBuilders.headingThunk(6)],
-    /* eslint-enable no-magic-numbers */
-    ["b", BoxBuilders.emphasisThunk("**")],
-    ["strong", BoxBuilders.emphasisThunk("**")],
-    ["i", BoxBuilders.emphasisThunk("*")],
-    ["em", BoxBuilders.emphasisThunk("*")],
-    ["u", BoxBuilders.emphasisThunk("_")],
-    ["s", BoxBuilders.emphasisThunk("~")],
-    ["strike", BoxBuilders.emphasisThunk("~")],
-    ["del", BoxBuilders.emphasisThunk("~")],
-    ["a", BoxBuilders.link],
-    ["hr", BoxBuilders.hr],
-    ["br", BoxBuilders.br],
-    ["pre", BoxBuilders.pre],
-    ["code", BoxBuilders.code]
-  ])
-  let builder = builders.get(elementName)
-  if (!builder) {
-    const display = getElementDisplay(elementName)
-    if (display === CssDisplayValue.block) {
-      builder = BoxBuilders.genericBlock
-    } else if (display === CssDisplayValue.inline) {
-      builder = BoxBuilders.genericInline
-    } else if (display === CssDisplayValue.listItem) {
-      builder = BoxBuilders.listItem
-    } else {
-      throw new Error("unexpected element and unexpected display")
-    }
-  }
-  return builder
 }
 
 /**
@@ -181,11 +219,65 @@ const elementToDisplayMap: Map<string, CssDisplayValue> = new Map<
  * @param elementTypeName The name of a document language element type (e.g. div, span, etc.).
  */
 function getElementDisplay(elementTypeName: string): CssDisplayValue {
-  // See https://www.w3.org/TR/CSS22/sample.html for how we identify block elements in HTML:
+  /**
+   * See https://www.w3.org/TR/CSS22/sample.html for how we identify block elements in HTML.
+   * A less concise but more current reference for HTML5 is at https://html.spec.whatwg.org/multipage/rendering.html#the-css-user-agent-style-sheet-and-presentational-hints
+   */
   let display = elementToDisplayMap.get(elementTypeName)
   if (display === undefined) {
     // default to inline:
     display = CssDisplayValue.inline
   }
   return display
+}
+
+export interface CssBoxConstructor {
+  (
+    context: LayoutContext,
+    textContent: string,
+    children: Iterable<CssBox>,
+    debugNote: string
+  ): CssBox
+}
+
+/**
+ * Creates the function that creates @see CssBox objects. It will handle incorporating any mappers from plugins.
+ * We use this to make sure that plugins can modify the boxes created by other plugins/builders.
+ * @param plugins The list of plugins
+ * @param mapperName Whether we're dealing with inline or block boxes.
+ */
+function createCssBoxConstructor(
+  plugins: RenderPlugin[],
+  boxType: BoxType
+): CssBoxConstructor {
+  let creator: CssBoxConstructor = (
+    context: LayoutContext,
+    textContent: string,
+    children: CssBox[],
+    debugNote: string
+  ): CssBox => new CssBoxImp(boxType, textContent, children, debugNote)
+  /* for reference, this is what an identity BoxMapper looks like:
+   * const identityMapper: BoxMapper = (context: LayoutContext, box: CssBox) => box
+   */
+  if (plugins) {
+    const mapperName: string =
+      boxType === BoxType.inline ? "inlineBoxMapper" : "blockBoxMapper"
+    const mappers: BoxMapper[] = plugins
+      .filter(p => p[mapperName])
+      .map(p => p[mapperName])
+    for (const mapper of mappers) {
+      creator = (
+        context: LayoutContext,
+        textContent: string,
+        children: CssBox[],
+        debugNote: string
+      ): CssBox => {
+        return mapper(
+          context,
+          creator(context, textContent, children, debugNote)
+        )
+      }
+    }
+  }
+  return creator
 }

@@ -1,15 +1,9 @@
-/* eslint-disable no-unused-vars */
-export enum BoxType {
-  block = 0,
-  inline = 1
-}
-
-/* eslint-enable no-unused-vars */
+import { CssBox, BoxType } from ".."
 
 /**
  * Represents a (simplified) a CSS box as described at https://www.w3.org/TR/CSS22/visuren.html#box-gen.
  */
-export class CssBox {
+export class CssBoxImp implements CssBox {
   private readonly _children: CssBox[]
 
   /**
@@ -17,7 +11,7 @@ export class CssBox {
    * @param type The type of this box.
    * @param textContent Returns any text content if this box has text to render.
    * @param children Returns any child boxes of this box.
-   * @param debugNote A string ot add to the box to help with debugging.
+   * @param debugNote A string to add to the box to help with debugging.
    */
   public constructor(
     public type: BoxType,
@@ -61,7 +55,7 @@ export class CssBox {
         if (child.type === BoxType.inline) {
           anonymousBox = anonymousBox
             ? anonymousBox
-            : new CssBox(BoxType.block, null, null, "Anonymous-Block-Box")
+            : new CssBoxImp(BoxType.block, null, null, "Anonymous-Block-Box")
           anonymousBox.addChild(child)
         } else {
           if (anonymousBox) {
