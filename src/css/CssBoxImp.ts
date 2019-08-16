@@ -22,6 +22,29 @@ export class CssBoxImp implements CssBox {
     this._children = children ? Array.from(children) : []
   }
 
+  /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+  public static traceBoxTree(box: CssBox, indent = 0): string {
+    const typeStr = (type: BoxType): string =>
+      type === BoxType.inline ? "inline" : "block"
+    const boxStr = (b: CssBox): string =>
+      "CssBox " +
+      (b == null
+        ? "<null>"
+        : JSON.stringify({
+            type: typeStr(b.type),
+            text: b.textContent,
+            debug: b.debugNote
+          })) +
+      "\n"
+    let output = "  ".repeat(indent) + boxStr(box)
+    if (box) {
+      for (const child of box.children) {
+        output += CssBoxImp.traceBoxTree(child, indent + 1)
+      }
+    }
+    return output
+  }
+
   public addChild(box: CssBox): void {
     if (!box) throw new Error("box must be provided")
     this._children.push(box)

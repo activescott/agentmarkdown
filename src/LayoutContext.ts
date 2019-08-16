@@ -1,39 +1,4 @@
-import { CssBox, HtmlNode } from "."
-
-export interface LayoutBoxFactory {
-  /**
-   * Builds a set of @see CssBox objects for the specified elements.
-   */
-  buildBoxes(context: LayoutContext, elements: HtmlNode[]): CssBox[]
-  /**
-   * Creates a new @see CssBox instance.
-   * @param textContent Returns any text content if this box has text to render.
-   * @param children Returns any child boxes of this box.
-   * @param debugNote A string to add to the box to help with debugging.
-   */
-  createBlockBox(
-    textContent: string,
-    children: Iterable<CssBox>,
-    debugNote: string
-  ): CssBox
-  createBlockBox(textContent: string, children: Iterable<CssBox>): CssBox
-  createBlockBox(textContent: string): CssBox
-  /**
-   * Creates a new @see CssBox instance.
-   * @param textContent Returns any text content if this box has text to render.
-   * @param children Returns any child boxes of this box.
-   * @param debugNote A string to add to the box to help with debugging.
-   */
-  createInlineBox(
-    textContent: string,
-    children: Iterable<CssBox>,
-    debugNote: string
-  ): CssBox
-  createInlineBox(textContent: string, children: Iterable<CssBox>): CssBox
-  createInlineBox(textContent: string): CssBox
-}
-
-export interface LayoutContext extends LayoutBoxFactory {
+export interface LayoutContext {
   /**
    * Returns the specified stack.
    * If the stack is not yet created it will return an empty stack.

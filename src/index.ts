@@ -4,6 +4,10 @@ import { DefaultTextWriter } from "./DefaultTextWriter"
 import { layout } from "./css"
 import { HtmlNode } from "./HtmlNode"
 import { LayoutContext } from "./LayoutContext"
+import { DefaultBoxBuilderFuncs } from "./css/layout/DefaultBoxBuilderFuncs"
+import BlockquotePlugin from "./css/layout/BlockquotePlugin"
+import { CssBoxFactoryFunc } from "./css/layout/CssBoxFactory"
+import { LayoutManager } from "./LayoutManager"
 export { LayoutContext } from "./LayoutContext"
 export { HtmlNode } from "./HtmlNode"
 
@@ -17,7 +21,7 @@ export interface RenderOptions {
    * A map of "element name" => @see BoxBuilder where the key is the element name and the associated value is a @see BoxBuilder implementations that render markdown for a specified HTML element.
    * Any elements in this map that conflict with the default intrinsic implementations will override the default rendering.
    */
-  renderPlugins?: RenderPlugin[]
+  layoutPlugins?: LayoutPlugin[]
 }
 
 export interface MarkdownOutput {
@@ -31,6 +35,34 @@ export interface ImageReference {
    */
   url: string
 }
+
+const defaultPlugins: LayoutPlugin[] = [
+  { elementName: "a", layout: DefaultBoxBuilderFuncs.link },
+  { elementName: "b", layout: DefaultBoxBuilderFuncs.emphasisThunk("**") },
+  { elementName: "br", layout: DefaultBoxBuilderFuncs.br },
+  { elementName: "code", layout: DefaultBoxBuilderFuncs.code },
+  { elementName: "del", layout: DefaultBoxBuilderFuncs.emphasisThunk("~") },
+  { elementName: "li", layout: DefaultBoxBuilderFuncs.listItem },
+  { elementName: "ol", layout: DefaultBoxBuilderFuncs.list },
+  { elementName: "ul", layout: DefaultBoxBuilderFuncs.list },
+  /* eslint-disable no-magic-numbers */
+  { elementName: "h1", layout: DefaultBoxBuilderFuncs.headingThunk(1) },
+  { elementName: "h2", layout: DefaultBoxBuilderFuncs.headingThunk(2) },
+  { elementName: "h3", layout: DefaultBoxBuilderFuncs.headingThunk(3) },
+  { elementName: "h4", layout: DefaultBoxBuilderFuncs.headingThunk(4) },
+  { elementName: "h5", layout: DefaultBoxBuilderFuncs.headingThunk(5) },
+  { elementName: "h6", layout: DefaultBoxBuilderFuncs.headingThunk(6) },
+  /* eslint-enable no-magic-numbers */
+  { elementName: "hr", layout: DefaultBoxBuilderFuncs.hr },
+  { elementName: "i", layout: DefaultBoxBuilderFuncs.emphasisThunk("*") },
+  { elementName: "em", layout: DefaultBoxBuilderFuncs.emphasisThunk("*") },
+  { elementName: "pre", layout: DefaultBoxBuilderFuncs.pre },
+  { elementName: "s", layout: DefaultBoxBuilderFuncs.emphasisThunk("~") },
+  { elementName: "strike", layout: DefaultBoxBuilderFuncs.emphasisThunk("~") },
+  { elementName: "strong", layout: DefaultBoxBuilderFuncs.emphasisThunk("**") },
+  { elementName: "u", layout: DefaultBoxBuilderFuncs.emphasisThunk("_") },
+  new BlockquotePlugin()
+]
 
 /**
  * An HTML to markdown converter.
@@ -62,7 +94,11 @@ export class AgentMarkdown {
     const dom = await parseHtml(options.html)
     //console.debug(traceHtmlNodes(dom))
     const writer = new DefaultTextWriter()
-    const docStructure = layout(dom, options.renderPlugins)
+    const plugins = options.layoutPlugins
+      ? defaultPlugins.concat(options.layoutPlugins)
+      : defaultPlugins
+    const docStructure = layout(dom, plugins)
+    //console.log("! docStructure !:\n", CssBoxImp.traceBoxTree(docStructure))
     renderImp(writer, docStructure.children)
     return {
       markdown: writer.toString(),
@@ -86,18 +122,22 @@ function renderImp(writer: TextWriter, boxes: Iterable<CssBox>): void {
 /**
  * Defines the function used to create a @see CssBox from an HTML element.
  */
-export interface BoxBuilder {
-  (context: LayoutContext, element: HtmlNode): CssBox | null
+export interface LayoutGenerator {
+  (
+    context: LayoutContext,
+    manager: LayoutManager,
+    element: HtmlNode
+  ): CssBox | null
 }
 
 /**
- * Defines a function to map a @see CssBox to another @css CssBox (or just returns the same box).
+ * A function to map a @see CssBox to another @see CssBox.
  */
-export interface BoxMapper {
-  (context: LayoutContext, box: CssBox): CssBox
+export interface LayoutTransformer {
+  (context: LayoutContext, boxFactory: CssBoxFactoryFunc, box: CssBox): CssBox
 }
 
-export interface RenderPlugin {
+export interface LayoutPlugin {
   /**
    * Specifies the name of the HTML element that this plugin renders markdown for.
    * NOTE: Must be all lowercase
@@ -106,17 +146,12 @@ export interface RenderPlugin {
   /**
    * This is the core of the implementation that will be called for each instance of the HTML element that this plugin is registered for.
    */
-  renderer: BoxBuilder
+  layout: LayoutGenerator
   /**
-   * In some rare cases the BoxBuilder will need to manipulate the boxes created by other @see RenderPlugin objects.
-   * If specified, this function will be called for every inline box created.
+   * In some rare cases the plugin will need to manipulate the boxes created by other @see LayoutPlugin objects (especially when those boxes are for child HTML elements that the plugin is interested in).
+   * If specified, this function will be called for every box created during layout.
    */
-  inlineBoxMapper?: BoxMapper
-  /**
-   * In some rare cases the BoxBuilder will need to manipulate the boxes created by other @see RenderPlugin objects.
-   * If specified, this function will be called for every block box created.
-   */
-  blockBoxMapper?: BoxMapper
+  transform?: LayoutTransformer
 }
 
 /* eslint-disable no-unused-vars */
