@@ -5,6 +5,11 @@ import { CssBox, BoxType } from ".."
  */
 export class CssBoxImp implements CssBox {
   private readonly _children: CssBox[]
+  private readonly childBoxTypeCache: {
+    hasBlock: boolean
+    hasInline: boolean
+    needsCalculated: boolean
+  } = { hasBlock: false, hasInline: false, needsCalculated: true }
 
   /**
    * Initializes a new @see CssBox.
@@ -48,21 +53,49 @@ export class CssBoxImp implements CssBox {
   public addChild(box: CssBox): void {
     if (!box) throw new Error("box must be provided")
     this._children.push(box)
+    this.childBoxTypeCache.needsCalculated = true
+  }
+
+  public prependChild(box: CssBox): void {
+    if (!box) throw new Error("box must be provided")
+    this._children.unshift(box)
+    this.childBoxTypeCache.needsCalculated = true
   }
 
   public get children(): IterableIterator<CssBox> {
     return this.childrenBoxGenerator()
   }
 
-  private get containsInlineAndBlockBoxes(): boolean {
-    //TODO: PERF: Cache this value.
-    let hasBlock = false
-    let hasInline = false
-    for (const child of this._children) {
-      hasBlock = hasBlock || child.type === BoxType.block
-      hasInline = hasInline || child.type == BoxType.inline
+  public get doesEstablishBlockFormattingContext(): boolean {
+    return this.containsBlockBoxes
+  }
+
+  private get childBoxTypes(): { hasBlock: boolean; hasInline: boolean } {
+    if (this.childBoxTypeCache.needsCalculated) {
+      let hasBlock = false
+      let hasInline = false
+      // Deliberately avoiding anonymous boxes created in this.children() with this._children
+      for (const child of this._children) {
+        hasBlock = hasBlock || child.type === BoxType.block
+        hasInline = hasInline || child.type === BoxType.inline
+      }
+      this.childBoxTypeCache.hasBlock = hasBlock
+      this.childBoxTypeCache.hasInline = hasInline
+      this.childBoxTypeCache.needsCalculated = false
     }
-    return hasBlock && hasInline
+    return this.childBoxTypeCache
+  }
+
+  private get containsInlineBoxes(): boolean {
+    return this.childBoxTypes.hasInline
+  }
+
+  private get containsBlockBoxes(): boolean {
+    return this.childBoxTypes.hasBlock
+  }
+
+  private get containsInlineAndBlockBoxes(): boolean {
+    return this.containsInlineBoxes && this.containsBlockBoxes
   }
 
   private *childrenBoxGenerator(): IterableIterator<CssBox> {

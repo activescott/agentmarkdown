@@ -12,7 +12,7 @@ import BoxBuilderManager from "./BoxBuilderManager"
  */
 export function layout(document: HtmlNode[], plugins: LayoutPlugin[]): CssBox {
   const context: LayoutContext = new LayoutContextImp()
-  const boxFactory = new CssBoxFactory(plugins)
+  const boxFactory = new CssBoxFactory()
   const boxBuilder = new BoxBuilderManager(plugins, boxFactory)
   const manager = new LayoutManagerImp(boxFactory, boxBuilder)
   // NOTE: we want a single root box so that the if the incoming HTML is a fragment (e.g. <span>a</span> <span>b</span>) it will still figure out it's own formatting context.

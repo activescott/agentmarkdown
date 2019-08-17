@@ -7,7 +7,6 @@ import {
   BoxType
 } from "../../src"
 import { LayoutManager } from "../../src/LayoutManager"
-import { CssBoxFactoryFunc } from "../../src/css/layout/CssBoxFactory"
 
 const customEmphasisLayout: LayoutGenerator = (
   context: LayoutContext,
@@ -44,39 +43,4 @@ it("should allow rendering new elements with custom BoxBuilder", async () => {
     ]
   })
   expect(result.markdown).toEqual("_custom content_")
-})
-
-it("should allow customizing created boxes with transform", async () => {
-  const result = await AgentMarkdown.render({
-    html: "<customblockquote><b>my bold</b></customblockquote>",
-    layoutPlugins: [
-      {
-        elementName: "customblockquote",
-        layout: (
-          context: LayoutContext,
-          manager: LayoutManager,
-          element: HtmlNode
-        ): CssBox | null => {
-          return manager.createBox(
-            context,
-            BoxType.block,
-            "",
-            manager.layout(context, element.children)
-          )
-        },
-        transform: (
-          context: LayoutContext,
-          boxFactory: CssBoxFactoryFunc,
-          box: CssBox
-        ): CssBox => {
-          if (box.type === BoxType.block) {
-            return boxFactory(context, BoxType.block, "> ", [box])
-          } else {
-            return box
-          }
-        }
-      }
-    ]
-  })
-  expect(result.markdown).toEqual("> **my bold**")
 })

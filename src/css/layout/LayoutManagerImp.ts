@@ -2,6 +2,7 @@ import { CssBox, HtmlNode, LayoutContext, BoxType } from "../.."
 import { CssBoxFactory } from "./CssBoxFactory"
 import BoxBuilderManager from "./BoxBuilderManager"
 import { LayoutManager } from "../../LayoutManager"
+import { CssBoxImp } from "../CssBoxImp"
 
 export class LayoutManagerImp implements LayoutManager {
   public constructor(
@@ -20,12 +21,6 @@ export class LayoutManagerImp implements LayoutManager {
     children: Iterable<CssBox> = [],
     debugNote: string = ""
   ): CssBox {
-    return this.boxFactory.createBox(
-      state,
-      boxType,
-      textContent,
-      children,
-      debugNote
-    )
+    return new CssBoxImp(boxType, textContent, children, debugNote)
   }
 }

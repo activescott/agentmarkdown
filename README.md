@@ -21,7 +21,7 @@ Agent Markdown is a [HTML user agent](https://en.wikipedia.org/wiki/User_agent) 
 - [Features](#features)
 - [CLI Example](#cli-example)
 - [Live Example](#live-example)
-- [Customize & Extend](#customize--extend)
+- [Customize & Extend with Plugins](#customize--extend-with-plugins)
 - [Show your support](#show-your-support)
 - [Contributing 🤝](#contributing-🤝)
 - [Release Process (Deploying to NPM) 🚀](#release-process-deploying-to-npm-🚀)
@@ -77,26 +77,65 @@ yarn
 yarn start
 ```
 
-## Customize & Extend
+## Customize & Extend with Plugins
 
-To customize how the markdown is generated or add support for new elements, implement the `BoxBuilder` interface to handle a particular HTML element. The BoxBuilder interface is a single function defined as follows:
+To customize how the markdown is generated or add support for new elements, implement the `LayoutPlugin` interface to handle a particular HTML element. The `LayoutPlugin` is defined as follows:
 
 ```TypeScript
-export interface BoxBuilder {
-  (context: LayoutContext, element: HtmlNode): CssBox | null
+export interface LayoutPlugin {
+  /**
+   * Specifies the name of the HTML element that this plugin renders markdown for.
+   * NOTE: Must be all lowercase
+   */
+  elementName: string
+  /**
+   * This is the core of the implementation that will be called for each instance of the HTML element that this plugin is registered for.
+   */
+  layout: LayoutGenerator
 }
 ```
 
+The `LayoutGenerator` is a single function that performs a [CSS2 box generation layout algorithm](https://www.w3.org/TR/CSS22/visuren.html#box-gen) on the an HTML element. Essentially it creates a zero or more boxes for the given element that AgentMarkdown will later render to text. The function definition is the following:
+
 ```TypeScript
-(context: LayoutContext, element: HtmlNode): CssBox | null => {
-      const kids = BoxBuilders.buildBoxes(context, element.children)
-      kids.unshift(new CssBox(BoxType.inline, sequence))
-      kids.push(new CssBox(BoxType.inline, sequence))
-      return new CssBox(BoxType.inline, "", kids)
-    }
+export interface LayoutGenerator {
+  (
+    context: LayoutContext,
+    manager: LayoutManager,
+    element: HtmlNode
+  ): CssBox | null
+}
 ```
 
-An example of how the html `<bold>` element is implement is below:
+An example of how the HTML `<b>` element could be implemented as a plugin is below:
+
+```TypeScript
+class BoldPlugin {
+  elementName: "b"
+
+  layout: LayoutGenerator = (
+    context: LayoutContext,
+    manager: LayoutManager,
+    element: HtmlNode
+  ): CssBox | null => {
+    const kids = manager.layout(context, element.children)
+    kids.unshift(manager.createBox(context, BoxType.inline, "*"))
+    kids.push(manager.createBox(context, BoxType.inline, "*"))
+    return manager.createBox(context, BoxType.inline, "", kids)
+  }
+}
+```
+
+To initialize AgentMarkdown with plugins pass them in as an option as follows:
+
+```TypeScript
+const result = await AgentMarkdown.render({
+    html: myHtmlString,
+    layoutPlugins: [
+      new BoldPlugin()
+    ]
+  })
+```
 
 ## Show your support
 

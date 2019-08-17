@@ -24,6 +24,20 @@ export class DefaultBoxBuilderFuncs {
     )
   }
   /**
+   * Same as using @see genericBlock, but allows specifying a debug note to be added to each box.
+   * @param debugNote the note to be added to each box created.
+   */
+  public static blockThunk(debugNote: string = ""): LayoutGenerator {
+    return (
+      context: LayoutContext,
+      manager: LayoutManager,
+      element: HtmlNode
+    ): CssBox | null => {
+      const kids = manager.layout(context, element.children)
+      return manager.createBox(context, BoxType.block, "", kids, debugNote)
+    }
+  }
+  /**
    * A @see BoxBuilder suitable for generic inline elements.
    */
   public static genericInline(

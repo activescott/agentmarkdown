@@ -6,7 +6,6 @@ import { HtmlNode } from "./HtmlNode"
 import { LayoutContext } from "./LayoutContext"
 import { DefaultBoxBuilderFuncs } from "./css/layout/DefaultBoxBuilderFuncs"
 import BlockquotePlugin from "./css/layout/BlockquotePlugin"
-import { CssBoxFactoryFunc } from "./css/layout/CssBoxFactory"
 import { LayoutManager } from "./LayoutManager"
 export { LayoutContext } from "./LayoutContext"
 export { HtmlNode } from "./HtmlNode"
@@ -42,6 +41,7 @@ const defaultPlugins: LayoutPlugin[] = [
   { elementName: "br", layout: DefaultBoxBuilderFuncs.br },
   { elementName: "code", layout: DefaultBoxBuilderFuncs.code },
   { elementName: "del", layout: DefaultBoxBuilderFuncs.emphasisThunk("~") },
+  { elementName: "div", layout: DefaultBoxBuilderFuncs.blockThunk("div") },
   { elementName: "li", layout: DefaultBoxBuilderFuncs.listItem },
   { elementName: "ol", layout: DefaultBoxBuilderFuncs.list },
   { elementName: "ul", layout: DefaultBoxBuilderFuncs.list },
@@ -56,6 +56,7 @@ const defaultPlugins: LayoutPlugin[] = [
   { elementName: "hr", layout: DefaultBoxBuilderFuncs.hr },
   { elementName: "i", layout: DefaultBoxBuilderFuncs.emphasisThunk("*") },
   { elementName: "em", layout: DefaultBoxBuilderFuncs.emphasisThunk("*") },
+  { elementName: "p", layout: DefaultBoxBuilderFuncs.blockThunk("p") },
   { elementName: "pre", layout: DefaultBoxBuilderFuncs.pre },
   { elementName: "s", layout: DefaultBoxBuilderFuncs.emphasisThunk("~") },
   { elementName: "strike", layout: DefaultBoxBuilderFuncs.emphasisThunk("~") },
@@ -130,13 +131,6 @@ export interface LayoutGenerator {
   ): CssBox | null
 }
 
-/**
- * A function to map a @see CssBox to another @see CssBox.
- */
-export interface LayoutTransformer {
-  (context: LayoutContext, boxFactory: CssBoxFactoryFunc, box: CssBox): CssBox
-}
-
 export interface LayoutPlugin {
   /**
    * Specifies the name of the HTML element that this plugin renders markdown for.
@@ -147,11 +141,6 @@ export interface LayoutPlugin {
    * This is the core of the implementation that will be called for each instance of the HTML element that this plugin is registered for.
    */
   layout: LayoutGenerator
-  /**
-   * In some rare cases the plugin will need to manipulate the boxes created by other @see LayoutPlugin objects (especially when those boxes are for child HTML elements that the plugin is interested in).
-   * If specified, this function will be called for every box created during layout.
-   */
-  transform?: LayoutTransformer
 }
 
 /* eslint-disable no-unused-vars */
@@ -169,5 +158,10 @@ export interface CssBox {
   type: BoxType
   textContent: string
   readonly debugNote: string
+  /**
+   * Returns true if this box establishes new block formatting contexts for it's contents as explained in [9.4.1 Block formatting contexts](https://www.w3.org/TR/CSS22/visuren.html#normal-flow).
+   */
+  doesEstablishBlockFormattingContext: boolean
   addChild(box: CssBox): void
+  prependChild(box: CssBox): void
 }

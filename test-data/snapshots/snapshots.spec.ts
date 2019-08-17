@@ -22,7 +22,8 @@ function getAllSnapshots(dir: string = __dirname): string[] {
   return snapshotPaths
 }
 
-const table = getAllSnapshots() //.filter(s => s.endsWith("blockquote-paragraph.mrkdwn"))
+const table = getAllSnapshots()
+//const table = getAllSnapshots().filter(s => s.endsWith("blockquote-heading-and-paragraph.mrkdwn"))
 
 describe("snapshots", () => {
   // NOTE: many of the tests were originally from https://github.com/integrations/html-to-mrkdwn/tree/master/test/fixtures, but they were crazy wrong (like headings wrapped in * instead of #). So they're fixed herein.

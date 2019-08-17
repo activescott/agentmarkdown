@@ -1,0 +1,15 @@
+<blockquote>
+  <div>
+    <p>foo</p>
+    <p>bar</p>
+  </div>
+  <div>
+    <p>doe</p>
+    <p>rae</p>
+  </div>
+</blockquote>
+====
+> foo
+> bar
+> doe
+> rae
