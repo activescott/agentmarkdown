@@ -172,6 +172,7 @@ see [/docs/todo.md](docs/todo.md)
 # Alternatives
 
 - http://domchristie.github.io/turndown/
+- https://github.com/rehypejs/rehype-remark
 
 ## License 📝
 

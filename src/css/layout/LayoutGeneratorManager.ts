@@ -6,33 +6,35 @@ import {
   BoxType,
   LayoutGenerator
 } from "../.."
-import { DefaultBoxBuilderFuncs } from "./DefaultBoxBuilderFuncs"
+import { DefaultLayoutGenerators } from "./DefaultLayoutGenerators"
 import { normalizeWhitespace } from ".."
 import { StyleState } from "./StyleState"
 import { CssBoxFactory } from "./CssBoxFactory"
 import { LayoutManager } from "../../LayoutManager"
 
 /**
- * Given a list of plugins, manages the list of @see BoxBuilder plugins to build boxes for an element.
+ * Given a list of plugins, manages the list of @see LayoutGenerator plugins to build boxes for an element.
  */
-export default class BoxBuilderManager {
-  private readonly boxBuilderMap: Map<string, LayoutGenerator>
+export default class LayoutGeneratorManager {
+  private readonly layoutGeneratorMap: Map<string, LayoutGenerator>
 
   public constructor(
     plugins: LayoutPlugin[],
     private readonly boxFactory: CssBoxFactory
   ) {
-    this.boxBuilderMap = BoxBuilderManager.createLayoutGeneratorMap(plugins)
+    this.layoutGeneratorMap = LayoutGeneratorManager.createLayoutGeneratorMap(
+      plugins
+    )
   }
 
   private static createLayoutGeneratorMap(
     plugins: LayoutPlugin[]
   ): Map<string, LayoutGenerator> {
-    const builders = new Map<string, LayoutGenerator>()
+    const generators = new Map<string, LayoutGenerator>()
     for (const plugin of plugins) {
-      builders.set(plugin.elementName, plugin.layout)
+      generators.set(plugin.elementName, plugin.layout)
     }
-    return builders
+    return generators
   }
 
   /**
@@ -40,7 +42,7 @@ export default class BoxBuilderManager {
    * See https://www.w3.org/TR/CSS22/visuren.html#propdef-display
    * @param element The element to generate a box for
    */
-  public buildBox(
+  public generateBox(
     context: LayoutContext,
     manager: LayoutManager,
     element: HtmlNode
@@ -62,13 +64,15 @@ export default class BoxBuilderManager {
         )
       }
     } else if (element.type === "tag") {
-      const boxBuilderFunc = this.getBoxBuilderForElement(element.name)
+      const layoutGeneratorFunc = this.getLayoutGeneratorForElement(
+        element.name
+      )
       try {
-        box = boxBuilderFunc(context, manager, element)
+        box = layoutGeneratorFunc(context, manager, element)
       } catch (e) {
         throw new Error(
-          `boxbuilder (${JSON.stringify(
-            boxBuilderFunc
+          `LayoutGenerator (${JSON.stringify(
+            layoutGeneratorFunc
           )}) error for element ${JSON.stringify(element.name)}: ${e}`
         )
       }
@@ -80,38 +84,38 @@ export default class BoxBuilderManager {
     return box
   }
 
-  public buildBoxes(
+  public generateBoxes(
     context: LayoutContext,
     manager: LayoutManager,
     elements: HtmlNode[]
   ): CssBox[] {
     const boxes = elements
       ? elements
-          .map(el => this.buildBox(context, manager, el))
+          .map(el => this.generateBox(context, manager, el))
           .filter(childBox => childBox !== null)
       : []
     return boxes
   }
 
   /**
-   * Returns @see BlockBuilder for specified element.
+   * Returns @see LayoutGenerator for specified element.
    * @param elementName name/tag of element
    */
-  private getBoxBuilderForElement(elementName: string): LayoutGenerator {
-    let builder = this.boxBuilderMap.get(elementName)
-    if (!builder) {
+  private getLayoutGeneratorForElement(elementName: string): LayoutGenerator {
+    let generator = this.layoutGeneratorMap.get(elementName)
+    if (!generator) {
       const display = getElementDisplay(elementName)
       if (display === CssDisplayValue.block) {
-        builder = DefaultBoxBuilderFuncs.genericBlock
+        generator = DefaultLayoutGenerators.genericBlock
       } else if (display === CssDisplayValue.inline) {
-        builder = DefaultBoxBuilderFuncs.genericInline
+        generator = DefaultLayoutGenerators.genericInline
       } else if (display === CssDisplayValue.listItem) {
-        builder = DefaultBoxBuilderFuncs.listItem
+        generator = DefaultLayoutGenerators.listItem
       } else {
         throw new Error("unexpected element and unexpected display")
       }
     }
-    return builder
+    return generator
   }
 }
 

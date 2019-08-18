@@ -4,7 +4,7 @@ import { DefaultTextWriter } from "./DefaultTextWriter"
 import { layout } from "./css"
 import { HtmlNode } from "./HtmlNode"
 import { LayoutContext } from "./LayoutContext"
-import { DefaultBoxBuilderFuncs } from "./css/layout/DefaultBoxBuilderFuncs"
+import { DefaultLayoutGenerators } from "./css/layout/DefaultLayoutGenerators"
 import BlockquotePlugin from "./css/layout/BlockquotePlugin"
 import { LayoutManager } from "./LayoutManager"
 export { LayoutContext } from "./LayoutContext"
@@ -17,7 +17,7 @@ export interface RenderOptions {
   html: string
   /**
    * Use to customize the rendering of HTML elements or provide HTML-to-markdown rendering for an element that isn't handled by default.
-   * A map of "element name" => @see BoxBuilder where the key is the element name and the associated value is a @see BoxBuilder implementations that render markdown for a specified HTML element.
+   * A map of "element name" => @see LayoutPlugin where the key is the element name and the associated value is a @see LayoutPlugin implementations that render markdown for a specified HTML element.
    * Any elements in this map that conflict with the default intrinsic implementations will override the default rendering.
    */
   layoutPlugins?: LayoutPlugin[]
@@ -36,32 +36,35 @@ export interface ImageReference {
 }
 
 const defaultPlugins: LayoutPlugin[] = [
-  { elementName: "a", layout: DefaultBoxBuilderFuncs.link },
-  { elementName: "b", layout: DefaultBoxBuilderFuncs.emphasisThunk("**") },
-  { elementName: "br", layout: DefaultBoxBuilderFuncs.br },
-  { elementName: "code", layout: DefaultBoxBuilderFuncs.code },
-  { elementName: "del", layout: DefaultBoxBuilderFuncs.emphasisThunk("~") },
-  { elementName: "div", layout: DefaultBoxBuilderFuncs.blockThunk("div") },
-  { elementName: "li", layout: DefaultBoxBuilderFuncs.listItem },
-  { elementName: "ol", layout: DefaultBoxBuilderFuncs.list },
-  { elementName: "ul", layout: DefaultBoxBuilderFuncs.list },
+  { elementName: "a", layout: DefaultLayoutGenerators.link },
+  { elementName: "b", layout: DefaultLayoutGenerators.emphasisThunk("**") },
+  { elementName: "br", layout: DefaultLayoutGenerators.br },
+  { elementName: "code", layout: DefaultLayoutGenerators.code },
+  { elementName: "del", layout: DefaultLayoutGenerators.emphasisThunk("~") },
+  { elementName: "div", layout: DefaultLayoutGenerators.blockThunk("div") },
+  { elementName: "li", layout: DefaultLayoutGenerators.listItem },
+  { elementName: "ol", layout: DefaultLayoutGenerators.list },
+  { elementName: "ul", layout: DefaultLayoutGenerators.list },
   /* eslint-disable no-magic-numbers */
-  { elementName: "h1", layout: DefaultBoxBuilderFuncs.headingThunk(1) },
-  { elementName: "h2", layout: DefaultBoxBuilderFuncs.headingThunk(2) },
-  { elementName: "h3", layout: DefaultBoxBuilderFuncs.headingThunk(3) },
-  { elementName: "h4", layout: DefaultBoxBuilderFuncs.headingThunk(4) },
-  { elementName: "h5", layout: DefaultBoxBuilderFuncs.headingThunk(5) },
-  { elementName: "h6", layout: DefaultBoxBuilderFuncs.headingThunk(6) },
+  { elementName: "h1", layout: DefaultLayoutGenerators.headingThunk(1) },
+  { elementName: "h2", layout: DefaultLayoutGenerators.headingThunk(2) },
+  { elementName: "h3", layout: DefaultLayoutGenerators.headingThunk(3) },
+  { elementName: "h4", layout: DefaultLayoutGenerators.headingThunk(4) },
+  { elementName: "h5", layout: DefaultLayoutGenerators.headingThunk(5) },
+  { elementName: "h6", layout: DefaultLayoutGenerators.headingThunk(6) },
   /* eslint-enable no-magic-numbers */
-  { elementName: "hr", layout: DefaultBoxBuilderFuncs.hr },
-  { elementName: "i", layout: DefaultBoxBuilderFuncs.emphasisThunk("*") },
-  { elementName: "em", layout: DefaultBoxBuilderFuncs.emphasisThunk("*") },
-  { elementName: "p", layout: DefaultBoxBuilderFuncs.blockThunk("p") },
-  { elementName: "pre", layout: DefaultBoxBuilderFuncs.pre },
-  { elementName: "s", layout: DefaultBoxBuilderFuncs.emphasisThunk("~") },
-  { elementName: "strike", layout: DefaultBoxBuilderFuncs.emphasisThunk("~") },
-  { elementName: "strong", layout: DefaultBoxBuilderFuncs.emphasisThunk("**") },
-  { elementName: "u", layout: DefaultBoxBuilderFuncs.emphasisThunk("_") },
+  { elementName: "hr", layout: DefaultLayoutGenerators.hr },
+  { elementName: "i", layout: DefaultLayoutGenerators.emphasisThunk("*") },
+  { elementName: "em", layout: DefaultLayoutGenerators.emphasisThunk("*") },
+  { elementName: "p", layout: DefaultLayoutGenerators.blockThunk("p") },
+  { elementName: "pre", layout: DefaultLayoutGenerators.pre },
+  { elementName: "s", layout: DefaultLayoutGenerators.emphasisThunk("~") },
+  { elementName: "strike", layout: DefaultLayoutGenerators.emphasisThunk("~") },
+  {
+    elementName: "strong",
+    layout: DefaultLayoutGenerators.emphasisThunk("**")
+  },
+  { elementName: "u", layout: DefaultLayoutGenerators.emphasisThunk("_") },
   new BlockquotePlugin()
 ]
 

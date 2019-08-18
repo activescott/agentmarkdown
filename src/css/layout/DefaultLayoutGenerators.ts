@@ -6,9 +6,9 @@ import { decodeHtmlEntities } from "../../util"
 import { StyleState } from "./StyleState"
 import { LayoutManager } from "../../LayoutManager"
 
-export class DefaultBoxBuilderFuncs {
+export class DefaultLayoutGenerators {
   /**
-   * A @see BoxBuilder suitable for generic block elements.
+   * A @see LayoutGenerator suitable for generic block elements.
    */
   public static genericBlock(
     context: LayoutContext,
@@ -38,7 +38,7 @@ export class DefaultBoxBuilderFuncs {
     }
   }
   /**
-   * A @see BoxBuilder suitable for generic inline elements.
+   * A @see LayoutGenerator suitable for generic inline elements.
    */
   public static genericInline(
     context: LayoutContext,
@@ -62,7 +62,7 @@ export class DefaultBoxBuilderFuncs {
       )
   }
   /**
-   * A @see BoxBuilder suitable for list item elements.
+   * A @see LayoutGenerator suitable for list item elements.
    */
   public static listItem(
     context: LayoutContext,

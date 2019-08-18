@@ -1,17 +1,17 @@
 import { CssBox, HtmlNode, LayoutContext, BoxType } from "../.."
 import { CssBoxFactory } from "./CssBoxFactory"
-import BoxBuilderManager from "./BoxBuilderManager"
+import LayoutGeneratorManager from "./LayoutGeneratorManager"
 import { LayoutManager } from "../../LayoutManager"
 import { CssBoxImp } from "../CssBoxImp"
 
 export class LayoutManagerImp implements LayoutManager {
   public constructor(
     private readonly boxFactory: CssBoxFactory,
-    private readonly builder: BoxBuilderManager
+    private readonly generator: LayoutGeneratorManager
   ) {}
 
   public layout(context: LayoutContext, elements: HtmlNode[]): CssBox[] {
-    return this.builder.buildBoxes(context, this, elements)
+    return this.generator.generateBoxes(context, this, elements)
   }
 
   public createBox(

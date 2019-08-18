@@ -10,8 +10,9 @@
   - multi-paragraph list items
   
 - Feat: Extensibility
-  - Allow customizing the conversion. Should the caller be able to provide custom `BoxBuilder`?
-  - We're using uinst (inadvertantly) so maybe allow different uinst frontends and extensibility in uinst as well as the CssBox BoxBuilder backend: https://unified.js.org/create-a-plugin.html
+  + Allow customizing the conversion. Should the caller be able to provide custom `LayoutGenerator`?
+  + We're *nearly* using [uinst](https://github.com/syntax-tree/unist) inadvertently so maybe allow different uinst frontends and extensibility in uinst as well as the CssBox LayoutGenerator backend: https://unified.js.org/create-a-plugin.html
+    + Okay, HtmlNode is not quite close enough to uninst. We focus more on node hierarchy and unist does that plus on position within text. Interesting bot not trivial amount of work and for potentially little benefit.
 
 - support elements (WITH TESTS):
   + links
@@ -36,5 +37,4 @@
   - benchmarks (some other lib had benchmarks)
 
 # code smells #
-- the css layout code started off pure based on the css specification only generating three general types of boxes: inline, block, and list-item - as defined in the CSS spec. The only determination on the type of box generated was a lookup to the CSS-defined `display` value for the corresponding HTML element name. Interestingly, this very simplistic layout algorithm actually produced pretty descent markdown from almost any HTML! It didn't have inline formatting but the general layout, line breaking, and list generation was perfect as far as I recall.
-All that smelled fine, but it started growing beyond pure CSS and introducing "special" non-standard boxes to handle markdown-specific formatting for certain elements (e.g. headings, emphasis, link, br, hr, etc.). This is perfectly fine as long as the only target is markdown but does start coupling the otherwise pure CSS box-generation/layout algorithm to markdown. It would be better to maybe make that CSS layout/box-generation code slightly extensible by allowing the caller to pass in a map of `BoxBuilder`s that could customize the box generation.
+- the css layout code started off pure based on the css specification only generating three general types of boxes: inline, block, and list-item - as defined in the CSS spec. The only determination on the type of box generated was a lookup to the CSS-defined `display` value for the corresponding HTML element name. Interestingly, this very simplistic layout algorithm actually produced pretty descent markdown from almost any HTML! It didn't have inline formatting but the general layout, line breaking, and list generation was perfect as far as I recall. All that smelled fine, but it started growing beyond pure CSS and introducing "special" non-standard boxes to handle markdown-specific formatting for certain elements (e.g. headings, emphasis, link, br, hr, etc.). This is perfectly fine as long as the only target is markdown but does start coupling the otherwise pure CSS box-generation/layout algorithm to markdown. It would be better to maybe make that CSS layout/box-generation code slightly extensible by allowing the caller to pass in a map of `LayoutGenerator`s that could customize the box generation.

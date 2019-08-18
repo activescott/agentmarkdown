@@ -19,7 +19,7 @@ const customEmphasisLayout: LayoutGenerator = (
   return manager.createBox(context, BoxType.inline, "", kids)
 }
 
-it("should allow overriding existing elements with custom BoxBuilder", async () => {
+it("should allow overriding existing elements with custom LayoutPlugin", async () => {
   const result = await AgentMarkdown.render({
     html: "<b>my bold</b>",
     layoutPlugins: [
@@ -32,7 +32,7 @@ it("should allow overriding existing elements with custom BoxBuilder", async () 
   expect(result.markdown).toEqual("_my bold_")
 })
 
-it("should allow rendering new elements with custom BoxBuilder", async () => {
+it("should allow rendering new elements with custom LayoutPlugin", async () => {
   const result = await AgentMarkdown.render({
     html: "<mycustomelement>custom content</mycustomelement>",
     layoutPlugins: [
