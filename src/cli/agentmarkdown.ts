@@ -42,6 +42,7 @@ export class Cli {
     try {
       markdown = await AgentMarkdown.produce(html)
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error("Error converting HTML to markdown.")
       process.exit(EXIT_ERR_CONVERTING)
       return false
@@ -50,6 +51,7 @@ export class Cli {
       process.stdout.write(markdown)
       process.stdout.end()
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error("Error writing to stdout.")
       process.exit(EXIT_ERR_STDOUT)
       return false

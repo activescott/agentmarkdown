@@ -1,4 +1,5 @@
-import { CssBox, BoxType } from "./CssBox"
+import { CssBoxImp } from "./CssBoxImp"
+import { BoxType, CssBox } from ".."
 
 describe("CSS 9.2.1.1 Anonymous block boxes", () => {
   /**
@@ -7,11 +8,11 @@ describe("CSS 9.2.1.1 Anonymous block boxes", () => {
    */
   it("should not insert boxes with only inline children", () => {
     const children = [
-      new CssBox(BoxType.inline),
-      new CssBox(BoxType.inline),
-      new CssBox(BoxType.inline)
+      new CssBoxImp(BoxType.inline),
+      new CssBoxImp(BoxType.inline),
+      new CssBoxImp(BoxType.inline)
     ]
-    const rootBox = new CssBox(BoxType.block, "", children)
+    const rootBox = new CssBoxImp(BoxType.block, "", children)
     for (const child of children) {
       expect(rootBox.children).toContainEqual(child)
     }
@@ -19,11 +20,11 @@ describe("CSS 9.2.1.1 Anonymous block boxes", () => {
 
   it("should not insert boxes with only block children", () => {
     const children = [
-      new CssBox(BoxType.block),
-      new CssBox(BoxType.block),
-      new CssBox(BoxType.block)
+      new CssBoxImp(BoxType.block),
+      new CssBoxImp(BoxType.block),
+      new CssBoxImp(BoxType.block)
     ]
-    const rootBox = new CssBox(BoxType.block, "", children)
+    const rootBox = new CssBoxImp(BoxType.block, "", children)
     for (const child of children) {
       expect(rootBox.children).toContainEqual(child)
     }
@@ -31,11 +32,11 @@ describe("CSS 9.2.1.1 Anonymous block boxes", () => {
 
   it("should insert anonymous block box with block & inline children", () => {
     const children = [
-      new CssBox(BoxType.block),
-      new CssBox(BoxType.inline),
-      new CssBox(BoxType.block)
+      new CssBoxImp(BoxType.block),
+      new CssBoxImp(BoxType.inline),
+      new CssBoxImp(BoxType.block)
     ]
-    const rootBox = new CssBox(BoxType.block, "", children)
+    const rootBox = new CssBoxImp(BoxType.block, "", children)
     const actual: CssBox[] = Array.from(rootBox.children)
     expect(actual).toHaveLength(3)
     // should have the first and last:
@@ -47,12 +48,12 @@ describe("CSS 9.2.1.1 Anonymous block boxes", () => {
 
   it("anonymous block box should collect sequences of adjacent inlines with block & inline children", () => {
     const children = [
-      new CssBox(BoxType.block),
-      new CssBox(BoxType.inline),
-      new CssBox(BoxType.inline),
-      new CssBox(BoxType.block)
+      new CssBoxImp(BoxType.block),
+      new CssBoxImp(BoxType.inline),
+      new CssBoxImp(BoxType.inline),
+      new CssBoxImp(BoxType.block)
     ]
-    const rootBox = new CssBox(BoxType.block, "", children)
+    const rootBox = new CssBoxImp(BoxType.block, "", children)
     const actual: CssBox[] = Array.from(rootBox.children)
     expect(actual).toHaveLength(3)
     // should have the first and last:
@@ -65,12 +66,12 @@ describe("CSS 9.2.1.1 Anonymous block boxes", () => {
 
   it("anonymous block box should not collect sequences of non-adjacent inlines with block & inline children", () => {
     const children = [
-      new CssBox(BoxType.block),
-      new CssBox(BoxType.inline),
-      new CssBox(BoxType.block),
-      new CssBox(BoxType.inline)
+      new CssBoxImp(BoxType.block),
+      new CssBoxImp(BoxType.inline),
+      new CssBoxImp(BoxType.block),
+      new CssBoxImp(BoxType.inline)
     ]
-    const rootBox = new CssBox(BoxType.block, "", children)
+    const rootBox = new CssBoxImp(BoxType.block, "", children)
     const actual: CssBox[] = Array.from(rootBox.children)
     expect(actual).toHaveLength(4)
     // should have the blocks (first and third):

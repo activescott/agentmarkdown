@@ -1,5 +1,5 @@
-import { LayoutContext } from "./LayoutContext"
 import { WhitespaceHandling } from "../"
+import { LayoutContext } from "../.."
 
 /**
  * Helps manage @see LayoutContext state for misc CSS style state.

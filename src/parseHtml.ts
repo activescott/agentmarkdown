@@ -26,7 +26,7 @@ export function traceHtmlNodes(nodes: HtmlNode[], indent: number = 0): string {
 }
 
 function traceHtmlNode(node: HtmlNode, indent: number = 0): string {
-  const nameStr = (node: HtmlNode): string => (node.name ? node.name : "")
+  const nameStr = (node: HtmlNode): string => (node.tagName ? node.tagName : "")
   const dataStr = (node: HtmlNode): string => (node.data ? node.data : "")
   let output =
     "  ".repeat(indent) +

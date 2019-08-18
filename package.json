@@ -36,10 +36,8 @@
     "coverage-publish": "cat ./coverage/lcov.info | coveralls"
   },
   "devDependencies": {
-    "@types/domhandler": "^2.4.1",
-    "@types/htmlparser2": "^3.10.0",
     "@types/jest": "^24.0.15",
-    "@types/node": "^12.0.10",
+    "@types/node": "^12.7.2",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
     "commitizen": "^4.0.3",
@@ -55,8 +53,8 @@
     "typescript": "^3.5.2"
   },
   "dependencies": {
-    "domhandler": "^2.4.2",
-    "htmlparser2": "^3.10.1"
+    "domhandler": "^3.0.0",
+    "htmlparser2": "^4.0.0"
   },
   "config": {
     "commitizen": {

@@ -1,0 +1,9 @@
+<blockquote>
+  <div>
+    <p>foo</p>
+    <p>bar</p>
+  </div>
+</blockquote>
+====
+> foo
+> bar

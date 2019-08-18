@@ -1,4 +1,4 @@
-import { LayoutContext } from "./LayoutContext"
+import { LayoutContext } from "../.."
 
 type ListType = "ul" | "ol"
 
@@ -31,12 +31,14 @@ export class ListState {
 
   public newListItem(): void {
     const stack = this.context.getStateStack<number>(ListState.ItemCountKey)
+    // eslint-disable-next-line no-console
     console.assert(stack.length > 0, "expected ItemCount state")
     stack[stack.length - 1] = stack[stack.length - 1] + 1
   }
 
   public getListItemCount(): number {
     const stack = this.context.getStateStack<number>(ListState.ItemCountKey)
+    // eslint-disable-next-line no-console
     console.assert(stack.length > 0, "expected ItemCount state")
     return stack[stack.length - 1]
   }
