@@ -23,6 +23,8 @@ class BlockquotePlugin implements LayoutPlugin {
           needChecked.push(box)
         } else {
           // then this guy and all of his siblings need prefixes; they are the deepest nodes in the tree that are inlines
+          // this should /really/ never happen unless there is a bug here so leaving the console
+          // eslint-disable-next-line no-console
           console.assert(
             !parent.doesEstablishBlockFormattingContext,
             `Expected the parent '${parent.debugNote}' to be establishing a new block formatting context`

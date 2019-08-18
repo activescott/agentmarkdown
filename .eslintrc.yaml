@@ -27,6 +27,8 @@ rules:
     - ignore: 
       - 0
       - 1
+  no-console:
+    - warn
   # References for TS rules: https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin#supported-rules
   "@typescript-eslint/explicit-function-return-type":
     - error

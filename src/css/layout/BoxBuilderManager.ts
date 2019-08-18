@@ -75,7 +75,6 @@ export default class BoxBuilderManager {
     } else if (element.type === "comment") {
       // deliberately ignored
     } else {
-      console.error(`Ignoring element with type ${element.type}`)
       box = null
     }
     return box
