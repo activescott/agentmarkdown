@@ -65,7 +65,7 @@ export default class LayoutGeneratorManager {
       }
     } else if (element.type === "tag") {
       const layoutGeneratorFunc = this.getLayoutGeneratorForElement(
-        element.name
+        element.tagName
       )
       try {
         box = layoutGeneratorFunc(context, manager, element)
@@ -73,7 +73,7 @@ export default class LayoutGeneratorManager {
         throw new Error(
           `LayoutGenerator (${JSON.stringify(
             layoutGeneratorFunc
-          )}) error for element ${JSON.stringify(element.name)}: ${e}`
+          )}) error for element ${JSON.stringify(element.tagName)}: ${e}`
         )
       }
     } else if (element.type === "comment") {

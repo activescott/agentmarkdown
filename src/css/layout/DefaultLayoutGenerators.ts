@@ -124,8 +124,8 @@ export class DefaultLayoutGenerators {
     manager: LayoutManager,
     element: HtmlNode
   ): CssBox | null {
-    if (!["ul", "ol"].includes(element.name)) {
-      throw new Error(`Unexpected list type "${element.name}"`)
+    if (!["ul", "ol"].includes(element.tagName)) {
+      throw new Error(`Unexpected list type "${element.tagName}"`)
     }
     const listState = new ListState(context)
     const listBox = manager.createBox(
@@ -133,9 +133,9 @@ export class DefaultLayoutGenerators {
       BoxType.block,
       "",
       [],
-      element.name
+      element.tagName
     )
-    listState.beginList(element.name as "ul" | "ol")
+    listState.beginList(element.tagName as "ul" | "ol")
     const kids = manager.layout(context, element.children)
     listState.endList()
     kids.forEach(kid => listBox.addChild(kid))
