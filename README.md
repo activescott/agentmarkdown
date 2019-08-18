@@ -79,7 +79,7 @@ yarn start
 
 ## Customize & Extend with Plugins
 
-To customize how the markdown is generated or add support for new elements, implement the `LayoutPlugin` interface to handle a particular HTML element. The `LayoutPlugin` is defined as follows:
+To customize how the markdown is generated or add support for new elements, implement the `LayoutPlugin` interface to handle a particular HTML element. The `LayoutPlugin` interface is defined as follows:
 
 ```TypeScript
 export interface LayoutPlugin {
@@ -95,7 +95,7 @@ export interface LayoutPlugin {
 }
 ```
 
-The `LayoutGenerator` is a single function that performs a [CSS2 box generation layout algorithm](https://www.w3.org/TR/CSS22/visuren.html#box-gen) on the an HTML element. Essentially it creates a zero or more boxes for the given element that AgentMarkdown will later render to text. The function definition is the following:
+The `LayoutGenerator` is a single function that performs a [CSS2 box generation layout algorithm](https://www.w3.org/TR/CSS22/visuren.html#box-gen) on the an HTML element. Essentially it creates zero or more boxes for the given element that AgentMarkdown will render to text. A box can contain text content and/or other boxes, and eacn box has a type of `inline` or `block`. Inline blocks are laid out horizontally. Block boxes are laid out vertically (i.e. they have new line characters before and after their contents). The `LayoutGenerator` function definition is as follows:
 
 ```TypeScript
 export interface LayoutGenerator {
@@ -107,7 +107,7 @@ export interface LayoutGenerator {
 }
 ```
 
-An example of how the HTML `<b>` element could be implemented as a plugin is below:
+An example of how the HTML `<b>` element could be implemented as a plugin like the following:
 
 ```TypeScript
 class BoldPlugin {
@@ -118,15 +118,18 @@ class BoldPlugin {
     manager: LayoutManager,
     element: HtmlNode
   ): CssBox | null => {
+    // let the manager use other plugins to layout any child elements:
     const kids = manager.layout(context, element.children)
-    kids.unshift(manager.createBox(context, BoxType.inline, "*"))
-    kids.push(manager.createBox(context, BoxType.inline, "*"))
+    // wrap the child elements in the markdown ** syntax for bold/strong:
+    kids.unshift(manager.createBox(context, BoxType.inline, "**"))
+    kids.push(manager.createBox(context, BoxType.inline, "**"))
+    // return a new box containing everything:
     return manager.createBox(context, BoxType.inline, "", kids)
   }
 }
 ```
 
-To initialize AgentMarkdown with plugins pass them in as an option as follows:
+To initialize AgentMarkdown with plugins pass them in as an array value for the `layoutPlugins` option as follows. To customize the rendering an element you can just specify a plugin for the elementName and your plugin will override the built-in plugin.
 
 ```TypeScript
 const result = await AgentMarkdown.render({
