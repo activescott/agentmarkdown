@@ -3,8 +3,6 @@ import { CssBoxImp } from "../CssBoxImp"
 import { LayoutContext } from "../../LayoutContext"
 
 export class CssBoxFactory {
-  public constructor() {}
-
   public createBox(
     state: LayoutContext,
     boxType: BoxType,

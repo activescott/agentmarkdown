@@ -48,7 +48,7 @@ yarn (`yarn add agentmarkdown`) or npm (`npm install agentmarkdown`)
 - Supports nested lists
 - Supports [implied paragraphs](https://html.spec.whatwg.org/#paragraphs) / [CSS anonymous bock box layout](https://www.w3.org/TR/CSS22/visuren.html#anonymous-block-level)
 - Can be used client side (in the browser) or server side (with Node.js)
-- Extensible to allow extended or customized output?
+- Add support for new elements [with plugins](#customize--extend-with-plugins)
 - Fast?
 
 ## CLI Example

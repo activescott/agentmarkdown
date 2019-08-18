@@ -6,8 +6,6 @@ import { LayoutContext } from "../.."
 export class LayoutContextImp implements LayoutContext {
   private readonly state: Map<string, any> = new Map<string, any>() // eslint-disable-line @typescript-eslint/no-explicit-any
 
-  public constructor() {}
-
   public getStateStack<TValue>(stackName: string): TValue[] {
     let stack = this.state.get(stackName) as TValue[]
     if (!stack) {
