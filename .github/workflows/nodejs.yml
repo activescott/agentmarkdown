@@ -3,7 +3,7 @@ name: Node CI
 on: [push]
 
 jobs:
-  build:
+  build_and_test:
     runs-on: ubuntu-latest
 
     strategy:
@@ -12,10 +12,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+
       - name: build
         run: |
           yarn
@@ -27,7 +29,6 @@ jobs:
 
       - name: build demo
         run: |
-          pushd .
           cd ./example
           echo "Running in directory $PWD (before yarn)"
           yarn # although the default install script in travis runs this for the root, it doesn't for the example (https://docs.travis-ci.com/user/languages/javascript-with-nodejs/)
@@ -42,6 +43,39 @@ jobs:
           sleep 2 # to give yarn start/webpack a generous amount of time to complete initialization
           yarn run test-local
 
+  deploy_package:
+    needs: build_and_test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Use Node.js v12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: v12.x
+
+      - name: build
+        run: |
+          yarn
+          yarn build
+
+      - name: deploy via semantic-release
+        run: |
+          ./node_modules/.bin/semantic-release --dry-run  
+
+  deploy_demo:
+    needs: [build_and_test, deploy_package]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: build demo
+        run: |
+          cd ./example
+          echo "Running in directory $PWD (before yarn)"
+          yarn # although the default install script in travis runs this for the root, it doesn't for the example (https://docs.travis-ci.com/user/languages/javascript-with-nodejs/)
+          yarn build
+
       - name: cleanup unnecessary files for gh-pages branch
         run: |
           cd ./example
@@ -53,10 +87,10 @@ jobs:
           rm -rfd ./tests
           ls ./
 
-      - name: deploy via semantic-release
-        run: |
-          ./node_modules/.bin/semantic-release --dry-run
-
-      - name: TODO - deploy the live demo to the gh-pages branch
-        run: |
-          echo TODO!
+      - name: deploy the live demo to the gh-pages branch
+        if: github.ref == 'master' || github.ref == 'live-example-test'
+        uses: peaceiris/actions-gh-pages@v1.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_DIR: ./examples
+          PUBLISH_BRANCH: gh-pages
