@@ -9,11 +9,17 @@ describe("https://spec.commonmark.org/0.29/#atx-heading", () => {
 <h5>foo</h5>
 <h6>foo</h6>`
     const expected = `# foo #
+
 ## foo ##
+
 ### foo ###
+
 #### foo ####
+
 ##### foo #####
-###### foo ######`
+
+###### foo ######
+`
     const md = await toMarkdown(html)
     expect(md).toEqual(expected)
   })

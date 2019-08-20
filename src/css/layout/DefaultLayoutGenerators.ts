@@ -16,7 +16,6 @@ export class DefaultLayoutGenerators {
     element: HtmlNode
   ): CssBox | null {
     return manager.createBox(
-      context,
       BoxType.block,
       "",
       manager.layout(context, element.children),
@@ -34,7 +33,7 @@ export class DefaultLayoutGenerators {
       element: HtmlNode
     ): CssBox | null => {
       const kids = manager.layout(context, element.children)
-      return manager.createBox(context, BoxType.block, "", kids, debugNote)
+      return manager.createBox(BoxType.block, "", kids, debugNote)
     }
   }
   /**
@@ -52,14 +51,37 @@ export class DefaultLayoutGenerators {
     // if it has no text and no kids it doesn't affect layout so, don't create a box to affect layout:
     if ((!text || text.length === 0) && kids.length === 0) {
       return null
-    } else
-      return manager.createBox(
-        context,
-        BoxType.inline,
-        text,
-        kids,
-        "genericInline"
-      )
+    } else return manager.createBox(BoxType.inline, text, kids, "genericInline")
+  }
+  public static noOp(): CssBox | null {
+    return null
+  }
+
+  private static newlineBox(
+    context: LayoutContext,
+    manager: LayoutManager,
+    debugNote: string
+  ): CssBox | null {
+    return manager.createBox(BoxType.block, "", [], debugNote)
+  }
+  public static paragraph(
+    context: LayoutContext,
+    manager: LayoutManager,
+    element: HtmlNode
+  ): CssBox | null {
+    const content = manager.createBox(
+      BoxType.block,
+      "",
+      manager.layout(context, element.children),
+      "p",
+      true,
+      true
+    )
+    /*
+    const newLineAfter = DefaultLayoutGenerators.newlineBox(context, manager, "p-newLineAfter")
+    return manager.createBox(BoxType.block, "", [content, newLineAfter], "p-principal")
+    */
+    return content
   }
   /**
    * A @see LayoutGenerator suitable for list item elements.
@@ -80,7 +102,6 @@ export class DefaultLayoutGenerators {
     let markerBox: CssBox
     if (listState.getListType() === "ul") {
       markerBox = manager.createBox(
-        context,
         BoxType.inline,
         indentSpaces + "* ",
         null,
@@ -88,7 +109,6 @@ export class DefaultLayoutGenerators {
       )
     } else if (listState.getListType() === "ol") {
       markerBox = manager.createBox(
-        context,
         BoxType.inline,
         indentSpaces + `${listState.getListItemCount()}. `,
         null,
@@ -104,14 +124,12 @@ export class DefaultLayoutGenerators {
     )
     // prepare a single parent box for the list item's content (to keep it from breaking between the marker & content)
     const contentBox = manager.createBox(
-      context,
       BoxType.inline,
       "",
       contentChildBoxes,
       "li-content"
     )
     const principalBox = manager.createBox(
-      context,
       BoxType.block,
       "",
       [markerBox, contentBox],
@@ -128,13 +146,7 @@ export class DefaultLayoutGenerators {
       throw new Error(`Unexpected list type "${element.tagName}"`)
     }
     const listState = new ListState(context)
-    const listBox = manager.createBox(
-      context,
-      BoxType.block,
-      "",
-      [],
-      element.tagName
-    )
+    const listBox = manager.createBox(BoxType.block, "", [], element.tagName)
     listState.beginList(element.tagName as "ul" | "ol")
     const kids = manager.layout(context, element.children)
     listState.endList()
@@ -150,13 +162,25 @@ export class DefaultLayoutGenerators {
     ): CssBox | null => {
       const kids = manager.layout(context, element.children)
       const headingSequence = "#".repeat(headingLevel)
-      kids.unshift(
-        manager.createBox(context, BoxType.inline, headingSequence + " ")
+      kids.unshift(manager.createBox(BoxType.inline, headingSequence + " "))
+      kids.push(manager.createBox(BoxType.inline, " " + headingSequence))
+      const headingLine = manager.createBox(
+        BoxType.block,
+        "",
+        kids,
+        "h" + headingLevel
       )
-      kids.push(
-        manager.createBox(context, BoxType.inline, " " + headingSequence)
+      const newLineAfterHeading = DefaultLayoutGenerators.newlineBox(
+        context,
+        manager,
+        "h-newlineafter"
       )
-      return manager.createBox(context, BoxType.block, "", kids)
+      return manager.createBox(
+        BoxType.block,
+        "",
+        [headingLine, newLineAfterHeading],
+        `h${headingLevel}-principal`
+      )
     }
   }
   public static emphasisThunk(sequence: string): LayoutGenerator {
@@ -166,9 +190,9 @@ export class DefaultLayoutGenerators {
       element: HtmlNode
     ): CssBox | null => {
       const kids = manager.layout(context, element.children)
-      kids.unshift(manager.createBox(context, BoxType.inline, sequence))
-      kids.push(manager.createBox(context, BoxType.inline, sequence))
-      return manager.createBox(context, BoxType.inline, "", kids)
+      kids.unshift(manager.createBox(BoxType.inline, sequence))
+      kids.push(manager.createBox(BoxType.inline, sequence))
+      return manager.createBox(BoxType.inline, "", kids, "em-principal")
     }
   }
   public static link(
@@ -176,26 +200,13 @@ export class DefaultLayoutGenerators {
     manager: LayoutManager,
     element: HtmlNode
   ): CssBox | null {
-    const linkBox = manager.createBox(context, BoxType.inline, "")
     const childContentBoxes = manager.layout(context, element.children)
     // wrap the text in square brackets:
     childContentBoxes.unshift(
-      manager.createBox(
-        context,
-        BoxType.inline,
-        "[",
-        [],
-        "link-helper-open-text"
-      )
+      manager.createBox(BoxType.inline, "[", [], "link-helper-open-text")
     )
     childContentBoxes.push(
-      manager.createBox(
-        context,
-        BoxType.inline,
-        "]",
-        [],
-        "link-helper-close-text"
-      )
+      manager.createBox(BoxType.inline, "]", [], "link-helper-close-text")
     )
     // add destination/title syntax:
     const href =
@@ -211,7 +222,6 @@ export class DefaultLayoutGenerators {
     destinationMarkup += ")"
     childContentBoxes.push(
       manager.createBox(
-        context,
         BoxType.inline,
         destinationMarkup,
         [],
@@ -219,21 +229,26 @@ export class DefaultLayoutGenerators {
       )
     )
     // add the child boxes:
-    childContentBoxes.forEach(kid => linkBox.addChild(kid))
-    return linkBox
+    const linkPrincipal = manager.createBox(
+      BoxType.inline,
+      "",
+      childContentBoxes,
+      "link-principal"
+    )
+    return linkPrincipal
   }
   public static hr(
     context: LayoutContext,
     manager: LayoutManager
   ): CssBox | null {
-    return manager.createBox(context, BoxType.block, "* * *")
+    return manager.createBox(BoxType.block, "* * *")
   }
 
   public static br(
     context: LayoutContext,
     manager: LayoutManager
   ): CssBox | null {
-    return manager.createBox(context, BoxType.inline, "\n")
+    return manager.createBox(BoxType.inline, "\n")
   }
   public static pre(
     context: LayoutContext,
@@ -251,10 +266,10 @@ export class DefaultLayoutGenerators {
       }
     }
     kids.forEach(kid => decode(kid))
-    kids.unshift(manager.createBox(context, BoxType.block, "```"))
-    kids.push(manager.createBox(context, BoxType.block, "```"))
+    kids.unshift(manager.createBox(BoxType.block, "```"))
+    kids.push(manager.createBox(BoxType.block, "```"))
     styleState.popWhitespaceHandling()
-    return manager.createBox(context, BoxType.block, "", kids)
+    return manager.createBox(BoxType.block, "", kids)
   }
   public static code(
     context: LayoutContext,
@@ -265,9 +280,9 @@ export class DefaultLayoutGenerators {
     const kids = manager.layout(context, element.children)
     // If we're already nested inside of a <pre> element, don't output the inline code formatting (using the "whitespaceHandling" mode here is a bit of a risky assumption used to make this conclusion)
     if (new StyleState(context).whitespaceHandling != WhitespaceHandling.pre) {
-      kids.unshift(manager.createBox(context, BoxType.inline, "`"))
-      kids.push(manager.createBox(context, BoxType.inline, "`"))
+      kids.unshift(manager.createBox(BoxType.inline, "`"))
+      kids.push(manager.createBox(BoxType.inline, "`"))
     }
-    return manager.createBox(context, BoxType.block, "", kids)
+    return manager.createBox(BoxType.block, "", kids)
   }
 }

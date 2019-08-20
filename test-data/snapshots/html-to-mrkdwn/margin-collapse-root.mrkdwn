@@ -1,0 +1,10 @@
+<!-- 
+This is all about margins and collapsing margins in particular: https://www.w3.org/TR/CSS22/box.html#margin-properties
+CSS2 says that the root element's margins (i.e. the body's margins) cannot collapse with it's children in [8.3.1 Collapsing margins](https://www.w3.org/TR/CSS22/box.html#collapsing-margins). However, this is odd in markdown to put a blank line at the beginning of the doc and the end so we /do/ collapse with a sort of "invisible margin" when rendering to markdown.
+
+This demonstrates the collapsed margin with the root element. Specifically:
+The paragraph has no blank lines above it or below it as the margin is collapsed into it's parent's (invisible margins).
+-->
+paragraph
+====
+paragraph a

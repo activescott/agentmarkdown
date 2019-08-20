@@ -7,6 +7,7 @@ import { LayoutContext } from "./LayoutContext"
 import { DefaultLayoutGenerators } from "./css/layout/DefaultLayoutGenerators"
 import BlockquotePlugin from "./css/layout/BlockquotePlugin"
 import { LayoutManager } from "./LayoutManager"
+import { CssBoxImp } from "./css/CssBoxImp"
 export { LayoutContext } from "./LayoutContext"
 export { HtmlNode } from "./HtmlNode"
 
@@ -54,9 +55,10 @@ const defaultPlugins: LayoutPlugin[] = [
   { elementName: "h6", layout: DefaultLayoutGenerators.headingThunk(6) },
   /* eslint-enable no-magic-numbers */
   { elementName: "hr", layout: DefaultLayoutGenerators.hr },
+  { elementName: "html", layout: DefaultLayoutGenerators.blockThunk("html") },
   { elementName: "i", layout: DefaultLayoutGenerators.emphasisThunk("*") },
   { elementName: "em", layout: DefaultLayoutGenerators.emphasisThunk("*") },
-  { elementName: "p", layout: DefaultLayoutGenerators.blockThunk("p") },
+  { elementName: "p", layout: DefaultLayoutGenerators.paragraph },
   { elementName: "pre", layout: DefaultLayoutGenerators.pre },
   { elementName: "s", layout: DefaultLayoutGenerators.emphasisThunk("~") },
   { elementName: "strike", layout: DefaultLayoutGenerators.emphasisThunk("~") },
@@ -102,7 +104,7 @@ export class AgentMarkdown {
       ? defaultPlugins.concat(options.layoutPlugins)
       : defaultPlugins
     const docStructure = layout(dom, plugins)
-    //console.log("! docStructure !:\n", CssBoxImp.traceBoxTree(docStructure))
+    console.log("! docStructure !:\n", CssBoxImp.traceBoxTree(docStructure))
     renderImp(writer, docStructure.children)
     return {
       markdown: writer.toString(),
@@ -114,6 +116,7 @@ export class AgentMarkdown {
 function renderImp(writer: TextWriter, boxes: Iterable<CssBox>): void {
   let isFirst = true
   for (const box of boxes) {
+    console.log("RenderImp:", CssBoxImp.traceBoxTree(box))
     if (box.type == BoxType.block && !isFirst) {
       writer.newLine()
     }
@@ -161,6 +164,18 @@ export interface CssBox {
   type: BoxType
   textContent: string
   readonly debugNote: string
+  /**
+   * True if this box requires a top margin
+   * NOTE: If two boxes have [adjoining margins](https://www.w3.org/TR/CSS22/box.html#x28) the output should have only a single new line between two boxes to support [CSS's Collapsing Margins](https://www.w3.org/TR/CSS22/box.html#collapsing-margins).
+   * NOTE: The top margin of a first in-flow child and top margin of its parent can be collapsed; thus, a newline is not introduced for margin purposes when the first inflow child and its parent have a top margin.
+   */
+  topMargin: boolean
+  /**
+   * True if this box requires a bottom margin.
+   * NOTE: If two boxes have [adjoining margins](https://www.w3.org/TR/CSS22/box.html#x28) the output should have only a single new line between two boxes to support [CSS's Collapsing Margins](https://www.w3.org/TR/CSS22/box.html#collapsing-margins).
+   * NOTE: The bottom margin of a last in-flow child and bottom margin of its parent can be collapsed; thus, a newline is not introduced for margin purposes when the last inflow child and its parent have a bottom margin.
+   */
+  bottomMargin: boolean
   /**
    * Returns true if this box establishes new block formatting contexts for it's contents as explained in [9.4.1 Block formatting contexts](https://www.w3.org/TR/CSS22/visuren.html#normal-flow).
    */

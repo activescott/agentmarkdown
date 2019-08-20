@@ -22,7 +22,9 @@ export class CssBoxImp implements CssBox {
     public type: BoxType,
     public textContent: string = "",
     children: Iterable<CssBox> = [],
-    public readonly debugNote: string = ""
+    public readonly debugNote: string = "",
+    public topMargin: boolean = false,
+    public bottomMargin: boolean = false
   ) {
     this._children = children ? Array.from(children) : []
   }
@@ -31,16 +33,26 @@ export class CssBoxImp implements CssBox {
   public static traceBoxTree(box: CssBox, indent = 0): string {
     const typeStr = (type: BoxType): string =>
       type === BoxType.inline ? "inline" : "block"
-    const boxStr = (b: CssBox): string =>
-      "CssBox " +
-      (b == null
-        ? "<null>"
-        : JSON.stringify({
-            type: typeStr(b.type),
-            text: b.textContent,
-            debug: b.debugNote
-          })) +
-      "\n"
+    const boxStr = (b: CssBox): string => {
+      const traceBox: {
+        type: string
+        text: string
+        debug: string
+        topMargin?: boolean
+        bottomMargin?: boolean
+      } = {
+        type: typeStr(b.type),
+        text: b.textContent,
+        debug: b.debugNote
+      }
+      if (b.type === BoxType.block) {
+        ;(traceBox.topMargin = b.topMargin),
+          (traceBox.bottomMargin = b.bottomMargin)
+      }
+      return (
+        "CssBox " + (b == null ? "<null>" : JSON.stringify(traceBox)) + "\n"
+      )
+    }
     let output = "  ".repeat(indent) + boxStr(box)
     if (box) {
       for (const child of box.children) {
@@ -67,7 +79,7 @@ export class CssBoxImp implements CssBox {
   }
 
   public get doesEstablishBlockFormattingContext(): boolean {
-    return this.containsBlockBoxes
+    return this.type === BoxType.block || this.containsBlockBoxes
   }
 
   private get childBoxTypes(): { hasBlock: boolean; hasInline: boolean } {
