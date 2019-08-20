@@ -102,13 +102,13 @@ jobs:
           PUBLISH_BRANCH: gh-pages
 
   test_prod_demo:
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/live-example-test')
     needs: [deploy_prod_demo]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
 
       - name: test live demo prod deployment
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/live-example-test')
         run: |
           cd ./example
           yarn
