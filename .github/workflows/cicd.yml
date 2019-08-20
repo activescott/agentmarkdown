@@ -60,8 +60,11 @@ jobs:
           yarn build
 
       - name: deploy via semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          ./node_modules/.bin/semantic-release --dry-run  
+          ./node_modules/.bin/semantic-release
 
   deploy_prod_demo:
     needs: [build_and_test, deploy_package]
