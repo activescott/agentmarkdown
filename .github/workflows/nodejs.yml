@@ -63,7 +63,7 @@ jobs:
         run: |
           ./node_modules/.bin/semantic-release --dry-run  
 
-  deploy_demo:
+  deploy_prod_demo:
     needs: [build_and_test, deploy_package]
     runs-on: ubuntu-latest
     steps:
@@ -93,9 +93,22 @@ jobs:
         run: echo "$GITHUB_CONTEXT"
 
       - name: deploy the live demo to the gh-pages branch
+        # i.e. not a pull request and (master or a test branch)
         if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/live-example-test')
         uses: peaceiris/actions-gh-pages@v1.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PUBLISH_DIR: ./examples
           PUBLISH_BRANCH: gh-pages
+
+  test_prod_demo:
+    needs: [deploy_prod_demo]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: test live demo prod deployment
+        run: |
+          - cd ./example
+          - yarn
+          - yarn run test-prod
