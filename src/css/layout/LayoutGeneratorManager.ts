@@ -9,7 +9,6 @@ import {
 import { DefaultLayoutGenerators } from "./DefaultLayoutGenerators"
 import { normalizeWhitespace } from ".."
 import { StyleState } from "./StyleState"
-import { CssBoxFactory } from "./CssBoxFactory"
 import { LayoutManager } from "../../LayoutManager"
 
 /**
@@ -18,10 +17,7 @@ import { LayoutManager } from "../../LayoutManager"
 export default class LayoutGeneratorManager {
   private readonly layoutGeneratorMap: Map<string, LayoutGenerator>
 
-  public constructor(
-    plugins: LayoutPlugin[],
-    private readonly boxFactory: CssBoxFactory
-  ) {
+  public constructor(plugins: LayoutPlugin[]) {
     this.layoutGeneratorMap = LayoutGeneratorManager.createLayoutGeneratorMap(
       plugins
     )
@@ -35,6 +31,10 @@ export default class LayoutGeneratorManager {
       generators.set(plugin.elementName, plugin.layout)
     }
     return generators
+  }
+
+  private createMarginBox(manager: LayoutManager): CssBox {
+    return manager.createBox(BoxType.block, "", [], "v-margin", false, false)
   }
 
   /**
@@ -55,13 +55,7 @@ export default class LayoutGeneratorManager {
       )
       if (text) {
         // only create a box if normalizeWhitespace left something over
-        box = this.boxFactory.createBox(
-          context,
-          BoxType.inline,
-          text,
-          [],
-          "textNode"
-        )
+        box = manager.createBox(BoxType.inline, text, [], "textNode")
       }
     } else if (element.type === "tag") {
       const layoutGeneratorFunc = this.getLayoutGeneratorForElement(
@@ -111,8 +105,12 @@ export default class LayoutGeneratorManager {
         generator = DefaultLayoutGenerators.genericInline
       } else if (display === CssDisplayValue.listItem) {
         generator = DefaultLayoutGenerators.listItem
+      } else if (display === CssDisplayValue.none) {
+        generator = DefaultLayoutGenerators.noOp
       } else {
-        throw new Error("unexpected element and unexpected display")
+        throw new Error(
+          `unexpected element '${elementName}' and unexpected display '${display}'.`
+        )
       }
     }
     return generator
@@ -179,4 +177,19 @@ function getElementDisplay(elementTypeName: string): CssDisplayValue {
     display = CssDisplayValue.inline
   }
   return display
+}
+
+class LayoutManagerState {
+  private static MarginNeedsInsertedKey = "lm-margin-ins"
+  constructor(private readonly context: LayoutContext) {}
+  set marginNeedsInserted(value: boolean) {
+    this.context.pushState(LayoutManagerState.MarginNeedsInsertedKey, value)
+  }
+  get marginNeedsInserted(): boolean {
+    const val: boolean = this.context.popState<boolean>(
+      LayoutManagerState.MarginNeedsInsertedKey
+    )
+    // make sure "truthy" converts to explicit true or false
+    return val ? true : false
+  }
 }

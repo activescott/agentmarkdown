@@ -1,0 +1,18 @@
+<!-- 
+This is very similar to `margin-collapse.mrkdwn` except this one is demonstrating the impact it has on the containing blockquote box. 
+Blockquote is one of the few containers where we actually acknowledge styling like borders since blockquote's left "border" has to render in markdown too.
+
+It demonstrates the collapsed margin between the two paragraphs. Specifically:
+1. There is a line between the two paragraphs AND the blockquote is kept to a single blockquote rather than two separate ones.
+2. There is only one line between each, rather than two (one for the bottom margin of paragraph a, and one for the top margin of paragraph b).
+3. Also the blockquote has no blank lines above it or below it as the margin is collapsed into it's parent.
+NOTE: CSS2 says that the root element's margins (i.e. the body's margins) cannot collapse with it's children in [8.3.1 Collapsing margins](https://www.w3.org/TR/CSS22/box.html#collapsing-margins). However, this is odd in markdown to put a blank line at the beginning of the doc and the end so we /do/ collapse with a sort of "invisible margin" when rendering to markdown.
+-->
+<blockquote>
+  <p>paragraph a</p>
+  <p>paragraph b</p>
+</blockquote>
+====
+> paragraph a
+> 
+> paragraph b

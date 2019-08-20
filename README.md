@@ -121,10 +121,10 @@ class BoldPlugin {
     // let the manager use other plugins to layout any child elements:
     const kids = manager.layout(context, element.children)
     // wrap the child elements in the markdown ** syntax for bold/strong:
-    kids.unshift(manager.createBox(context, BoxType.inline, "**"))
-    kids.push(manager.createBox(context, BoxType.inline, "**"))
+    kids.unshift(manager.createBox(BoxType.inline, "**"))
+    kids.push(manager.createBox(BoxType.inline, "**"))
     // return a new box containing everything:
-    return manager.createBox(context, BoxType.inline, "", kids)
+    return manager.createBox(BoxType.inline, "", kids)
   }
 }
 ```
