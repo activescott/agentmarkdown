@@ -87,8 +87,13 @@ jobs:
           rm -rfd ./tests
           ls ./
 
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
       - name: deploy the live demo to the gh-pages branch
-        if: github.ref == 'master' || github.ref == 'live-example-test'
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/live-example-test')
         uses: peaceiris/actions-gh-pages@v1.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
