@@ -1,4 +1,4 @@
-name: Node CI
+name: Build, Test, Deploy
 
 on: [push]
 
@@ -102,6 +102,7 @@ jobs:
           PUBLISH_BRANCH: gh-pages
 
   test_prod_demo:
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/live-example-test')
     needs: [deploy_prod_demo]
     runs-on: ubuntu-latest
     steps:
@@ -109,6 +110,6 @@ jobs:
 
       - name: test live demo prod deployment
         run: |
-          - cd ./example
-          - yarn
-          - yarn run test-prod
+          cd ./example
+          yarn
+          yarn run test-prod
