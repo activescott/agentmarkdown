@@ -32,7 +32,7 @@ jobs:
           echo "Running in directory $PWD (before yarn)"
           yarn # although the default install script in travis runs this for the root, it doesn't for the example (https://docs.travis-ci.com/user/languages/javascript-with-nodejs/)
           yarn build
-          
+
       - name: test demo locally
         run: |
           # test the demo locally:
@@ -50,5 +50,11 @@ jobs:
           rm -f ./jest.config.js
           rm -rfd ./tests
           popd # leave us in our default working directory
-          
 
+      - name: deploy via semantic-release
+        run: |
+          ./node_modules/.bin/semantic-release --dry-run
+
+      - name: TODO - deploy the live demo to the gh-pages branch
+        run: |
+          echo TODO!
