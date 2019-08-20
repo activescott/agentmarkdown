@@ -98,7 +98,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v1.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_DIR: ./examples
+          PUBLISH_DIR: ./example
           PUBLISH_BRANCH: gh-pages
 
   test_prod_demo:
@@ -110,6 +110,7 @@ jobs:
       - name: test live demo prod deployment
         if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/live-example-test')
         run: |
+          echo "Running in directory $PWD"
           cd ./example
           yarn
           yarn run test-prod
