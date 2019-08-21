@@ -68,7 +68,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           echo "GITHUB_ACTION=[${GITHUB_ACTION}]"
-          ./node_modules/.bin/semantic-release
+          ./node_modules/.bin/semantic-release --debug
 
   deploy_prod_demo:
     needs: [build_and_test, deploy_package]
