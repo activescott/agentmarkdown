@@ -116,8 +116,8 @@ export class AgentMarkdown {
 function renderImp(writer: TextWriter, boxes: Iterable<CssBox>): void {
   let isFirst = true
   for (const box of boxes) {
-    console.log("RenderImp:", CssBoxImp.traceBoxTree(box))
-    if (box.type == BoxType.block && !isFirst) {
+    //console.log("RenderImp:", CssBoxImp.traceBoxTree(box))
+    if (box.type === BoxType.block && !isFirst) {
       writer.newLine()
     }
     box.textContent && writer.writeTextContent(box.textContent)

@@ -21,11 +21,6 @@ class BlockquotePlugin implements LayoutPlugin {
     while (needChecked.length > 0) {
       const parent: CssBox = needChecked.pop()
       for (const box of parent.children) {
-        console.debug(
-          box.debugNote,
-          "doesEstablishBlockFormattingContext:",
-          box.doesEstablishBlockFormattingContext
-        )
         if (box.doesEstablishBlockFormattingContext) {
           if (!isEmpty(box.children)) {
             // go one level deeper, as his children (or grandchildren) each will create a new line:
@@ -62,9 +57,9 @@ class BlockquotePlugin implements LayoutPlugin {
   ): CssBox | null {
     const kids = manager.layout(context, element.children)
     const box = manager.createBox(BoxType.block, "", kids, "blockquote")
-    console.log("BEFORE PREFIXES:", CssBoxImp.traceBoxTree(box))
+    //console.log("BEFORE PREFIXES:", CssBoxImp.traceBoxTree(box))
     BlockquotePlugin.insertBlockquotePrefixes(box, context, manager)
-    console.log("AFTER PREFIXES:", CssBoxImp.traceBoxTree(box))
+    //console.log("AFTER PREFIXES:", CssBoxImp.traceBoxTree(box))
     return box
   }
 }
