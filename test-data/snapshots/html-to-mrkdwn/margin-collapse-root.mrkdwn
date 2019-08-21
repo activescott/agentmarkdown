@@ -5,6 +5,6 @@ CSS2 says that the root element's margins (i.e. the body's margins) cannot colla
 This demonstrates the collapsed margin with the root element. Specifically:
 The paragraph has no blank lines above it or below it as the margin is collapsed into it's parent's (invisible margins).
 -->
-paragraph
+paragraph a
 ====
 paragraph a
