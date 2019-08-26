@@ -1,4 +1,4 @@
-name: Build, Test, Deploy
+name: main
 
 on: [push]
 
@@ -59,16 +59,15 @@ jobs:
           yarn
           yarn build
 
-      - name: debug deploy_package
-        uses: actions/bin/debug@master
+      #- name: debug deploy_package
+      #  uses: actions/bin/debug@master
 
       - name: deploy via semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          echo "GITHUB_ACTION=[${GITHUB_ACTION}]"
-          ./node_modules/.bin/semantic-release --debug --dry-run
+          ./node_modules/.bin/semantic-release --debug
 
   deploy_prod_demo:
     needs: [build_and_test, deploy_package]
