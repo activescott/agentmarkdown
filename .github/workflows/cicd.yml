@@ -59,8 +59,8 @@ jobs:
           yarn
           yarn build
 
-      #- name: debug deploy_package
-      #  uses: actions/bin/debug@master
+      - name: debug deploy_package
+        uses: actions/bin/debug@master
 
       - name: deploy via semantic-release
         env:
