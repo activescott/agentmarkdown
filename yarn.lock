@@ -6211,7 +6211,7 @@ sax@^1.2.4:
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
-"semantic-release@github:activescott/semantic-release#fix-github-actions-prefix-x-access-token-JUNK":
+"semantic-release@github:activescott/semantic-release#fix-github-actions-prefix-x-access-token":
   version "0.0.0-development"
   resolved "https://codeload.github.com/activescott/semantic-release/tar.gz/54d4bf221c4ee1b05625bb7d5bfefcdb719da5b6"
   dependencies:
