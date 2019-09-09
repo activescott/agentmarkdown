@@ -104,7 +104,7 @@ export class AgentMarkdown {
       ? defaultPlugins.concat(options.layoutPlugins)
       : defaultPlugins
     const docStructure = layout(dom, plugins)
-    console.log("! docStructure !:\n", CssBoxImp.traceBoxTree(docStructure))
+    //console.log("! docStructure !:\n", CssBoxImp.traceBoxTree(docStructure))
     renderImp(writer, docStructure.children)
     return {
       markdown: writer.toString(),
@@ -115,14 +115,20 @@ export class AgentMarkdown {
 
 function renderImp(writer: TextWriter, boxes: Iterable<CssBox>): void {
   let isFirst = true
+  let lastBoxHasBottomMargin = false
   for (const box of boxes) {
     //console.log("RenderImp:", CssBoxImp.traceBoxTree(box))
+    // vertical margins: Due to CSS collapsing margins, we only want to insert one newLine even if both topMargin on this box and bottomMargin on the last box are set.
+    if ((box.topMargin && !isFirst) || lastBoxHasBottomMargin) {
+      writer.newLine()
+    }
     if (box.type === BoxType.block && !isFirst) {
       writer.newLine()
     }
     box.textContent && writer.writeTextContent(box.textContent)
     box.children && renderImp(writer, box.children)
     isFirst = false
+    lastBoxHasBottomMargin = box.bottomMargin
   }
 }
 
