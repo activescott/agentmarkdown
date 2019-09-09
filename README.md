@@ -1,6 +1,6 @@
 [![npm version](https://badge.fury.io/js/agentmarkdown.svg)](https://www.npmjs.com/package/agentmarkdown)
 [![npm downloads](https://img.shields.io/npm/dt/agentmarkdown.svg?logo=npm)](https://www.npmjs.com/package/agentmarkdown)
-[![Build Status](https://travis-ci.org/activescott/agentmarkdown.svg?branch=master)](https://travis-ci.org/activescott/agentmarkdown)
+[![Build Status](https://github.com/activescott/agentmarkdown/workflows/main/badge.svg)](https://github.com/activescott/agentmarkdown/actions)
 [![Coverage Status](https://coveralls.io/repos/github/activescott/agentmarkdown/badge.svg?branch=master)](https://coveralls.io/github/activescott/agentmarkdown?branch=master)
 [![Greenkeeper badge](https://badges.greenkeeper.io/activescott/agentmarkdown.svg)](https://greenkeeper.io/)
 [![Code Quality](https://api.codacy.com/project/badge/Grade/1b9057ec20bb473295303334bfd2ccd8)](https://app.codacy.com/app/activescott/agentmarkdown?utm_source=github.com&utm_medium=referral&utm_content=activescott/agentmarkdown&utm_campaign=Badge_Grade_Dashboard)
