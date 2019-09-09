@@ -45,7 +45,7 @@ function step3(whitespace: WhitespaceHandling, normalized: string): string {
     whitespace == WhitespaceHandling.normal ||
     whitespace == WhitespaceHandling.nowrap
   ) {
-    // if there are only LF chars, reaplce them with "no character":
+    // if there are only LF chars, replace them with "no character":
     if (
       Array.prototype.every.call(
         normalized,

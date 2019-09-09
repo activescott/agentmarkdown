@@ -77,10 +77,6 @@ export class DefaultLayoutGenerators {
       true,
       true
     )
-    /*
-    const newLineAfter = DefaultLayoutGenerators.newlineBox(context, manager, "p-newLineAfter")
-    return manager.createBox(BoxType.block, "", [content, newLineAfter], "p-principal")
-    */
     return content
   }
   /**
@@ -168,19 +164,11 @@ export class DefaultLayoutGenerators {
         BoxType.block,
         "",
         kids,
-        "h" + headingLevel
+        "h" + headingLevel,
+        true, 
+        true
       )
-      const newLineAfterHeading = DefaultLayoutGenerators.newlineBox(
-        context,
-        manager,
-        "h-newlineafter"
-      )
-      return manager.createBox(
-        BoxType.block,
-        "",
-        [headingLine, newLineAfterHeading],
-        `h${headingLevel}-principal`
-      )
+      return headingLine
     }
   }
   public static emphasisThunk(sequence: string): LayoutGenerator {

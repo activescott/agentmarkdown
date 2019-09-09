@@ -22,9 +22,7 @@ function getAllSnapshots(dir: string = __dirname): string[] {
   return snapshotPaths
 }
 
-//const table = getAllSnapshots()
-//const table = getAllSnapshots().filter(s => s.endsWith("blockquote-heading-and-paragraph.mrkdwn"))
-const table = getAllSnapshots().filter(s => s.endsWith("/margin-collapse.mrkdwn"))
+const table = getAllSnapshots()// .filter(s => s.endsWith("/escaping.mrkdwn"))
 
 describe("snapshots", () => {
   // NOTE: many of the tests were originally from https://github.com/integrations/html-to-mrkdwn/tree/master/test/fixtures, but they were crazy wrong (like headings wrapped in * instead of #). So they're fixed herein.
@@ -32,7 +30,9 @@ describe("snapshots", () => {
     const snapshot: string = await fsPromises.readFile(snapshotPath, {
       encoding: "utf8"
     })
-    const [html, expected] = snapshot.split("\n====\n")
+    let [html, expected] = snapshot.split("\n====\n")
+    // if the html snapshot begins with a comment followed by a LF remove it (because the LF becomes part of the output in some case):
+    html = html.replace(/^<!--[\s\S]+?-->\n/g, "")
     const md = await toMarkdown(html)
     /*
     console.log({

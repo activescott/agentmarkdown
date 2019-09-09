@@ -1,6 +1,5 @@
 import { LayoutPlugin, HtmlNode, LayoutContext, CssBox, BoxType } from "../.."
 import { LayoutManager } from "../../LayoutManager"
-import { CssBoxImp } from "../CssBoxImp"
 
 class BlockquotePlugin implements LayoutPlugin {
   public elementName: string = "blockquote"
