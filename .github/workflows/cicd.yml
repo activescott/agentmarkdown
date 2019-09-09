@@ -59,15 +59,15 @@ jobs:
           yarn
           yarn build
 
-      - name: debug deploy_package
-        uses: actions/bin/debug@master
+      #- name: debug deploy_package
+      #  uses: actions/bin/debug@master
 
       - name: deploy via semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          ./node_modules/.bin/semantic-release --debug
+          ./node_modules/.bin/semantic-release
 
   deploy_prod_demo:
     needs: [build_and_test, deploy_package]
@@ -93,10 +93,10 @@ jobs:
           rm -rfd ./tests
           ls ./
 
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
+      #- name: Dump GitHub context
+      #  env:
+      #    GITHUB_CONTEXT: ${{ toJson(github) }}
+      #  run: echo "$GITHUB_CONTEXT"
 
       - name: deploy the live demo to the gh-pages branch
         # i.e. not a pull request and (master or a test branch)
