@@ -28,3 +28,15 @@ export function decodeHtmlEntities(input: string): string {
   }
   return input
 }
+/**
+ * Returns true if the iterable is empty.
+ */
+export function isEmpty<T>(collection: Iterable<T>): boolean {
+  // Iterable: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol
+  if (!collection || !Reflect.has(collection, Symbol.iterator)) return true
+  const iterator: Iterator<T> = collection[Symbol.iterator]()
+  // Iterator: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol
+  if (!iterator) return true
+  const result = iterator.next()
+  return !result || result.done
+}

@@ -57,13 +57,6 @@ export class DefaultLayoutGenerators {
     return null
   }
 
-  private static newlineBox(
-    context: LayoutContext,
-    manager: LayoutManager,
-    debugNote: string
-  ): CssBox | null {
-    return manager.createBox(BoxType.block, "", [], debugNote)
-  }
   public static paragraph(
     context: LayoutContext,
     manager: LayoutManager,
@@ -165,7 +158,7 @@ export class DefaultLayoutGenerators {
         "",
         kids,
         "h" + headingLevel,
-        true, 
+        true,
         true
       )
       return headingLine

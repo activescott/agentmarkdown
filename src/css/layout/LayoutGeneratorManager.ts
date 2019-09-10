@@ -33,10 +33,6 @@ export default class LayoutGeneratorManager {
     return generators
   }
 
-  private createMarginBox(manager: LayoutManager): CssBox {
-    return manager.createBox(BoxType.block, "", [], "v-margin", false, false)
-  }
-
   /**
    * Generates zero or more CSS boxes for the specified element.
    * See https://www.w3.org/TR/CSS22/visuren.html#propdef-display
@@ -177,19 +173,4 @@ function getElementDisplay(elementTypeName: string): CssDisplayValue {
     display = CssDisplayValue.inline
   }
   return display
-}
-
-class LayoutManagerState {
-  private static MarginNeedsInsertedKey = "lm-margin-ins"
-  constructor(private readonly context: LayoutContext) {}
-  set marginNeedsInserted(value: boolean) {
-    this.context.pushState(LayoutManagerState.MarginNeedsInsertedKey, value)
-  }
-  get marginNeedsInserted(): boolean {
-    const val: boolean = this.context.popState<boolean>(
-      LayoutManagerState.MarginNeedsInsertedKey
-    )
-    // make sure "truthy" converts to explicit true or false
-    return val ? true : false
-  }
 }

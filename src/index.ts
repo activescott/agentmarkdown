@@ -7,7 +7,6 @@ import { LayoutContext } from "./LayoutContext"
 import { DefaultLayoutGenerators } from "./css/layout/DefaultLayoutGenerators"
 import BlockquotePlugin from "./css/layout/BlockquotePlugin"
 import { LayoutManager } from "./LayoutManager"
-import { CssBoxImp } from "./css/CssBoxImp"
 export { LayoutContext } from "./LayoutContext"
 export { HtmlNode } from "./HtmlNode"
 
@@ -104,8 +103,8 @@ export class AgentMarkdown {
       ? defaultPlugins.concat(options.layoutPlugins)
       : defaultPlugins
     const docStructure = layout(dom, plugins)
-    //console.log("! docStructure !:\n", CssBoxImp.traceBoxTree(docStructure))
-    renderImp(writer, docStructure.children)
+    // console.log("! docStructure !:\n", CssBoxImp.traceBoxTree(docStructure))
+    renderImp(writer, new RenderState(), docStructure.children)
     return {
       markdown: writer.toString(),
       images: []
@@ -113,23 +112,41 @@ export class AgentMarkdown {
   }
 }
 
-function renderImp(writer: TextWriter, boxes: Iterable<CssBox>): void {
+function renderImp(
+  writer: TextWriter,
+  state: RenderState,
+  boxes: Iterable<CssBox>
+): void {
   let isFirst = true
-  let lastBoxHasBottomMargin = false
   for (const box of boxes) {
-    //console.log("RenderImp:", CssBoxImp.traceBoxTree(box))
-    // vertical margins: Due to CSS collapsing margins, we only want to insert one newLine even if both topMargin on this box and bottomMargin on the last box are set.
-    if ((box.topMargin && !isFirst) || lastBoxHasBottomMargin) {
+    // insert newline for vertical margins: Due to CSS collapsing margins, we only want to insert one newLine even if both topMargin on this box and bottomMargin on the last box are set.
+    if ((box.topMargin && !isFirst) || state.lastBottomMarginNeedsRendered) {
       writer.newLine()
+      state.lastBottomMarginNeedsRendered = false
+      if (state.activeBlockquoteCount) {
+        writer.writeMarkup("> ")
+      }
     }
     if (box.type === BoxType.block && !isFirst) {
       writer.newLine()
     }
     box.textContent && writer.writeTextContent(box.textContent)
-    box.children && renderImp(writer, box.children)
+    if (box.debugNote === "blockquote") {
+      state.activeBlockquoteCount++
+    }
+    box.children && renderImp(writer, state, box.children)
+    if (box.debugNote === "blockquote") {
+      state.activeBlockquoteCount--
+    }
     isFirst = false
-    lastBoxHasBottomMargin = box.bottomMargin
+    if (box.type === BoxType.block)
+      state.lastBottomMarginNeedsRendered = box.bottomMargin
   }
+}
+
+class RenderState {
+  activeBlockquoteCount: number = 0
+  lastBottomMarginNeedsRendered: boolean = false
 }
 
 /**
