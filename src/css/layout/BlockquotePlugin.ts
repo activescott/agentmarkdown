@@ -1,5 +1,6 @@
 import { LayoutPlugin, HtmlNode, LayoutContext, CssBox, BoxType } from "../.."
 import { LayoutManager } from "../../LayoutManager"
+import { isEmpty } from "../../util"
 
 class BlockquotePlugin implements LayoutPlugin {
   public elementName: string = "blockquote"
@@ -47,6 +48,25 @@ class BlockquotePlugin implements LayoutPlugin {
         manager.createBox(BoxType.inline, "> ", [], "blockquote-prefix")
       )
     })
+    // if there are only inlines as children (e.g. `<blockquote>blockquote</blockquote>`), we need to add one prefix:
+    if (needPrefix.length === 0) {
+      if (
+        !isEmpty(bq.children) &&
+        BlockquotePlugin.hasOnlyInlines(bq.children)
+      ) {
+        bq.prependChild(
+          manager.createBox(BoxType.inline, "> ", [], "blockquote-prefix")
+        )
+      }
+    }
+  }
+
+  private static hasOnlyInlines(boxes: IterableIterator<CssBox>): boolean {
+    let onlyInlines = true
+    for (const box of boxes) {
+      onlyInlines = onlyInlines && box.type === BoxType.inline
+    }
+    return onlyInlines
   }
 
   public layout(
@@ -63,10 +83,4 @@ class BlockquotePlugin implements LayoutPlugin {
   }
 }
 
-function isEmpty<T>(collection: IterableIterator<T>): boolean {
-  for (const item of collection) {
-    return false
-  }
-  return true
-}
 export default BlockquotePlugin

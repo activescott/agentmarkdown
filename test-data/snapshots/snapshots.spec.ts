@@ -3,7 +3,6 @@ import path from "path"
 import { toMarkdown } from "../../tests/support"
 
 function isSnapshotExt(fileName: string): boolean {
-  //return /escaping.mrkdwn$/.test(fileName)
   return fileName.endsWith(".mrkdwn")
 }
 function getAllSnapshots(dir: string = __dirname): string[] {
@@ -22,7 +21,7 @@ function getAllSnapshots(dir: string = __dirname): string[] {
   return snapshotPaths
 }
 
-const table = getAllSnapshots()// .filter(s => s.endsWith("/escaping.mrkdwn"))
+const table = getAllSnapshots() // .filter(s => s.endsWith("/blockquote.mrkdwn"))
 
 describe("snapshots", () => {
   // NOTE: many of the tests were originally from https://github.com/integrations/html-to-mrkdwn/tree/master/test/fixtures, but they were crazy wrong (like headings wrapped in * instead of #). So they're fixed herein.
@@ -30,9 +29,9 @@ describe("snapshots", () => {
     const snapshot: string = await fsPromises.readFile(snapshotPath, {
       encoding: "utf8"
     })
-    let [html, expected] = snapshot.split("\n====\n")
+    const [htmlRaw, expected] = snapshot.split("\n====\n")
     // if the html snapshot begins with a comment followed by a LF remove it (because the LF becomes part of the output in some case):
-    html = html.replace(/^<!--[\s\S]+?-->\n/g, "")
+    const html = htmlRaw.replace(/^<!--[\s\S]+?-->\n/g, "")
     const md = await toMarkdown(html)
     /*
     console.log({
