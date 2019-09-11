@@ -56,7 +56,7 @@ function renderBox(box: CssBox, state: RenderState, writer: TextWriter): void {
 }
 
 export class RenderState {
-  isFirstSibling: boolean
-  activeBlockquoteCount: number = 0
-  lastBottomMarginNeedsRendered: boolean = false
+  public isFirstSibling: boolean
+  public activeBlockquoteCount: number = 0
+  public lastBottomMarginNeedsRendered: boolean = false
 }
