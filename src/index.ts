@@ -1,5 +1,4 @@
 import { parseHtml } from "./parseHtml"
-import { TextWriter } from "./TextWriter"
 import { DefaultTextWriter } from "./DefaultTextWriter"
 import { layout } from "./css"
 import { HtmlNode } from "./HtmlNode"
@@ -7,6 +6,7 @@ import { LayoutContext } from "./LayoutContext"
 import { DefaultLayoutGenerators } from "./css/layout/DefaultLayoutGenerators"
 import BlockquotePlugin from "./css/layout/BlockquotePlugin"
 import { LayoutManager } from "./LayoutManager"
+import { renderBoxes } from "./render"
 export { LayoutContext } from "./LayoutContext"
 export { HtmlNode } from "./HtmlNode"
 
@@ -104,54 +104,12 @@ export class AgentMarkdown {
       : defaultPlugins
     const docStructure = layout(dom, plugins)
     // console.log("! docStructure !:\n", CssBoxImp.traceBoxTree(docStructure))
-    renderImp(writer, new RenderState(), docStructure.children)
+    renderBoxes(writer, docStructure.children)
     return {
       markdown: writer.toString(),
       images: []
     }
   }
-}
-
-function renderImp(
-  writer: TextWriter,
-  state: RenderState,
-  boxes: Iterable<CssBox>
-): void {
-  let isFirst = true
-  for (const box of boxes) {
-    // insert newline for vertical margins: Due to CSS collapsing margins, we only want to insert one newLine even if both topMargin on this box and bottomMargin on the last box are set.
-    if ((box.topMargin && !isFirst) || state.lastBottomMarginNeedsRendered) {
-      writer.newLine()
-      state.lastBottomMarginNeedsRendered = false
-      if (state.activeBlockquoteCount) {
-        writer.writeMarkup("> ")
-      }
-    }
-    if (box.type === BoxType.block && !isFirst) {
-      writer.newLine()
-    }
-    box.textContent && writer.writeTextContent(box.textContent)
-    if (box.debugNote === "blockquote") {
-      state.activeBlockquoteCount++
-    }
-    box.children && renderImp(writer, state, box.children)
-    if (box.debugNote === "blockquote") {
-      state.activeBlockquoteCount--
-    }
-    isFirst = false
-    if (box.bottomMargin) {
-      console.assert(
-        box.type === BoxType.block,
-        "expected only block boxes to have a bottomMargin"
-      )
-      state.lastBottomMarginNeedsRendered = true
-    }
-  }
-}
-
-class RenderState {
-  activeBlockquoteCount: number = 0
-  lastBottomMarginNeedsRendered: boolean = false
 }
 
 /**
@@ -204,11 +162,6 @@ export interface CssBox {
    * NOTE: The bottom margin of a last in-flow child and bottom margin of its parent can be collapsed; thus, a newline is not introduced for margin purposes when the last inflow child and its parent have a bottom margin.
    */
   bottomMargin: boolean
-  /**
-   * Returns true if this box establishes new block formatting contexts for it's contents as explained in [9.4.1 Block formatting contexts](https://www.w3.org/TR/CSS22/visuren.html#normal-flow).
-   * See also https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flow_Layout/Intro_to_formatting_contexts
-   */
-  doesEstablishBlockFormattingContext: boolean
   addChild(box: CssBox): void
   prependChild(box: CssBox): void
 }

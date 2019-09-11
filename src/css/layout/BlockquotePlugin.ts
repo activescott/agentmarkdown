@@ -21,7 +21,7 @@ class BlockquotePlugin implements LayoutPlugin {
     while (needChecked.length > 0) {
       const parent: CssBox = needChecked.pop()
       for (const box of parent.children) {
-        if (box.doesEstablishBlockFormattingContext) {
+        if (box.type === BoxType.block) {
           if (!isEmpty(box.children)) {
             // go one level deeper, as his children (or grandchildren) each will create a new line:
             needChecked.push(box)
@@ -34,7 +34,7 @@ class BlockquotePlugin implements LayoutPlugin {
           // this should /really/ never happen unless there is a bug here so leaving the console
           // eslint-disable-next-line no-console
           console.assert(
-            parent.doesEstablishBlockFormattingContext,
+            parent.type === BoxType.block,
             `Expected the parent '${parent.debugNote}' to be establishing a new block formatting context`
           )
           //Array.prototype.forEach.call(parent.children, b => needPrefix.push(b))

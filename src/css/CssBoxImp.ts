@@ -78,10 +78,6 @@ export class CssBoxImp implements CssBox {
     return this.childrenBoxGenerator()
   }
 
-  public get doesEstablishBlockFormattingContext(): boolean {
-    return this.type === BoxType.block || this.containsBlockBoxes
-  }
-
   private get childBoxTypes(): { hasBlock: boolean; hasInline: boolean } {
     if (this.childBoxTypeCache.needsCalculated) {
       let hasBlock = false
