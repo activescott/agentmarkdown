@@ -7,5 +7,5 @@ it("9.2.1.1 Anonymous block boxes", async () => {
    */
   const html = "Some <b>text</b>\n<p>More text</p>"
   const md = await toMarkdown(html)
-  expect(md).toEqual("Some **text**\nMore text")
+  expect(md).toEqual("Some **text**\n\nMore text")
 })
