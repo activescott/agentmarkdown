@@ -47,6 +47,8 @@ rules:
       ignoreProperties: true
   "@typescript-eslint/member-ordering":
     - warn
+  "@typescript-eslint/explicit-member-accessibility":
+    - error
 overrides:
   - files: "**/*.spec.ts"
     env:
