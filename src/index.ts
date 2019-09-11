@@ -139,8 +139,10 @@ function renderImp(
       state.activeBlockquoteCount--
     }
     isFirst = false
-    if (box.type === BoxType.block)
-      state.lastBottomMarginNeedsRendered = box.bottomMargin
+    if (box.bottomMargin) {
+      console.assert(box.type === BoxType.block, "expected only block boxes to have a bottomMargin")
+      state.lastBottomMarginNeedsRendered = true
+    }
   }
 }
 
@@ -201,6 +203,7 @@ export interface CssBox {
   bottomMargin: boolean
   /**
    * Returns true if this box establishes new block formatting contexts for it's contents as explained in [9.4.1 Block formatting contexts](https://www.w3.org/TR/CSS22/visuren.html#normal-flow).
+   * See also https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flow_Layout/Intro_to_formatting_contexts
    */
   doesEstablishBlockFormattingContext: boolean
   addChild(box: CssBox): void
