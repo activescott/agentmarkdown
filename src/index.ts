@@ -54,9 +54,10 @@ const defaultPlugins: LayoutPlugin[] = [
   { elementName: "h6", layout: DefaultLayoutGenerators.headingThunk(6) },
   /* eslint-enable no-magic-numbers */
   { elementName: "hr", layout: DefaultLayoutGenerators.hr },
+  { elementName: "html", layout: DefaultLayoutGenerators.blockThunk("html") },
   { elementName: "i", layout: DefaultLayoutGenerators.emphasisThunk("*") },
   { elementName: "em", layout: DefaultLayoutGenerators.emphasisThunk("*") },
-  { elementName: "p", layout: DefaultLayoutGenerators.blockThunk("p") },
+  { elementName: "p", layout: DefaultLayoutGenerators.paragraph },
   { elementName: "pre", layout: DefaultLayoutGenerators.pre },
   { elementName: "s", layout: DefaultLayoutGenerators.emphasisThunk("~") },
   { elementName: "strike", layout: DefaultLayoutGenerators.emphasisThunk("~") },
@@ -102,8 +103,8 @@ export class AgentMarkdown {
       ? defaultPlugins.concat(options.layoutPlugins)
       : defaultPlugins
     const docStructure = layout(dom, plugins)
-    //console.log("! docStructure !:\n", CssBoxImp.traceBoxTree(docStructure))
-    renderImp(writer, docStructure.children)
+    // console.log("! docStructure !:\n", CssBoxImp.traceBoxTree(docStructure))
+    renderImp(writer, new RenderState(), docStructure.children)
     return {
       markdown: writer.toString(),
       images: []
@@ -111,16 +112,46 @@ export class AgentMarkdown {
   }
 }
 
-function renderImp(writer: TextWriter, boxes: Iterable<CssBox>): void {
+function renderImp(
+  writer: TextWriter,
+  state: RenderState,
+  boxes: Iterable<CssBox>
+): void {
   let isFirst = true
   for (const box of boxes) {
-    if (box.type == BoxType.block && !isFirst) {
+    // insert newline for vertical margins: Due to CSS collapsing margins, we only want to insert one newLine even if both topMargin on this box and bottomMargin on the last box are set.
+    if ((box.topMargin && !isFirst) || state.lastBottomMarginNeedsRendered) {
+      writer.newLine()
+      state.lastBottomMarginNeedsRendered = false
+      if (state.activeBlockquoteCount) {
+        writer.writeMarkup("> ")
+      }
+    }
+    if (box.type === BoxType.block && !isFirst) {
       writer.newLine()
     }
     box.textContent && writer.writeTextContent(box.textContent)
-    box.children && renderImp(writer, box.children)
+    if (box.debugNote === "blockquote") {
+      state.activeBlockquoteCount++
+    }
+    box.children && renderImp(writer, state, box.children)
+    if (box.debugNote === "blockquote") {
+      state.activeBlockquoteCount--
+    }
     isFirst = false
+    if (box.bottomMargin) {
+      console.assert(
+        box.type === BoxType.block,
+        "expected only block boxes to have a bottomMargin"
+      )
+      state.lastBottomMarginNeedsRendered = true
+    }
   }
+}
+
+class RenderState {
+  activeBlockquoteCount: number = 0
+  lastBottomMarginNeedsRendered: boolean = false
 }
 
 /**
@@ -162,7 +193,20 @@ export interface CssBox {
   textContent: string
   readonly debugNote: string
   /**
+   * True if this box requires a top margin
+   * NOTE: If two boxes have [adjoining margins](https://www.w3.org/TR/CSS22/box.html#x28) the output should have only a single new line between two boxes to support [CSS's Collapsing Margins](https://www.w3.org/TR/CSS22/box.html#collapsing-margins).
+   * NOTE: The top margin of a first in-flow child and top margin of its parent can be collapsed; thus, a newline is not introduced for margin purposes when the first inflow child and its parent have a top margin.
+   */
+  topMargin: boolean
+  /**
+   * True if this box requires a bottom margin.
+   * NOTE: If two boxes have [adjoining margins](https://www.w3.org/TR/CSS22/box.html#x28) the output should have only a single new line between two boxes to support [CSS's Collapsing Margins](https://www.w3.org/TR/CSS22/box.html#collapsing-margins).
+   * NOTE: The bottom margin of a last in-flow child and bottom margin of its parent can be collapsed; thus, a newline is not introduced for margin purposes when the last inflow child and its parent have a bottom margin.
+   */
+  bottomMargin: boolean
+  /**
    * Returns true if this box establishes new block formatting contexts for it's contents as explained in [9.4.1 Block formatting contexts](https://www.w3.org/TR/CSS22/visuren.html#normal-flow).
+   * See also https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flow_Layout/Intro_to_formatting_contexts
    */
   doesEstablishBlockFormattingContext: boolean
   addChild(box: CssBox): void

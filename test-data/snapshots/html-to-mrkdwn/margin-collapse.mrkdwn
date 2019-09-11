@@ -1,0 +1,12 @@
+<!--
+This is all about margins and collapsing margins in particular: https://www.w3.org/TR/CSS22/box.html#margin-properties
+This one demonstrates the collapsed margin between the two paragraphs. Specifically:
+1. There is a line between the two paragraphs
+2. There is only one line, rather than two (one for the bottom margin of paragraph a, and one for the top margin of paragraph b).
+-->
+<p>paragraph a</p>
+<p>paragraph b</p>
+====
+paragraph a
+
+paragraph b

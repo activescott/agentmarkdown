@@ -14,9 +14,9 @@ const customEmphasisLayout: LayoutGenerator = (
   element: HtmlNode
 ): CssBox | null => {
   const kids = manager.layout(context, element.children)
-  kids.unshift(manager.createBox(context, BoxType.inline, "_"))
-  kids.push(manager.createBox(context, BoxType.inline, "_"))
-  return manager.createBox(context, BoxType.inline, "", kids)
+  kids.unshift(manager.createBox(BoxType.inline, "_"))
+  kids.push(manager.createBox(BoxType.inline, "_"))
+  return manager.createBox(BoxType.inline, "", kids)
 }
 
 it("should allow overriding existing elements with custom LayoutPlugin", async () => {

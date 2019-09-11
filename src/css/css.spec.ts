@@ -48,7 +48,7 @@ describe("CSS Visual Formatting Model", () => {
          * ...by creating an "anonymous" block box for "Some text", even though it would normally be an inline box.
          */
         const html = `<div>Some text<p>More text</p></div>`
-        const expected = `Some text\nMore text`
+        const expected = `Some text\n\nMore text`
         const md = await toMarkdown(html)
         //console.log({ ex: expected })
         //console.log({ md })
