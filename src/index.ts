@@ -140,7 +140,10 @@ function renderImp(
     }
     isFirst = false
     if (box.bottomMargin) {
-      console.assert(box.type === BoxType.block, "expected only block boxes to have a bottomMargin")
+      console.assert(
+        box.type === BoxType.block,
+        "expected only block boxes to have a bottomMargin"
+      )
       state.lastBottomMarginNeedsRendered = true
     }
   }
