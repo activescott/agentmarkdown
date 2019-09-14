@@ -95,7 +95,7 @@ export interface LayoutPlugin {
 }
 ```
 
-The `LayoutGenerator` is a single function that performs a [CSS2 box generation layout algorithm](https://www.w3.org/TR/CSS22/visuren.html#box-gen) on the an HTML element. Essentially it creates zero or more boxes for the given element that AgentMarkdown will render to text. A box can contain text content and/or other boxes, and eacn box has a type of `inline` or `block`. Inline blocks are laid out horizontally. Block boxes are laid out vertically (i.e. they have new line characters before and after their contents). The `LayoutGenerator` function definition is as follows:
+The `LayoutGenerator` is a single function that performs a [CSS2 box generation layout algorithm](https://www.w3.org/TR/CSS22/visuren.html#box-gen) on the an HTML element. Essentially it creates zero or more boxes for the given element that AgentMarkdown will render to text. A box can contain text content and/or other boxes, and each box has a type of `inline` or `block`. Inline blocks are laid out horizontally. Block boxes are laid out vertically (i.e. they have new line characters before and after their contents). The `LayoutGenerator` function definition is as follows:
 
 ```TypeScript
 export interface LayoutGenerator {
@@ -142,7 +142,7 @@ const result = await AgentMarkdown.render({
 
 ## Show your support
 
-Give a ⭐️ if this project helped you!
+Please give a ⭐️ if this project helped you!
 
 ## Contributing 🤝
 
