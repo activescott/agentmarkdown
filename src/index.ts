@@ -8,6 +8,7 @@ import BlockquotePlugin from "./css/layout/BlockquotePlugin"
 import { LayoutManager } from "./LayoutManager"
 import { renderBoxes } from "./render"
 import { version } from "../package.json"
+import { ImagePlugin } from "./css/layout/ImagePlugin"
 export { LayoutContext } from "./LayoutContext"
 export { HtmlNode } from "./HtmlNode"
 
@@ -55,6 +56,7 @@ const defaultPlugins: LayoutPlugin[] = [
   { elementName: "h6", layout: DefaultLayoutGenerators.headingThunk(6) },
   /* eslint-enable no-magic-numbers */
   { elementName: "hr", layout: DefaultLayoutGenerators.hr },
+  new ImagePlugin(),
   { elementName: "html", layout: DefaultLayoutGenerators.blockThunk("html") },
   { elementName: "i", layout: DefaultLayoutGenerators.emphasisThunk("*") },
   { elementName: "em", layout: DefaultLayoutGenerators.emphasisThunk("*") },
