@@ -1,0 +1,7 @@
+<!--
+  https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#Examples
+  no alt is ok too
+-->
+<img src="https://developer.mozilla.org/static/img/favicon144.png">
+====
+![](https://developer.mozilla.org/static/img/favicon144.png)

@@ -1,0 +1,7 @@
+<!--
+  https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#Examples
+  ignore the class
+-->
+<img src="https://developer.mozilla.org/static/img/favicon144.png" class="logo" alt="MDN logo">
+====
+![MDN logo](https://developer.mozilla.org/static/img/favicon144.png)

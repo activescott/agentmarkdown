@@ -1,0 +1,6 @@
+<!--
+https://spec.commonmark.org/0.29/#example-569
+-->
+<img src="train.jpg" alt="foo bar" title="train &amp; tracks" />
+====
+![foo bar](train.jpg "train &amp; tracks")
