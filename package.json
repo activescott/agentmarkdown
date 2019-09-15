@@ -10,7 +10,8 @@
     "agentmarkdown": "dist/cjs/cli/agentmarkdown.js"
   },
   "files": [
-    "dist/"
+    "dist/",
+    "scripts/"
   ],
   "author": {
     "name": "Scott Willeke",
@@ -33,7 +34,8 @@
     "test": "jest --coverage",
     "dev": "jest --watch",
     "pretest": "yarn run lint",
-    "coverage-publish": "cat ./coverage/lcov.info | coveralls"
+    "coverage-publish": "cat ./coverage/lcov.info | coveralls",
+    "postinstall": "node scripts/postInstall.js"
   },
   "devDependencies": {
     "@semantic-release/github": "5.5.0-beta.1",
