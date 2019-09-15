@@ -1,3 +1,4 @@
+/*global require, process*/
 const EOL = require("os").EOL
 
 const UNDERLINE = "\x1b[4m"
