@@ -20,6 +20,6 @@
     "test-prod": "TEST_URL='https://activescott.github.io/agentmarkdown/' yarn test"
   },
   "dependencies": {
-    "agentmarkdown": "latest"
+    "agentmarkdown": "../"
   }
 }
