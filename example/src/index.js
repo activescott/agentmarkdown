@@ -5,10 +5,15 @@ window.addEventListener("load", docLoad)
 let htmlElement
 function docLoad() {
   console.log("docLoad!")
-  console.log("Using AgentMarkdown version", AgentMarkdown.version)
+  updateVersion()
   htmlElement = document.querySelector("#html")
   htmlElement.addEventListener("input", htmlUpdate)
   htmlUpdate()
+}
+
+function updateVersion() {
+  console.log("Using AgentMarkdown version", AgentMarkdown.version)
+  document.querySelector("#pkg-version").innerText = AgentMarkdown.version
 }
 
 async function htmlUpdate() {
