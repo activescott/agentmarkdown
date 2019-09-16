@@ -36,7 +36,7 @@
     "pretest": "yarn run lint",
     "coverage-publish": "cat ./coverage/lcov.info | coveralls",
     "postinstall": "node scripts/postInstall.js",
-    "postversion": "node scripts/postVersion.js"
+    "prepack": "node scripts/prepack.js"
   },
   "devDependencies": {
     "@semantic-release/github": "5.5.0-beta.1",
