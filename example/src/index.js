@@ -5,6 +5,7 @@ window.addEventListener("load", docLoad)
 let htmlElement
 function docLoad() {
   console.log("docLoad!")
+  console.log("Using AgentMarkdown version", AgentMarkdown.version)
   htmlElement = document.querySelector("#html")
   htmlElement.addEventListener("input", htmlUpdate)
   htmlUpdate()
@@ -19,7 +20,6 @@ async function htmlUpdate() {
     ".panel.output .content"
   )
   for (const e of outputs) {
-    console.log("e", e)
     e.value = markdown
   }
 }
