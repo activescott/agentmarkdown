@@ -89,6 +89,7 @@ const defaultPlugins: LayoutPlugin[] = [
 export class AgentMarkdown {
   /**
    * Returns the version of the package this class was loaded from.
+   * @deprecated use `import * as pkg from "agentmarkdown/package.json"` or `const pkg = require("agentmarkdown/package.json")`
    */
   public static get version(): string {
     return version

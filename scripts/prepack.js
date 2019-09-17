@@ -2,7 +2,7 @@ const fs = require("fs")
 const path = require("path")
 const execSync = require("child_process").execSync
 
-// All this shenanigans is due to the fact that if we reference package.json directly from TS, tsc puts it in the /dist folder. When `npm pack` finds package.json in the dist folder it stops including whole directories (interestingly `yarn pack` doesn't have this issue).
+// All this is to support AgentMarkdown.version. All the shenanigans is due to the fact that if we reference package.json directly from TS, tsc puts it in the /dist folder. When `npm pack` finds package.json in the dist folder it stops including whole directories (interestingly `yarn pack` doesn't have this issue).
 
 function loadPackage() {
   const packagePath = path.join(__dirname, "..", "package.json")
