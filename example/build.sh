@@ -19,3 +19,4 @@ yarn build
 # return to root/package dir
 cd ..
 echo "all built. current dir should be package dir. Is: $PWD"
+# trigger build
