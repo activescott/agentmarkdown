@@ -5,11 +5,13 @@ pushd .
 cd $THISDIR
 echo "current dir is now: $PWD"
 
-pushd .
+# go to package dir & build package
 cd ..
+echo "current dir should be package dir. Is: $PWD"
 yarn
 yarn build
-popd
+# now that package is built, return to example dir and build example
+cd $THISDIR
+echo "current dir should be example dir. Is: $PWD"
 yarn
 yarn build
-popd .
