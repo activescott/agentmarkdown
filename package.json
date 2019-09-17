@@ -2,7 +2,7 @@
   "name": "agentmarkdown",
   "description": "An accurate, extensible, and fast HTML-to-markdown converter.",
   "homepage": "https://github.com/activescott/agentmarkdown",
-  "version": "0.0.2",
+  "version": "0.0.0",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
   "types": "dist/es/index.d.ts",
@@ -35,8 +35,7 @@
     "dev": "jest --watch",
     "pretest": "yarn run lint",
     "coverage-publish": "cat ./coverage/lcov.info | coveralls",
-    "postinstall": "node scripts/postInstall.js",
-    "prepack": "node scripts/prepack.js"
+    "postinstall": "node scripts/postInstall.js"
   },
   "devDependencies": {
     "@semantic-release/github": "5.5.0-beta.1",

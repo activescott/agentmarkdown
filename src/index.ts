@@ -7,7 +7,6 @@ import { DefaultLayoutGenerators } from "./css/layout/DefaultLayoutGenerators"
 import BlockquotePlugin from "./css/layout/BlockquotePlugin"
 import { LayoutManager } from "./LayoutManager"
 import { renderBoxes } from "./render"
-import { version } from "./pkg.json"
 import { ImagePlugin } from "./css/layout/ImagePlugin"
 export { LayoutContext } from "./LayoutContext"
 export { HtmlNode } from "./HtmlNode"
@@ -87,14 +86,6 @@ const defaultPlugins: LayoutPlugin[] = [
  * - Allows overriding the MD generators for nodes so the user can customize output.
  */
 export class AgentMarkdown {
-  /**
-   * Returns the version of the package this class was loaded from.
-   * @deprecated use `import * as pkg from "agentmarkdown/package.json"` or `const pkg = require("agentmarkdown/package.json")`
-   */
-  public static get version(): string {
-    return version
-  }
-
   /**
    * @deprecated Use @see render instead.
    */
