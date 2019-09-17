@@ -3,7 +3,7 @@
   "name": "agentmarkdown-example",
   "builds": [
     {
-      "src": "example/package.json",
+      "src": "example/build.sh",
       "use": "@now/static-build",
       "config": { "distDir": "example/" }
     }
