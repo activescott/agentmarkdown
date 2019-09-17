@@ -20,4 +20,9 @@ describe(`example test of ${test_url}`, () => {
     const markdownValue = await page.$eval("#markdown", node => node.value)
     expect(markdownValue).toMatch(/# Formatting #/)
   })
+
+  it("should have a valid version", async () => {
+    const ver = await page.$eval("#pkg-version", node => node.innerText)
+    expect(ver).toMatch(/^(\d+\.)?(\d+\.)?(\*|\d+)$/)
+  })
 })

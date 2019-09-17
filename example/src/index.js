@@ -1,4 +1,5 @@
 import { AgentMarkdown } from "agentmarkdown"
+import * as pkg from "agentmarkdown/package.json"
 
 window.addEventListener("load", docLoad)
 
@@ -12,8 +13,8 @@ function docLoad() {
 }
 
 function updateVersion() {
-  console.log("Using AgentMarkdown version", AgentMarkdown.version)
-  document.querySelector("#pkg-version").innerText = AgentMarkdown.version
+  console.log("Using AgentMarkdown version", pkg.version)
+  document.querySelector("#pkg-version").innerText = pkg.version
 }
 
 async function htmlUpdate() {
