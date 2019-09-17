@@ -3,7 +3,29 @@
   <head>
     <meta charset="utf-8" />
     <script src="main.js" async="true" type="module"></script>
-
+    <!-- bootstrap https://getbootstrap.com/docs/4.3/getting-started/download/ -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <!-- /bootstrap -->
     <style>
       .panel {
         float: left;
@@ -16,16 +38,66 @@
     </style>
   </head>
   <body>
-    <p>
-      This is a demonstration of AgentMarkdown, an accurate, extensible, and
-      fast HTML-to-markdown converter. Learn more at
-      <a href="https://github.com/activescott/agentmarkdown"
-        >https://github.com/activescott/agentmarkdown</a
-      >.
-    </p>
-    <div id="input" class="panel input">
-      <p>Input HTML below that should be converted to markdown:</p>
-      <textarea id="html" class="content" placeholder="Enter html here">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">AgentMarkdown</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#"
+              >Demo <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="https://www.npmjs.com/package/agentmarkdown"
+              >Package</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="https://github.com/activescott/agentmarkdown"
+              >Code</a
+            >
+          </li>
+          <li class="nav-item">
+            <small
+              class="nav-link disabled font-weight-lighter"
+              aria-disabled="true"
+              >currently running package version
+              <span id="pkg-version">?</span></small
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container">
+      <p class="lead">
+        This is a demonstration of AgentMarkdown, an accurate, extensible, and
+        fast HTML-to-markdown converter.
+      </p>
+      <form>
+        <div id="input" class="panel input form-group">
+          <label for="html"
+            >Input HTML below that should be converted to markdown:</label
+          >
+          <textarea
+            id="html"
+            class="content form-control"
+            placeholder="Enter html here"
+          >
 <h1>Formatting</h1>
 Both <b>bold</b> and <i>italic</i> are supported (as well as <em>emphasis</em>).
 
@@ -58,11 +130,19 @@ Both <b>bold</b> and <i>italic</i> are supported (as well as <em>emphasis</em>).
   </li>
   <li>three</li>
 </ol>
-      </textarea>
-    </div>
-    <div id="output" class="panel output">
-      <p>Below is the markdown output:</p>
-      <textarea id="markdown" class="content" readonly="true"></textarea>
+          </textarea>
+        </div>
+      </form>
+      <form>
+        <div id="output" class="panel output form-group">
+          <label for="markdown">Below is the markdown output:</label>
+          <textarea
+            id="markdown"
+            class="content form-control"
+            readonly
+          ></textarea>
+        </div>
+      </form>
     </div>
   </body>
 </html>

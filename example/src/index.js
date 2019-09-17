@@ -1,13 +1,20 @@
 import { AgentMarkdown } from "agentmarkdown"
+import * as pkg from "agentmarkdown/package.json"
 
 window.addEventListener("load", docLoad)
 
 let htmlElement
 function docLoad() {
   console.log("docLoad!")
+  updateVersion()
   htmlElement = document.querySelector("#html")
   htmlElement.addEventListener("input", htmlUpdate)
   htmlUpdate()
+}
+
+function updateVersion() {
+  console.log("Using AgentMarkdown version", pkg.version)
+  document.querySelector("#pkg-version").innerText = pkg.version
 }
 
 async function htmlUpdate() {
@@ -19,7 +26,6 @@ async function htmlUpdate() {
     ".panel.output .content"
   )
   for (const e of outputs) {
-    console.log("e", e)
     e.value = markdown
   }
 }
