@@ -3,6 +3,9 @@
   "description": "An accurate, extensible, and fast HTML-to-markdown converter.",
   "homepage": "https://github.com/activescott/agentmarkdown",
   "version": "0.0.0",
+  "engines": {
+    "node": "^10 || ^12"
+  },
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
   "types": "dist/es/index.d.ts",
