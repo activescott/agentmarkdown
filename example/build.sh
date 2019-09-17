@@ -7,6 +7,7 @@ echo "current dir is now: $PWD"
 
 pushd .
 cd ..
+yarn
 yarn build
 popd
 yarn
