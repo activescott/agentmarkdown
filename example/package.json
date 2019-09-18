@@ -1,5 +1,8 @@
 {
   "private": true,
+  "engines": {
+    "node": "^10 || ^12"
+  },
   "devDependencies": {
     "@types/expect-puppeteer": "^3.3.1",
     "@types/jest-environment-puppeteer": "^4.0.0",
@@ -12,7 +15,7 @@
     "webpack-dev-server": "^3.7.2"
   },
   "scripts": {
-    "build": "./node_modules/.bin/webpack-cli --output-path ./",
+    "build": "./node_modules/.bin/webpack-cli",
     "start": "node_modules/.bin/webpack-dev-server",
     "dev": "(sleep 2s && open http://localhost:8080/) & node_modules/.bin/webpack-dev-server",
     "test": "./node_modules/.bin/jest ./tests/test.ts",
