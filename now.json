@@ -1,6 +1,7 @@
 {
   "version": 2,
   "name": "agentmarkdown-example",
+  "alias": "agentmarkdown.now.sh",
   "builds": [
     {
       "src": "example/build.sh",
@@ -9,6 +10,7 @@
     }
   ],
   "routes": [
-    { "src": "/", "dest": "example/index.html" }
+    { "src": "/", "dest": "example/index.html" },
+    { "src": "/main.js", "dest": "example/main.js" }
   ]
 }
