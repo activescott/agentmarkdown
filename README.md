@@ -67,7 +67,7 @@ The above commands assume you installed agentmarkdown with `yarn global add agen
 
 ## Live Example
 
-You can view the live online web example at [https://activescott.github.io/agentmarkdown/](https://activescott.github.io/agentmarkdown/).
+You can view the live online web example at [https://agentmarkdown.now.sh](https://agentmarkdown.now.sh).
 
 You can build and the web example locally with the following commands:
 
