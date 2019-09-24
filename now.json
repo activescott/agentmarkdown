@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "name": "agentmarkdown-example",
+  "alias": "agentmarkdown.now.sh",
+  "builds": [
+    {
+      "src": "example/build.sh",
+      "use": "@now/static-build",
+      "config": { "distDir": "dist" }
+    }
+  ],
+  "routes": [
+    { "src": "/", "dest": "example/index.html" },
+    { "src": "/main.js", "dest": "example/main.js" }
+  ]
+}

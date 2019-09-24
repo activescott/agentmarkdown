@@ -3,6 +3,9 @@
   "description": "An accurate, extensible, and fast HTML-to-markdown converter.",
   "homepage": "https://github.com/activescott/agentmarkdown",
   "version": "0.0.0",
+  "engines": {
+    "node": "^10 || ^12"
+  },
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
   "types": "dist/es/index.d.ts",
@@ -25,14 +28,14 @@
   "license": "MPL-2.0",
   "scripts": {
     "cm": "git-cz",
-    "build:cjs": "rm -rfd ./dist/cjs; tsc --project tsconfig.cjs.json",
-    "build:es": "rm -rfd ./dist/es; tsc --project tsconfig.es.json",
+    "build:cjs": "rm -rfd ./dist/cjs; ./node_modules/.bin/tsc --project tsconfig.cjs.json",
+    "build:es": "rm -rfd ./dist/es; ./node_modules/.bin/tsc --project tsconfig.es.json",
     "build": "rm -rfd ./dist && yarn run build:es && yarn run build:cjs",
-    "lint": "prettier -l \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\" && yarn run eslint",
+    "lint": "./node_modules/.bin/prettier -l \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\" && yarn run eslint",
     "eslint": "./node_modules/.bin/eslint . --ext .ts",
-    "lint-fix": "yarn run eslint --fix && prettier --write \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\"",
-    "test": "jest --coverage",
-    "dev": "jest --watch",
+    "lint-fix": "yarn run eslint --fix && ./node_modules/.bin/prettier --write \"{,!(node_modules)/**/}*.{ts,tsx,js,jsx,md,yml,json,html}\"",
+    "test": "./node_modules/.bin/jest --coverage",
+    "dev": "./node_modules/.bin/jest --watch",
     "pretest": "yarn run lint",
     "coverage-publish": "cat ./coverage/lcov.info | coveralls",
     "postinstall": "node scripts/postInstall.js"
