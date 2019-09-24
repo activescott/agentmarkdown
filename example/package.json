@@ -1,5 +1,8 @@
 {
   "private": true,
+  "engines": {
+    "node": "^10 || ^12"
+  },
   "devDependencies": {
     "@types/expect-puppeteer": "^3.3.1",
     "@types/jest-environment-puppeteer": "^4.0.0",
@@ -8,18 +11,18 @@
     "jest-puppeteer": "^4.3.0",
     "puppeteer": "^1.19.0",
     "webpack": "^4.40.2",
-    "webpack-cli": "^3.3.5",
+    "webpack-cli": "^3.3.9",
     "webpack-dev-server": "^3.7.2"
   },
   "scripts": {
-    "build": "./node_modules/.bin/webpack-cli --output-path ./",
+    "build": "./node_modules/.bin/webpack-cli",
     "start": "node_modules/.bin/webpack-dev-server",
     "dev": "(sleep 2s && open http://localhost:8080/) & node_modules/.bin/webpack-dev-server",
     "test": "./node_modules/.bin/jest ./tests/test.ts",
     "test-local": "TEST_URL='http://localhost:8080' yarn test",
-    "test-prod": "TEST_URL='https://activescott.github.io/agentmarkdown/' yarn test"
+    "test-prod": "TEST_URL='https://agentmarkdown.now.sh/' yarn test"
   },
   "dependencies": {
-    "agentmarkdown": "latest"
+    "agentmarkdown": "../"
   }
 }

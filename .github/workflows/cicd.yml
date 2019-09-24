@@ -18,12 +18,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: build
+      - name: build package
         run: |
           yarn
           yarn build
 
-      - name: test
+      - name: test package
         run: |
           yarn test
 
@@ -68,54 +68,3 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           ./node_modules/.bin/semantic-release
-
-  deploy_prod_demo:
-    needs: [build_and_test, deploy_package]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-
-      - name: build demo
-        run: |
-          cd ./example
-          echo "Running in directory $PWD (before yarn)"
-          yarn # although the default install script in travis runs this for the root, it doesn't for the example (https://docs.travis-ci.com/user/languages/javascript-with-nodejs/)
-          yarn build
-
-      - name: cleanup unnecessary files for gh-pages branch
-        run: |
-          cd ./example
-          rm -rfd ./node_modules
-          rm -rfd ./src
-          rm -f ./package.json
-          rm -f ./yarn.lock
-          rm -f ./jest.config.js
-          rm -rfd ./tests
-          ls ./
-
-      #- name: Dump GitHub context
-      #  env:
-      #    GITHUB_CONTEXT: ${{ toJson(github) }}
-      #  run: echo "$GITHUB_CONTEXT"
-
-      - name: deploy the live demo to the gh-pages branch
-        # i.e. not a pull request and (master or a test branch)
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/live-example-test')
-        uses: peaceiris/actions-gh-pages@v1.1.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_DIR: ./example
-          PUBLISH_BRANCH: gh-pages
-
-  test_prod_demo:
-    needs: [deploy_prod_demo]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-
-      - name: test live demo prod deployment
-        run: |
-          echo "Running in directory $PWD"
-          cd ./example
-          yarn
-          yarn run test-prod

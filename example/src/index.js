@@ -1,4 +1,5 @@
 import { AgentMarkdown } from "agentmarkdown"
+import * as pkg from "agentmarkdown/package.json"
 
 window.addEventListener("load", docLoad)
 
@@ -19,7 +20,6 @@ async function htmlUpdate() {
     ".panel.output .content"
   )
   for (const e of outputs) {
-    console.log("e", e)
     e.value = markdown
   }
 }
