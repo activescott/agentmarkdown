@@ -9,7 +9,7 @@ export class ListState {
   private static readonly ItemCountKey = "ol-item-count-stack"
   private static readonly ListTypeKey = "list-type-key-stack"
 
-  public constructor(readonly context: LayoutContext) {}
+  public constructor(private readonly context: LayoutContext) {}
 
   public beginList(listType: ListType): void {
     // track list type:

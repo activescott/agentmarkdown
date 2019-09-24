@@ -8,7 +8,7 @@ export class StyleState {
   private static readonly WhitespaceHandlingKey: string =
     "style-whitespace-handling"
 
-  public constructor(readonly context: LayoutContext) {}
+  public constructor(private readonly context: LayoutContext) {}
 
   public pushWhitespaceHandling(handling: WhitespaceHandling): void {
     this.context.pushState(StyleState.WhitespaceHandlingKey, handling)
