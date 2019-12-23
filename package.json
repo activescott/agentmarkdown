@@ -4,7 +4,7 @@
   "homepage": "https://github.com/activescott/agentmarkdown",
   "version": "0.0.0",
   "engines": {
-    "node": "^10 || ^12",
+    "node": "^10 || >=12",
     "yarn": "^1.17.3"
   },
   "main": "dist/cjs/index.js",
@@ -43,7 +43,6 @@
   },
   "devDependencies": {
     "@activescott/eslint-config": "^1.0.1",
-    "@semantic-release/github": "5.5.5",
     "@types/jest": "^24.0.15",
     "@types/node": "^12.7.2",
     "@typescript-eslint/eslint-plugin": "^2.3.1",
@@ -55,7 +54,7 @@
     "eslint-config-prettier": "^6.3.0",
     "jest": "^24.8.0",
     "prettier": "^1.18.2",
-    "semantic-release": "=16.0.0-beta.23",
+    "semantic-release": ">=16.0.0-beta",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.2"
