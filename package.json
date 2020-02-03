@@ -55,7 +55,7 @@
     "jest": "^24.8.0",
     "prettier": "^1.18.2",
     "semantic-release": ">=16.0.0-beta",
-    "ts-jest": "^24.0.2",
+    "ts-jest": "^25.2.0",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.2"
   },
