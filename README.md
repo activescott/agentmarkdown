@@ -77,7 +77,7 @@ yarn
 yarn start
 ```
 
-*NOTE: If you have trouble starting the example on macOS related to `fsevents` errors, it may require running `xcode-select --install`. If that doesn't work, then possibly a `sudo rm -rf $(xcode-select -print-path)` followed by `xcode-select --install` will be necessary.*
+_NOTE: If you have trouble starting the example on macOS related to `fsevents` errors, it may require running `xcode-select --install`. If that doesn't work, then possibly a `sudo rm -rf $(xcode-select -print-path)` followed by `xcode-select --install` will be necessary._
 
 ## Customize & Extend with Plugins
 
