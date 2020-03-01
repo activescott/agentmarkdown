@@ -43,25 +43,25 @@
   },
   "devDependencies": {
     "@activescott/eslint-config": "^1.0.1",
-    "@types/jest": "^24.0.15",
-    "@types/node": "^13.1.6",
-    "@typescript-eslint/eslint-plugin": "^2.3.1",
-    "@typescript-eslint/parser": "^2.3.1",
+    "@types/jest": "^25.1.3",
+    "@types/node": "^13.7.7",
+    "@typescript-eslint/eslint-plugin": "^2.21.0",
+    "@typescript-eslint/parser": "^2.21.0",
     "commitizen": "^4.0.3",
-    "coveralls": "^3.0.5",
+    "coveralls": "^3.0.9",
     "cz-conventional-changelog": "3.1.0",
-    "eslint": "^6.4.0",
-    "eslint-config-prettier": "^6.3.0",
-    "jest": "^24.8.0",
-    "prettier": "^1.18.2",
-    "semantic-release": ">=16.0.0-beta",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "jest": "^25.1.0",
+    "prettier": "^1.19.1",
+    "semantic-release": "^17.0.4",
     "ts-jest": "^25.1.0",
-    "ts-node": "^8.3.0",
-    "typescript": "^3.5.2"
+    "ts-node": "^8.6.2",
+    "typescript": "^3.8.3"
   },
   "dependencies": {
     "domhandler": "^3.0.0",
-    "htmlparser2": "^4.0.0"
+    "htmlparser2": "^4.1.0"
   },
   "config": {
     "commitizen": {
