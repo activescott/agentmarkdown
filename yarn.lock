@@ -597,10 +597,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.7.2.tgz#c4e63af5e8823ce9cc3f0b34f7b998c2171f0c44"
   integrity sha512-dyYO+f6ihZEtNPDcWNR1fkoTDf3zAK3lAABDze3mz6POyIercH0lEUawUFXlG8xaQZmm1yEBON/4TsYv/laDYg==
 
-"@types/node@^12.7.2":
-  version "12.7.4"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.7.4.tgz#64db61e0359eb5a8d99b55e05c729f130a678b04"
-  integrity sha512-W0+n1Y+gK/8G2P/piTkBBN38Qc5Q1ZSO6B5H3QmPCUewaiXOo2GCAWZ4ElZCcNhjJuBSUSLGFUJnmlCn5+nxOQ==
+"@types/node@^13.1.6":
+  version "13.1.6"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.1.6.tgz#076028d0b0400be8105b89a0a55550c86684ffec"
+  integrity sha512-Jg1F+bmxcpENHP23sVKkNuU3uaxPnsBMW0cLjleiikFKomJQbsn0Cqk2yDvQArqzZN6ABfBkZ0To7pQ8sLdWDg==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -1591,6 +1591,11 @@ conventional-commit-types@^2.0.0:
   resolved "https://registry.yarnpkg.com/conventional-commit-types/-/conventional-commit-types-2.1.1.tgz#352eb53f56fbc7c1a6c1ba059c2b6670c90b2a8a"
   integrity sha512-0Ts+fEdmjqYDOQ1yZ+LNgdSPO335XZw9qC10M7CxtLP3nIMGmeMhmkM8Taffa4+MXN13bRPlp0CtH+QfOzKTzw==
 
+conventional-commit-types@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/conventional-commit-types/-/conventional-commit-types-3.0.0.tgz#7c9214e58eae93e85dd66dbfbafe7e4fffa2365b"
+  integrity sha512-SmmCYnOniSsAa9GqWOeLqc179lfr5TRu5b4QFDkbsrJ5TZjPJx85wtOr3zn+1dbeNiXDKGPbZ72IKbPhLXh/Lg==
+
 conventional-commits-filter@^2.0.0, conventional-commits-filter@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/conventional-commits-filter/-/conventional-commits-filter-2.0.2.tgz#f122f89fbcd5bb81e2af2fcac0254d062d1039c1"
@@ -1758,14 +1763,14 @@ cz-conventional-changelog@3.0.1:
   optionalDependencies:
     "@commitlint/load" ">6.1.1"
 
-cz-conventional-changelog@3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/cz-conventional-changelog/-/cz-conventional-changelog-3.0.2.tgz#f6b9a406177ab07f9a3a087e06103a045b376260"
-  integrity sha512-MPxERbtQyVp0nnpCBiwzKGKmMBSswmCV3Jpef3Axqd5f3c/SOc6VFiSUlclOyZXBn3Xtf4snzt4O15hBTRb2gA==
+cz-conventional-changelog@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/cz-conventional-changelog/-/cz-conventional-changelog-3.1.0.tgz#1e004a4f507531347a5f78ab4ed65c3ff693fc97"
+  integrity sha512-SCwPPOF+7qMh1DZkJhrwaxCvZzPaz2E9BwQzcZwBuHlpcJj9zzz7K5vADQRhHuxStaHZFSLbDlZEdcls4bKu7Q==
   dependencies:
     chalk "^2.4.1"
     commitizen "^4.0.3"
-    conventional-commit-types "^2.0.0"
+    conventional-commit-types "^3.0.0"
     lodash.map "^4.5.1"
     longest "^2.0.1"
     right-pad "^1.0.1"
