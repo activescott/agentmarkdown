@@ -77,6 +77,8 @@ yarn
 yarn start
 ```
 
+_NOTE: If you have trouble starting the example on macOS related to `fsevents` errors, it may require running `xcode-select --install`. If that doesn't work, then possibly a `sudo rm -rf $(xcode-select -print-path)` followed by `xcode-select --install` will be necessary._
+
 ## Customize & Extend with Plugins
 
 To customize how the markdown is generated or add support for new elements, implement the `LayoutPlugin` interface to handle a particular HTML element. The `LayoutPlugin` interface is defined as follows:
