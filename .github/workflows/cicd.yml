@@ -31,7 +31,7 @@ jobs:
         run: |
           cd ./example
           echo "Running in directory $PWD (before npm)"
-          npm # although the default install script in travis runs this for the root, it doesn't for the example (https://docs.travis-ci.com/user/languages/javascript-with-nodejs/)
+          npm i # although the default install script in travis runs this for the root, it doesn't for the example (https://docs.travis-ci.com/user/languages/javascript-with-nodejs/)
           npm run build
 
       - name: test demo locally
