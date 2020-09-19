@@ -180,4 +180,4 @@ see [/docs/todo.md](docs/todo.md)
 
 Copyright © 2019 [Scott Willeke](https://github.com/activescott).
 
-This project is licensed via [Mozilla Public License 2.0](https://github.com/activescott/serverless-http-invoker/blob/master/LICENSE).
+This project is licensed via [Mozilla Public License 2.0](https://github.com/activescott/agentmarkdown/blob/master/LICENSE).
