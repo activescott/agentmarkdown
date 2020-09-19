@@ -25,9 +25,9 @@ const table = getAllSnapshots() // .filter(s => s.endsWith("/blockquote.mrkdwn")
 
 describe("snapshots", () => {
   // NOTE: many of the tests were originally from https://github.com/integrations/html-to-mrkdwn/tree/master/test/fixtures, but they were crazy wrong (like headings wrapped in * instead of #). So they're fixed herein.
-  test.each(table)("%s", async snapshotPath => {
+  test.each(table)("%s", async (snapshotPath) => {
     const snapshot: string = await fsPromises.readFile(snapshotPath, {
-      encoding: "utf8"
+      encoding: "utf8",
     })
     const [htmlRaw, expected] = snapshot.split("\n====\n")
     // if the html snapshot begins with a comment followed by a LF remove it (because the LF becomes part of the output in some case):

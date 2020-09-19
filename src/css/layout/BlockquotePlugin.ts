@@ -43,7 +43,7 @@ class BlockquotePlugin implements LayoutPlugin {
         }
       }
     }
-    needPrefix.forEach(b => {
+    needPrefix.forEach((b) => {
       b.prependChild(
         manager.createBox(BoxType.inline, "> ", [], "blockquote-prefix")
       )

@@ -4,7 +4,7 @@ import {
   LayoutContext,
   HtmlNode,
   BoxType,
-  LayoutGenerator
+  LayoutGenerator,
 } from "../.."
 import { DefaultLayoutGenerators } from "./DefaultLayoutGenerators"
 import { normalizeWhitespace } from ".."
@@ -81,8 +81,8 @@ export default class LayoutGeneratorManager {
   ): CssBox[] {
     const boxes = elements
       ? elements
-          .map(el => this.generateBox(context, manager, el))
-          .filter(childBox => childBox !== null)
+          .map((el) => this.generateBox(context, manager, el))
+          .filter((childBox) => childBox !== null)
       : []
     return boxes
   }
@@ -120,7 +120,7 @@ enum CssDisplayValue {
   block,
   inline,
   listItem,
-  none
+  none,
 }
 
 const elementToDisplayMap: Map<string, CssDisplayValue> = new Map<
@@ -155,7 +155,7 @@ const elementToDisplayMap: Map<string, CssDisplayValue> = new Map<
   ["menu", CssDisplayValue.block],
   ["pre", CssDisplayValue.block],
   ["li", CssDisplayValue.listItem],
-  ["head", CssDisplayValue.none]
+  ["head", CssDisplayValue.none],
 ])
 
 /**

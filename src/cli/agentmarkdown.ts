@@ -63,7 +63,7 @@ export class Cli {
     if (process.stdin.isTTY === true) {
       return false
     } else {
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         let stdinContent: string = null
         // See example at https://nodejs.org/api/process.html#process_a_note_on_process_i_o for this:
         process.stdin.on("readable", () => {

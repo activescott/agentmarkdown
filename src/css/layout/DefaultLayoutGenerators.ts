@@ -139,7 +139,7 @@ export class DefaultLayoutGenerators {
     listState.beginList(element.tagName as "ul" | "ol")
     const kids = manager.layout(context, element.children)
     listState.endList()
-    kids.forEach(kid => listBox.addChild(kid))
+    kids.forEach((kid) => listBox.addChild(kid))
     return listBox
   }
 
@@ -246,7 +246,7 @@ export class DefaultLayoutGenerators {
         decode(child)
       }
     }
-    kids.forEach(kid => decode(kid))
+    kids.forEach((kid) => decode(kid))
     kids.unshift(manager.createBox(BoxType.block, "```"))
     kids.push(manager.createBox(BoxType.block, "```"))
     styleState.popWhitespaceHandling()

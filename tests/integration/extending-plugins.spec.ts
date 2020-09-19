@@ -4,7 +4,7 @@ import {
   LayoutContext,
   HtmlNode,
   LayoutGenerator,
-  BoxType
+  BoxType,
 } from "../../src"
 import { LayoutManager } from "../../src/LayoutManager"
 
@@ -25,9 +25,9 @@ it("should allow overriding existing elements with custom LayoutPlugin", async (
     layoutPlugins: [
       {
         elementName: "b",
-        layout: customEmphasisLayout
-      }
-    ]
+        layout: customEmphasisLayout,
+      },
+    ],
   })
   expect(result.markdown).toEqual("_my bold_")
 })
@@ -38,9 +38,9 @@ it("should allow rendering new elements with custom LayoutPlugin", async () => {
     layoutPlugins: [
       {
         elementName: "mycustomelement",
-        layout: customEmphasisLayout
-      }
-    ]
+        layout: customEmphasisLayout,
+      },
+    ],
   })
   expect(result.markdown).toEqual("_custom content_")
 })

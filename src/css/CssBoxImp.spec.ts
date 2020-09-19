@@ -10,7 +10,7 @@ describe("CSS 9.2.1.1 Anonymous block boxes", () => {
     const children = [
       new CssBoxImp(BoxType.inline),
       new CssBoxImp(BoxType.inline),
-      new CssBoxImp(BoxType.inline)
+      new CssBoxImp(BoxType.inline),
     ]
     const rootBox = new CssBoxImp(BoxType.block, "", children)
     for (const child of children) {
@@ -22,7 +22,7 @@ describe("CSS 9.2.1.1 Anonymous block boxes", () => {
     const children = [
       new CssBoxImp(BoxType.block),
       new CssBoxImp(BoxType.block),
-      new CssBoxImp(BoxType.block)
+      new CssBoxImp(BoxType.block),
     ]
     const rootBox = new CssBoxImp(BoxType.block, "", children)
     for (const child of children) {
@@ -34,7 +34,7 @@ describe("CSS 9.2.1.1 Anonymous block boxes", () => {
     const children = [
       new CssBoxImp(BoxType.block),
       new CssBoxImp(BoxType.inline),
-      new CssBoxImp(BoxType.block)
+      new CssBoxImp(BoxType.block),
     ]
     const rootBox = new CssBoxImp(BoxType.block, "", children)
     const actual: CssBox[] = Array.from(rootBox.children)
@@ -51,7 +51,7 @@ describe("CSS 9.2.1.1 Anonymous block boxes", () => {
       new CssBoxImp(BoxType.block),
       new CssBoxImp(BoxType.inline),
       new CssBoxImp(BoxType.inline),
-      new CssBoxImp(BoxType.block)
+      new CssBoxImp(BoxType.block),
     ]
     const rootBox = new CssBoxImp(BoxType.block, "", children)
     const actual: CssBox[] = Array.from(rootBox.children)
@@ -69,7 +69,7 @@ describe("CSS 9.2.1.1 Anonymous block boxes", () => {
       new CssBoxImp(BoxType.block),
       new CssBoxImp(BoxType.inline),
       new CssBoxImp(BoxType.block),
-      new CssBoxImp(BoxType.inline)
+      new CssBoxImp(BoxType.inline),
     ]
     const rootBox = new CssBoxImp(BoxType.block, "", children)
     const actual: CssBox[] = Array.from(rootBox.children)

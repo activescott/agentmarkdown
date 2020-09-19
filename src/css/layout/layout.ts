@@ -15,6 +15,6 @@ export function layout(document: HtmlNode[], plugins: LayoutPlugin[]): CssBox {
   const manager = new LayoutManagerImp(layoutGenerator)
   // NOTE: we want a single root box so that the if the incoming HTML is a fragment (e.g. <span>a</span> <span>b</span>) it will still figure out it's own formatting context.
   const body = new CssBoxImp(BoxType.block, "", [], "body")
-  manager.layout(context, document).forEach(box => box && body.addChild(box))
+  manager.layout(context, document).forEach((box) => box && body.addChild(box))
   return body
 }

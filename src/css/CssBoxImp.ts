@@ -43,7 +43,7 @@ export class CssBoxImp implements CssBox {
       } = {
         type: typeStr(b.type),
         text: b.textContent,
-        debug: b.debugNote
+        debug: b.debugNote,
       }
       if (b.type === BoxType.block) {
         ;(traceBox.topMargin = b.topMargin),
