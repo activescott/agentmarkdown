@@ -14,7 +14,7 @@ const entityMap = new Map<RegExp, string>([
   [/&gt;/g, ">"],
   [/&nbsp;/g, "\u00A0"],
   [/&copy;/g, "\u00A9 "],
-  [/&reg;/g, "\u00AE"]
+  [/&reg;/g, "\u00AE"],
 ])
 /**
  * Decodes HTML Character entities into their corresponding character.

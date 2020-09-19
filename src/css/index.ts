@@ -6,7 +6,7 @@ export enum WhitespaceHandling {
   pre,
   nowrap,
   prewrap,
-  preline
+  preline,
 }
 /* eslint-enable no-unused-vars */
 

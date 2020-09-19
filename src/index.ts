@@ -65,10 +65,10 @@ const defaultPlugins: LayoutPlugin[] = [
   { elementName: "strike", layout: DefaultLayoutGenerators.emphasisThunk("~") },
   {
     elementName: "strong",
-    layout: DefaultLayoutGenerators.emphasisThunk("**")
+    layout: DefaultLayoutGenerators.emphasisThunk("**"),
   },
   { elementName: "u", layout: DefaultLayoutGenerators.emphasisThunk("_") },
-  new BlockquotePlugin()
+  new BlockquotePlugin(),
 ]
 
 /**
@@ -109,7 +109,7 @@ export class AgentMarkdown {
     renderBoxes(writer, docStructure.children)
     return {
       markdown: writer.toString(),
-      images: []
+      images: [],
     }
   }
 }
@@ -140,7 +140,7 @@ export interface LayoutPlugin {
 /* eslint-disable no-unused-vars */
 export enum BoxType {
   block = 0,
-  inline = 1
+  inline = 1,
 }
 /* eslint-enable no-unused-vars */
 

@@ -9,8 +9,8 @@ it("simple", async () => {
       type: "tag",
       name: "div",
       attribs: {},
-      children: [{ data: "hi", type: "text" }]
-    }
+      children: [{ data: "hi", type: "text" }],
+    },
   ]
   expect(actual).toMatchObject(expected)
 })
@@ -24,7 +24,7 @@ it("two", async () => {
   const expected = [
     {
       data: "Xyz ",
-      type: "text"
+      type: "text",
     },
     {
       type: "script",
@@ -33,10 +33,10 @@ it("two", async () => {
       children: [
         {
           data: "var foo = '<<bar>>';< /  script><!--<!-- Waah! -- -->",
-          type: "text"
-        }
-      ]
-    }
+          type: "text",
+        },
+      ],
+    },
   ]
   expect(actual).toMatchObject(expected)
 })

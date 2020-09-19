@@ -38,7 +38,7 @@ const markdownString = await AgentMarkdown.produce(htmlString)
 
 ## Install
 
-yarn (`yarn add agentmarkdown`) or npm (`npm install agentmarkdown`)
+npm (`npm install agentmarkdown`)
 
 ## Features
 
@@ -61,7 +61,7 @@ It also responds to stdin, if you pipe html to it. So you can do things like:
 
     echo "<b>bold</bold>" | agentmarkdown > myfile.md
 
-The above commands assume you installed agentmarkdown with `yarn global add agentmarkdown`, `npm install --global agentmarkdown` but it also works with `npx` so you can run it without installing like:
+The above commands assume you installed agentmarkdown with `npm install --global agentmarkdown` but it also works with `npx` so you can run it without installing like:
 
     npx agentmarkdown <filename.html>
 
@@ -73,8 +73,8 @@ You can build and the web example locally with the following commands:
 
 ```
 cd example/
-yarn
-yarn start
+npm install
+npm run start
 ```
 
 _NOTE: If you have trouble starting the example on macOS related to `fsevents` errors, it may require running `xcode-select --install`. If that doesn't work, then possibly a `sudo rm -rf $(xcode-select -print-path)` followed by `xcode-select --install` will be necessary._
@@ -154,7 +154,7 @@ This is a community project. We invite your participation through issues and pul
 
 The package is written in TypeScript. To build the package run the following from the root of the repo:
 
-    yarn build # It will be built in /dist
+    npm run build # It will be built in /dist
 
 ## Release Process (Deploying to NPM) 🚀
 

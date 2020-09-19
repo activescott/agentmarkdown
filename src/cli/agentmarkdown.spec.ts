@@ -14,7 +14,7 @@ describe("CLI", () => {
       exit: jest.fn(),
       argv: ["/usr/local/bin/node", "file.js"],
       stdin: new MockReadable(null, true),
-      stdout: mockStdOut
+      stdout: mockStdOut,
     }
     await new Cli().run(mockProcess)
     expect(mockStdOut.data).toMatch(/^Usage: agentmarkdown \[filePath\]/)
@@ -34,7 +34,7 @@ describe("CLI", () => {
       exit: jest.fn(),
       argv: ["/usr/local/bin/node", "file.js", contentPath],
       stdin: new MockReadable(null, true),
-      stdout: mockStdOut
+      stdout: mockStdOut,
     }
     await new Cli().run(mockProcess)
     expect(mockStdOut.data).toEqual("*emphasis*")
@@ -50,7 +50,7 @@ describe("CLI", () => {
       exit: jest.fn(),
       argv: ["/usr/local/bin/node", "file.js"],
       stdin: new MockReadable("<em>emphasis</em>", false),
-      stdout: mockStdOut
+      stdout: mockStdOut,
     }
     await new Cli().run(mockProcess)
     expect(mockStdOut.data).toEqual("*emphasis*")
