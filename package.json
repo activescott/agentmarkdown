@@ -59,7 +59,7 @@
     "typescript": "^4.0.3"
   },
   "dependencies": {
-    "domhandler": "^3.0.0",
+    "domhandler": "^4.1.0",
     "htmlparser2": "^4.1.0"
   },
   "config": {
