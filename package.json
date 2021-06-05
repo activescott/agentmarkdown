@@ -43,7 +43,7 @@
   "devDependencies": {
     "@activescott/eslint-config": "^2.2.0",
     "@types/jest": "^26.0.22",
-    "@types/node": "^14.14.37",
+    "@types/node": "^15.12.1",
     "@typescript-eslint/eslint-plugin": "^4.1.1",
     "@typescript-eslint/parser": "^4.1.1",
     "commitizen": "^4.2.1",
