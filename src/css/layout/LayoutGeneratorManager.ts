@@ -18,9 +18,8 @@ export default class LayoutGeneratorManager {
   private readonly layoutGeneratorMap: Map<string, LayoutGenerator>
 
   public constructor(plugins: LayoutPlugin[]) {
-    this.layoutGeneratorMap = LayoutGeneratorManager.createLayoutGeneratorMap(
-      plugins
-    )
+    this.layoutGeneratorMap =
+      LayoutGeneratorManager.createLayoutGeneratorMap(plugins)
   }
 
   private static createLayoutGeneratorMap(
