@@ -20,11 +20,5 @@ function info(msg, url) {
   process.stdout.write(EOL)
 }
 
-info(
-  `Did ${package.name} help you? Please add a ⭐ at `,
-  package.repository
-)
-info(
-  "Not helpful? Please share your feedback 📣 at ",
-  package.bugs.url
-)
+info(`Did ${package.name} help you? Please add a ⭐ at `, package.repository)
+info("Not helpful? Please share your feedback 📣 at ", package.bugs.url)
