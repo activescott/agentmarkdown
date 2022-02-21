@@ -4,10 +4,10 @@ updates:
   - package-ecosystem: "npm"
     schedule:
       interval: "monthly"
-      # Check for npm updates on Sundays
-      day: "saturday"
+      # Check for npm updates on "day"
+      day: "friday"
     allow:
-      - dependency-type: "production"
+      - dependency-type: "direct"
     directory: "/"
     commit-message:
       # for production deps, prefix commit messages with "fix" (trigger a patch release)
