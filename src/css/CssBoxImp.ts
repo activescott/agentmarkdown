@@ -29,6 +29,38 @@ export class CssBoxImp implements CssBox {
     this._children = children ? Array.from(children) : []
   }
 
+  public get children(): IterableIterator<CssBox> {
+    return this.childrenBoxGenerator()
+  }
+
+  private get childBoxTypes(): { hasBlock: boolean; hasInline: boolean } {
+    if (this.childBoxTypeCache.needsCalculated) {
+      let hasBlock = false
+      let hasInline = false
+      // Deliberately avoiding anonymous boxes created in this.children() with this._children
+      for (const child of this._children) {
+        hasBlock = hasBlock || child.type === BoxType.block
+        hasInline = hasInline || child.type === BoxType.inline
+      }
+      this.childBoxTypeCache.hasBlock = hasBlock
+      this.childBoxTypeCache.hasInline = hasInline
+      this.childBoxTypeCache.needsCalculated = false
+    }
+    return this.childBoxTypeCache
+  }
+
+  private get containsInlineBoxes(): boolean {
+    return this.childBoxTypes.hasInline
+  }
+
+  private get containsBlockBoxes(): boolean {
+    return this.childBoxTypes.hasBlock
+  }
+
+  private get containsInlineAndBlockBoxes(): boolean {
+    return this.containsInlineBoxes && this.containsBlockBoxes
+  }
+
   /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
   public static traceBoxTree(box: CssBox, indent = 0): string {
     const typeStr = (type: BoxType): string =>
@@ -72,38 +104,6 @@ export class CssBoxImp implements CssBox {
     if (!box) throw new Error("box must be provided")
     this._children.unshift(box)
     this.childBoxTypeCache.needsCalculated = true
-  }
-
-  public get children(): IterableIterator<CssBox> {
-    return this.childrenBoxGenerator()
-  }
-
-  private get childBoxTypes(): { hasBlock: boolean; hasInline: boolean } {
-    if (this.childBoxTypeCache.needsCalculated) {
-      let hasBlock = false
-      let hasInline = false
-      // Deliberately avoiding anonymous boxes created in this.children() with this._children
-      for (const child of this._children) {
-        hasBlock = hasBlock || child.type === BoxType.block
-        hasInline = hasInline || child.type === BoxType.inline
-      }
-      this.childBoxTypeCache.hasBlock = hasBlock
-      this.childBoxTypeCache.hasInline = hasInline
-      this.childBoxTypeCache.needsCalculated = false
-    }
-    return this.childBoxTypeCache
-  }
-
-  private get containsInlineBoxes(): boolean {
-    return this.childBoxTypes.hasInline
-  }
-
-  private get containsBlockBoxes(): boolean {
-    return this.childBoxTypes.hasBlock
-  }
-
-  private get containsInlineAndBlockBoxes(): boolean {
-    return this.containsInlineBoxes && this.containsBlockBoxes
   }
 
   private *childrenBoxGenerator(): IterableIterator<CssBox> {

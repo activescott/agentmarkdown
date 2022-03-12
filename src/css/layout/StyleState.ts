@@ -10,19 +10,19 @@ export class StyleState {
 
   public constructor(private readonly context: LayoutContext) {}
 
-  public pushWhitespaceHandling(handling: WhitespaceHandling): void {
-    this.context.pushState(StyleState.WhitespaceHandlingKey, handling)
-  }
-
-  public popWhitespaceHandling(): void {
-    this.context.popState(StyleState.WhitespaceHandlingKey)
-  }
-
   public get whitespaceHandling(): WhitespaceHandling {
     const handling: WhitespaceHandling =
       this.context.peekState<WhitespaceHandling>(
         StyleState.WhitespaceHandlingKey
       )
     return handling ? handling : WhitespaceHandling.normal
+  }
+
+  public pushWhitespaceHandling(handling: WhitespaceHandling): void {
+    this.context.pushState(StyleState.WhitespaceHandlingKey, handling)
+  }
+
+  public popWhitespaceHandling(): void {
+    this.context.popState(StyleState.WhitespaceHandlingKey)
   }
 }
