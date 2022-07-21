@@ -2,8 +2,16 @@ var path = require("path")
 
 module.exports = {
   mode: "production",
+  performance: {
+    // the asset size got large when including the events module for htmlparser2. This shuts up webpack
+    // https://webpack.js.org/configuration/performance/
+    maxAssetSize: 275000,
+    maxEntrypointSize: 275000,
+  },
+  target: "es6",
   // https://webpack.js.org/configuration/output/
   output: {
+    chunkFormat: "module",
     path: path.join(__dirname, "dist"),
     filename: "main.js",
   },

@@ -38,7 +38,8 @@
     "dev": "./node_modules/.bin/jest --watch",
     "pretest": "npm run lint",
     "coverage-publish": "cat ./coverage/lcov.info | coveralls",
-    "postinstall": "node scripts/postInstall.js"
+    "postinstall": "node scripts/postInstall.js",
+    "clean": "rm -rf node_modules; rm -rf example/node_modules"
   },
   "devDependencies": {
     "@activescott/eslint-config": "^2.3.5",
