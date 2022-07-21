@@ -1,7 +1,12 @@
 import { AgentMarkdown } from "agentmarkdown"
-import * as pkg from "agentmarkdown/package.json"
 
-window.addEventListener("load", docLoad)
+if (document.readyState === "loading") {
+  // Loading hasn't finished yet
+  document.addEventListener("DOMContentLoaded", docLoad);
+} else {
+  console.log("`DOMContentLoaded` has already fired")
+  docLoad();
+}
 
 let htmlElement
 function docLoad() {
