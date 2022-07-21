@@ -2,10 +2,10 @@ import { AgentMarkdown } from "agentmarkdown"
 
 if (document.readyState === "loading") {
   // Loading hasn't finished yet
-  document.addEventListener("DOMContentLoaded", docLoad);
+  document.addEventListener("DOMContentLoaded", docLoad)
 } else {
   console.log("`DOMContentLoaded` has already fired")
-  docLoad();
+  docLoad()
 }
 
 let htmlElement
