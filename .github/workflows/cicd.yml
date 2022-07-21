@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          cache: "npm"
           cache-dependency-path: package-lock.json
 
       - name: build package
@@ -28,7 +28,7 @@ jobs:
       - name: test package
         run: |
           npm run test
-  
+
   test_demo:
     needs: [test_package]
     runs-on: ubuntu-20.04
@@ -43,9 +43,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          cache: "npm"
           cache-dependency-path: example/package-lock.json
-  
+
       - name: build package
         run: |
           npm i
