@@ -3,20 +3,24 @@ name: main
 on: [push]
 
 jobs:
-  build_and_test:
+  test_package:
     runs-on: ubuntu-20.04
 
     strategy:
+      # allow all versions to run to see if it is a problem in a specific node-version
+      fail-fast: false
       matrix:
-        node-version: [12.x, 16.x]
+        node-version: [14, 16, 18]
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: package-lock.json
 
       - name: build package
         run: |
@@ -27,11 +31,35 @@ jobs:
         run: |
           npm run test
 
+  test_demo:
+    needs: [test_package]
+    runs-on: ubuntu-20.04
+    strategy:
+      # allow all versions to run to see if it is a problem in a specific node-version
+      fail-fast: false
+      matrix:
+        node-version: [14, 16, 18]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: example/package-lock.json
+
+      - name: build package
+        run: |
+          npm i
+          npm run build
+
       - name: build demo
         run: |
           cd ./example
           echo "Running in directory $PWD (before npm)"
-          npm i # although the default install script in travis runs this for the root, it doesn't for the example (https://docs.travis-ci.com/user/languages/javascript-with-nodejs/)
+          npm i
           npm run build
 
       - name: test demo locally
@@ -44,15 +72,15 @@ jobs:
           npm run test-local
 
   deploy_package:
-    needs: build_and_test
+    needs: [test_package, test_demo]
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
 
-      - name: Use Node.js v12.x
-        uses: actions/setup-node@v1
+      - name: Use Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: v12.x
+          node-version: 18
 
       - name: build
         run: |
