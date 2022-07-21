@@ -3,12 +3,10 @@ import { HtmlNode } from "./HtmlNode"
 
 export function parseHtml(html: string): Promise<HtmlNode[]> {
   return new Promise<HtmlNode[]>((resolve, reject): void => {
-    const handler = new htmlparser.DomHandler(
-      function (error, dom): void {
-        if (error) reject(new Error("Error parsing html into DOM"))
-        else resolve(dom as HtmlNode[])
-      }
-    )
+    const handler = new htmlparser.DomHandler(function (error, dom): void {
+      if (error) reject(new Error("Error parsing html into DOM"))
+      else resolve(dom as HtmlNode[])
+    })
     const parser = new htmlparser.Parser(handler)
     parser.write(html)
     parser.end()
