@@ -1,4 +1,6 @@
 on:
+  # allows manually triggering (see https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#workflow_dispatch)
+  workflow_dispatch:
   pull_request_target:
     types: [auto_merge_enabled, auto_merge_disabled]
 
