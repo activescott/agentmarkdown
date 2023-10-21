@@ -11,7 +11,7 @@ import { LayoutManager } from "../../src/LayoutManager"
 const customEmphasisLayout: LayoutGenerator = (
   context: LayoutContext,
   manager: LayoutManager,
-  element: HtmlNode
+  element: HtmlNode,
 ): CssBox | null => {
   const kids = manager.layout(context, element.children)
   kids.unshift(manager.createBox(BoxType.inline, "_"))

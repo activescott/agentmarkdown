@@ -22,7 +22,7 @@ async function htmlUpdate() {
   const markdown = await AgentMarkdown.produce(html)
   console.log("markdown:", markdown)
   const outputs /*: NodeListOf<HTMLDivElement>*/ = document.querySelectorAll(
-    ".panel.output .content"
+    ".panel.output .content",
   )
   for (const e of outputs) {
     e.value = markdown

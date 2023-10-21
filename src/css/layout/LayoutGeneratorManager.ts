@@ -23,7 +23,7 @@ export default class LayoutGeneratorManager {
   }
 
   private static createLayoutGeneratorMap(
-    plugins: LayoutPlugin[]
+    plugins: LayoutPlugin[],
   ): Map<string, LayoutGenerator> {
     const generators = new Map<string, LayoutGenerator>()
     for (const plugin of plugins) {
@@ -40,13 +40,13 @@ export default class LayoutGeneratorManager {
   public generateBox(
     context: LayoutContext,
     manager: LayoutManager,
-    element: HtmlNode
+    element: HtmlNode,
   ): CssBox | null {
-    let box: CssBox = null
-    if (element.type === "text") {
+    let box: CssBox | null = null
+    if (element.type === "text" && element.data) {
       const text = normalizeWhitespace(
         element.data,
-        new StyleState(context).whitespaceHandling
+        new StyleState(context).whitespaceHandling,
       )
       if (text) {
         // only create a box if normalizeWhitespace left something over
@@ -54,21 +54,19 @@ export default class LayoutGeneratorManager {
       }
     } else if (element.type === "tag") {
       const layoutGeneratorFunc = this.getLayoutGeneratorForElement(
-        element.tagName
+        element.tagName,
       )
       try {
         box = layoutGeneratorFunc(context, manager, element)
       } catch (e) {
         throw new Error(
           `LayoutGenerator (${JSON.stringify(
-            layoutGeneratorFunc
-          )}) error for element ${JSON.stringify(element.tagName)}: ${e}`
+            layoutGeneratorFunc,
+          )}) error for element ${JSON.stringify(element.tagName)}: ${e}`,
         )
       }
     } else if (element.type === "comment") {
       // deliberately ignored
-    } else {
-      box = null
     }
     return box
   }
@@ -76,12 +74,12 @@ export default class LayoutGeneratorManager {
   public generateBoxes(
     context: LayoutContext,
     manager: LayoutManager,
-    elements: HtmlNode[]
+    elements: HtmlNode[],
   ): CssBox[] {
     const boxes = elements
-      ? elements
+      ? (elements
           .map((el) => this.generateBox(context, manager, el))
-          .filter((childBox) => childBox !== null)
+          .filter((childBox) => childBox !== null) as CssBox[])
       : []
     return boxes
   }
@@ -104,7 +102,7 @@ export default class LayoutGeneratorManager {
         generator = DefaultLayoutGenerators.noOp
       } else {
         throw new Error(
-          `unexpected element '${elementName}' and unexpected display '${display}'.`
+          `unexpected element '${elementName}' and unexpected display '${display}'.`,
         )
       }
     }

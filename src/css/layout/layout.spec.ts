@@ -19,12 +19,10 @@ it("should recognize inline element", () => {
 
 it("should create children", () => {
   const childNodes: HtmlNode[] = [
-    new MockHtmlNode("tag", "b", "bold", null),
-    new MockHtmlNode("tag", "i", "italic", null),
+    new MockHtmlNode("tag", "b", "bold"),
+    new MockHtmlNode("tag", "i", "italic"),
   ]
-  const doc: HtmlNode[] = [
-    new MockHtmlNode("tag", "span", null, null, childNodes),
-  ]
+  const doc: HtmlNode[] = [new MockHtmlNode("tag", "span", "", {}, childNodes)]
 
   const actual = Array.from(layout(doc, []).children)
   expect(actual).toHaveLength(1)

@@ -13,9 +13,9 @@ export interface HtmlNode {
   /**
    * The name of the node when @see type is "tag"
    */
-  tagName?: string
-  attribs?: AttribsType
-  children?: HtmlNode[]
+  tagName: string
+  attribs: AttribsType
+  children: HtmlNode[]
 }
 
 export interface AttribsType {

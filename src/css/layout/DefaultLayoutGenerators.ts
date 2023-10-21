@@ -13,13 +13,13 @@ export class DefaultLayoutGenerators {
   public static genericBlock(
     context: LayoutContext,
     manager: LayoutManager,
-    element: HtmlNode
+    element: HtmlNode,
   ): CssBox | null {
     return manager.createBox(
       BoxType.block,
       "",
       manager.layout(context, element.children),
-      "genericBlock"
+      "genericBlock",
     )
   }
   /**
@@ -30,7 +30,7 @@ export class DefaultLayoutGenerators {
     return (
       context: LayoutContext,
       manager: LayoutManager,
-      element: HtmlNode
+      element: HtmlNode,
     ): CssBox | null => {
       const kids = manager.layout(context, element.children)
       return manager.createBox(BoxType.block, "", kids, debugNote)
@@ -42,7 +42,7 @@ export class DefaultLayoutGenerators {
   public static genericInline(
     context: LayoutContext,
     manager: LayoutManager,
-    element: HtmlNode
+    element: HtmlNode,
   ): CssBox | null {
     const text = element.data
       ? normalizeWhitespace(element.data, WhitespaceHandling.normal)
@@ -60,7 +60,7 @@ export class DefaultLayoutGenerators {
   public static paragraph(
     context: LayoutContext,
     manager: LayoutManager,
-    element: HtmlNode
+    element: HtmlNode,
   ): CssBox | null {
     const content = manager.createBox(
       BoxType.block,
@@ -68,7 +68,7 @@ export class DefaultLayoutGenerators {
       manager.layout(context, element.children),
       "p",
       true,
-      true
+      true,
     )
     return content
   }
@@ -78,7 +78,7 @@ export class DefaultLayoutGenerators {
   public static listItem(
     context: LayoutContext,
     manager: LayoutManager,
-    element: HtmlNode
+    element: HtmlNode,
   ): CssBox | null {
     const listState = new ListState(context)
     listState.newListItem()
@@ -93,15 +93,15 @@ export class DefaultLayoutGenerators {
       markerBox = manager.createBox(
         BoxType.inline,
         indentSpaces + "* ",
-        null,
-        "li-marker-ul"
+        [],
+        "li-marker-ul",
       )
     } else if (listState.getListType() === "ol") {
       markerBox = manager.createBox(
         BoxType.inline,
         indentSpaces + `${listState.getListItemCount()}. `,
-        null,
-        "li-marker-ol"
+        [],
+        "li-marker-ol",
       )
     } else {
       throw new Error("unexpected list type")
@@ -109,27 +109,27 @@ export class DefaultLayoutGenerators {
     // add boxes for list item child elements
     const contentChildBoxes: CssBox[] = manager.layout(
       context,
-      element.children
+      element.children,
     )
     // prepare a single parent box for the list item's content (to keep it from breaking between the marker & content)
     const contentBox = manager.createBox(
       BoxType.inline,
       "",
       contentChildBoxes,
-      "li-content"
+      "li-content",
     )
     const principalBox = manager.createBox(
       BoxType.block,
       "",
       [markerBox, contentBox],
-      "li-principal"
+      "li-principal",
     )
     return principalBox
   }
   public static list(
     context: LayoutContext,
     manager: LayoutManager,
-    element: HtmlNode
+    element: HtmlNode,
   ): CssBox | null {
     if (!["ul", "ol"].includes(element.tagName)) {
       throw new Error(`Unexpected list type "${element.tagName}"`)
@@ -147,7 +147,7 @@ export class DefaultLayoutGenerators {
     return (
       context: LayoutContext,
       manager: LayoutManager,
-      element: HtmlNode
+      element: HtmlNode,
     ): CssBox | null => {
       const kids = manager.layout(context, element.children)
       const headingSequence = "#".repeat(headingLevel)
@@ -159,7 +159,7 @@ export class DefaultLayoutGenerators {
         kids,
         "h" + headingLevel,
         true,
-        true
+        true,
       )
       return headingLine
     }
@@ -168,7 +168,7 @@ export class DefaultLayoutGenerators {
     return (
       context: LayoutContext,
       manager: LayoutManager,
-      element: HtmlNode
+      element: HtmlNode,
     ): CssBox | null => {
       const kids = manager.layout(context, element.children)
       kids.unshift(manager.createBox(BoxType.inline, sequence))
@@ -179,15 +179,15 @@ export class DefaultLayoutGenerators {
   public static link(
     context: LayoutContext,
     manager: LayoutManager,
-    element: HtmlNode
+    element: HtmlNode,
   ): CssBox | null {
     const childContentBoxes = manager.layout(context, element.children)
     // wrap the text in square brackets:
     childContentBoxes.unshift(
-      manager.createBox(BoxType.inline, "[", [], "link-helper-open-text")
+      manager.createBox(BoxType.inline, "[", [], "link-helper-open-text"),
     )
     childContentBoxes.push(
-      manager.createBox(BoxType.inline, "]", [], "link-helper-close-text")
+      manager.createBox(BoxType.inline, "]", [], "link-helper-close-text"),
     )
     // add destination/title syntax:
     const href =
@@ -206,35 +206,35 @@ export class DefaultLayoutGenerators {
         BoxType.inline,
         destinationMarkup,
         [],
-        "link-helper-close-text"
-      )
+        "link-helper-close-text",
+      ),
     )
     // add the child boxes:
     const linkPrincipal = manager.createBox(
       BoxType.inline,
       "",
       childContentBoxes,
-      "link-principal"
+      "link-principal",
     )
     return linkPrincipal
   }
   public static hr(
     context: LayoutContext,
-    manager: LayoutManager
+    manager: LayoutManager,
   ): CssBox | null {
     return manager.createBox(BoxType.block, "* * *")
   }
 
   public static br(
     context: LayoutContext,
-    manager: LayoutManager
+    manager: LayoutManager,
   ): CssBox | null {
     return manager.createBox(BoxType.inline, "\n")
   }
   public static pre(
     context: LayoutContext,
     manager: LayoutManager,
-    element: HtmlNode
+    element: HtmlNode,
   ): CssBox | null {
     const styleState = new StyleState(context)
     styleState.pushWhitespaceHandling(WhitespaceHandling.pre)
@@ -255,7 +255,7 @@ export class DefaultLayoutGenerators {
   public static code(
     context: LayoutContext,
     manager: LayoutManager,
-    element: HtmlNode
+    element: HtmlNode,
   ): CssBox | null {
     // kids is likely a single text element
     const kids = manager.layout(context, element.children)

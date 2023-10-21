@@ -4,7 +4,7 @@ import { CssBox, BoxType } from "./index"
 export function renderBoxes(
   writer: TextWriter,
   boxes: Iterable<CssBox>,
-  state: RenderState = null
+  state: RenderState | null = null,
 ): void {
   if (!state) state = new RenderState()
   state.isFirstSibling = true
@@ -35,7 +35,7 @@ function afterBox(box: CssBox, state: RenderState): void {
     /* eslint-disable-next-line no-console */
     console.assert(
       box.type === BoxType.block,
-      "expected only block boxes to have a bottomMargin"
+      "expected only block boxes to have a bottomMargin",
     )
     state.lastBottomMarginNeedsRendered = true
   }
@@ -56,7 +56,7 @@ function renderBox(box: CssBox, state: RenderState, writer: TextWriter): void {
 }
 
 export class RenderState {
-  public isFirstSibling: boolean
+  public isFirstSibling: boolean = false
   public activeBlockquoteCount: number = 0
   public lastBottomMarginNeedsRendered: boolean = false
 }

@@ -16,7 +16,7 @@ export class LayoutManagerImp implements LayoutManager {
     children: Iterable<CssBox> = [],
     debugNote: string = "",
     topMargin: boolean = false,
-    bottomMargin: boolean = false
+    bottomMargin: boolean = false,
   ): CssBox {
     return new CssBoxImp(
       boxType,
@@ -24,7 +24,7 @@ export class LayoutManagerImp implements LayoutManager {
       children,
       debugNote,
       topMargin,
-      bottomMargin
+      bottomMargin,
     )
   }
 }

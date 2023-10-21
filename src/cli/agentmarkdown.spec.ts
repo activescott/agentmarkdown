@@ -13,7 +13,7 @@ describe("CLI", () => {
     const mockProcess: CliProcess = {
       exit: jest.fn(),
       argv: ["/usr/local/bin/node", "file.js"],
-      stdin: new MockReadable(null, true),
+      stdin: new MockReadable("", true),
       stdout: mockStdOut,
     }
     await new Cli().run(mockProcess)
@@ -27,13 +27,13 @@ describe("CLI", () => {
   it("should process filename on arg", async () => {
     const contentPath: string = path.join(
       __dirname,
-      "../../test-data/emphasis.fragment.html"
+      "../../test-data/emphasis.fragment.html",
     )
     const mockStdOut: MockWritable = new MockWritable()
     const mockProcess: CliProcess = {
       exit: jest.fn(),
       argv: ["/usr/local/bin/node", "file.js", contentPath],
-      stdin: new MockReadable(null, true),
+      stdin: new MockReadable("", true),
       stdout: mockStdOut,
     }
     await new Cli().run(mockProcess)
@@ -66,7 +66,7 @@ class MockWritable extends Writable {
   public _write(
     chunk: string | Buffer,
     encoding: string,
-    callback: (error?: Error | null) => void
+    callback: (error?: Error | null) => void,
   ): void {
     if (encoding === "buffer") {
       chunk = this._decoder.write(chunk as Buffer)
@@ -77,7 +77,10 @@ class MockWritable extends Writable {
 }
 
 class MockReadable extends Readable {
-  public constructor(public _data: string, public isTTY: boolean) {
+  public constructor(
+    public _data: string,
+    public isTTY: boolean,
+  ) {
     super()
     _data && this.push(_data)
     this.push(null)
