@@ -11,10 +11,9 @@ export class StyleState {
   public constructor(private readonly context: LayoutContext) {}
 
   public get whitespaceHandling(): WhitespaceHandling {
-    const handling: WhitespaceHandling =
-      this.context.peekState<WhitespaceHandling>(
-        StyleState.WhitespaceHandlingKey
-      )
+    const handling = this.context.peekState<WhitespaceHandling>(
+      StyleState.WhitespaceHandlingKey,
+    )
     return handling ? handling : WhitespaceHandling.normal
   }
 

@@ -7,7 +7,7 @@ export class ImagePlugin implements LayoutPlugin {
   public layout(
     context: LayoutContext,
     manager: LayoutManager,
-    element: HtmlNode
+    element: HtmlNode,
   ): CssBox | null {
     const src = element.attribs["src"]
     const alt = element.attribs["alt"] || ""

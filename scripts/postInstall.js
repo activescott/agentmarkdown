@@ -12,7 +12,7 @@ const package = require("../package.json")
 
 function info(msg, url) {
   process.stdout.write(
-    `${BG_BLACK}${FG_WHITE}${package.name}${RESET} ${BG_BLACK}${FG_BLUE}notice${RESET} ${msg}`
+    `${BG_BLACK}${FG_WHITE}${package.name}${RESET} ${BG_BLACK}${FG_BLUE}notice${RESET} ${msg}`,
   )
   // NOTE: During install npm will update a `repository: "https://github.com/..."` to be an object with a url property.
   url = url && url.url ? url.url : url

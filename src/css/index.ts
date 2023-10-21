@@ -49,7 +49,7 @@ function step3(whitespace: WhitespaceHandling, normalized: string): string {
     if (
       Array.prototype.every.call(
         normalized,
-        (ch: string): boolean => ch === "\n"
+        (ch: string): boolean => ch === "\n",
       )
     ) {
       normalized = ""
@@ -84,7 +84,7 @@ function step4(whitespace: WhitespaceHandling, normalized: string): string {
  */
 export function normalizeWhitespace(
   text: string,
-  whitespace: WhitespaceHandling = WhitespaceHandling.normal
+  whitespace: WhitespaceHandling = WhitespaceHandling.normal,
 ): string {
   let normalized = step1(whitespace, text)
   normalized = step2(whitespace, normalized)

@@ -38,5 +38,5 @@ export function isEmpty<T>(collection: Iterable<T>): boolean {
   // Iterator: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterator_protocol
   if (!iterator) return true
   const result = iterator.next()
-  return !result || result.done
+  return result.done === true
 }

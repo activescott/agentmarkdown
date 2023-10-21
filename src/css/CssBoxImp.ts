@@ -24,7 +24,7 @@ export class CssBoxImp implements CssBox {
     children: Iterable<CssBox> = [],
     public readonly debugNote: string = "",
     public topMargin: boolean = false,
-    public bottomMargin: boolean = false
+    public bottomMargin: boolean = false,
   ) {
     this._children = children ? Array.from(children) : []
   }
@@ -111,7 +111,7 @@ export class CssBoxImp implements CssBox {
     const areAnonymousBoxesNeeded: boolean =
       this._children.length > 0 && this.containsInlineAndBlockBoxes
     if (areAnonymousBoxesNeeded) {
-      let anonymousBox: CssBox
+      let anonymousBox: CssBox | null = null
       const kids: Iterator<CssBox> = this._children[Symbol.iterator]()
       let nextKid = kids.next()
       while (!nextKid.done) {
@@ -119,7 +119,7 @@ export class CssBoxImp implements CssBox {
         if (child.type === BoxType.inline) {
           anonymousBox = anonymousBox
             ? anonymousBox
-            : new CssBoxImp(BoxType.block, null, null, "Anonymous-Block-Box")
+            : new CssBoxImp(BoxType.block, "", [], "Anonymous-Block-Box")
           anonymousBox.addChild(child)
         } else {
           if (anonymousBox) {

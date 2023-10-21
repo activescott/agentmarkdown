@@ -22,7 +22,7 @@ export interface StdOutStream {
 export interface StdInStream {
   isTTY?: boolean
   on(eventName: string, callback: () => void): this
-  setEncoding(encoding: string): void
+  setEncoding(encoding: BufferEncoding): void
   read(size?: number): string | Buffer
 }
 
@@ -36,7 +36,7 @@ export class Cli {
 
   private async processHtml(
     process: CliProcess,
-    html: string
+    html: string,
   ): Promise<boolean> {
     let markdown = ""
     try {
@@ -64,12 +64,11 @@ export class Cli {
       return false
     } else {
       return new Promise((resolve) => {
-        let stdinContent: string = null
         // See example at https://nodejs.org/api/process.html#process_a_note_on_process_i_o for this:
         process.stdin.on("readable", () => {
           process.stdin.setEncoding("utf8")
-          stdinContent = process.stdin.read() as string
-          if (stdinContent === null) {
+          const stdinContent = process.stdin.read()
+          if (typeof stdinContent !== "string") {
             // no data was piped in
             resolve(false)
           } else {

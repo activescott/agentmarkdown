@@ -15,7 +15,7 @@ export interface LayoutManager {
     children: Iterable<CssBox>,
     debugNote: string,
     topMargin: boolean,
-    bottomMargin: boolean
+    bottomMargin: boolean,
   ): CssBox
 
   /**
@@ -25,7 +25,7 @@ export interface LayoutManager {
     boxType: BoxType,
     textContent: string,
     children: Iterable<CssBox>,
-    debugNote: string
+    debugNote: string,
   ): CssBox
   /**
    * Creates a new @see CssBox instance.
@@ -33,7 +33,7 @@ export interface LayoutManager {
   createBox(
     boxType: BoxType,
     textContent: string,
-    children: Iterable<CssBox>
+    children: Iterable<CssBox>,
   ): CssBox
   /**
    * Creates a new @see CssBox instance.

@@ -121,7 +121,7 @@ export interface LayoutGenerator {
   (
     context: LayoutContext,
     manager: LayoutManager,
-    element: HtmlNode
+    element: HtmlNode,
   ): CssBox | null
 }
 
